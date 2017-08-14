@@ -9,6 +9,7 @@ import auxiliar.ConsolePrinter;
 import auxiliar.ServerTemplatesDataSupplier;
 import auxiliar.ServerTemplatesProcessor;
 import database.CodegenDatabaseController;
+import database.TemplateSpecs;
 import database.Project;
 import java.io.BufferedReader;
 import java.io.File;
@@ -131,6 +132,15 @@ public class CodegenServer extends AbstractHandler {
                 break;
             case "novoProjeto":
                  CodegenDatabaseController.adicionaProjeto(Project.fromJson(leTodasLinhas(request.getReader())));
+                break;
+            case "addTemplateProjeto":
+                CodegenDatabaseController.newTemplate(TemplateSpecs.fromJson(leTodasLinhas(request.getReader())));
+                break;
+            case "editaTemplateProjeto":
+                CodegenDatabaseController.openTemplate(TemplateSpecs.fromJson(leTodasLinhas(request.getReader())));
+                break;
+            case "excluiTemplateProjeto":
+                CodegenDatabaseController.excluiTemplate(TemplateSpecs.fromJson(leTodasLinhas(request.getReader())));
                 break;
             case "setProjetoAtual":
                 Cookie cookieProjeto = new Cookie("project", baseRequest.getParameter("project"));

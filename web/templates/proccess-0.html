@@ -6,13 +6,13 @@
 		<th>Processar</th>
 		<th>Nome do modelo</th>
 	</tr>
-<#list root.listaModels as model>
+<#list root.projeto.models as model>
 	<tr>
 		<td class="col-md-1">
-	    	<input type="checkbox" value="processa${model.name}">
+	    	<input type="checkbox" value="processa${model}">
 	    </td>
 		<td>
-			${model.name}
+			${model}
 		</td>
 	</tr>
 </#list>

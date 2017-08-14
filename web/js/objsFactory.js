@@ -21,6 +21,14 @@ function newCampo(){
 	}
 }
 
+function newTemplateSpecs(){
+	return {
+		projeto:"",
+		nome:"",
+		nomeAntigo:"",
+	}
+}
+
 function newProject(){
 	return {
 		nome:"",

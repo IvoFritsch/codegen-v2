@@ -70,5 +70,17 @@ public class Project {
     public String toJson(){
         return new Gson().toJson(this);
     }
+
+    public void addTemplate(String nome) {
+        if(templates.contains(nome)) return;
+        templates.add(nome);
+        CodegenDatabaseController.criaArquivoTemplate(this.nome, nome);
+    }
+
+    void excluiTemplate(String nome) {
+        if(!templates.contains(nome)) return;
+        templates.remove(nome);
+        CodegenDatabaseController.removeArquivoTemplate(this.nome, nome);
+    }
     
 }

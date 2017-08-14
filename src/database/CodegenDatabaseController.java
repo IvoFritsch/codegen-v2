@@ -6,17 +6,14 @@
 package database;
 
 import auxiliar.ConsolePrinter;
+import auxiliar.Utils;
 import com.google.gson.Gson;
+import java.awt.Desktop;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import model.ServerModel;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.filefilter.NameFileFilter;
-import org.apache.commons.io.filefilter.NotFileFilter;
-import org.apache.commons.io.filefilter.OrFileFilter;
-import org.apache.commons.io.filefilter.TrueFileFilter;
 
 /**
  *
@@ -105,5 +102,40 @@ public class CodegenDatabaseController {
             FileUtils.write(new File("codegenDB/projects/" + projeto + "/models/"+modelo.getNome()+".cgm"), new Gson().toJson(modelo), "UTF-8");
         } catch (Exception ex) {
         }
+    }
+    public static void criaArquivoTemplate(String projeto, String nome) {
+        try {
+            String caminho = "codegenDB/projects/" + projeto + "/templates/"+nome;
+            caminho = Utils.formalizaCaminho(caminho);
+            FileUtils.write(new File(caminho), "", "UTF-8");
+        } catch (Exception ex) {
+        }
+    }
+    public static void removeArquivoTemplate(String projeto, String nome) {
+        try {
+            String caminho = "codegenDB/projects/" + projeto + "/templates/"+nome;
+            caminho = Utils.formalizaCaminho(caminho);
+            FileUtils.deleteQuietly(new File(caminho));
+        } catch (Exception ex) {
+        }
+    }
+
+    public static void newTemplate(TemplateSpecs specs) {
+        getProjetoViaNome(specs.getProjeto()).addTemplate(specs.getNome());
+        saveDb();
+    }
+
+    public static void openTemplate(TemplateSpecs specs) {
+        Desktop dt = Desktop.getDesktop();
+        try {
+            String caminho = "codegenDB/projects/" + specs.getProjeto() + "/templates/"+specs.getNome();
+            caminho = Utils.formalizaCaminho(caminho);
+            dt.open(new File(caminho));
+        } catch (Exception ex) {}
+    }
+
+    public static void excluiTemplate(TemplateSpecs specs) {
+        getProjetoViaNome(specs.getProjeto()).excluiTemplate(specs.getNome());
+        saveDb();
     }
 }

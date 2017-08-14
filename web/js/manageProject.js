@@ -41,9 +41,58 @@ function fechaCriacaoTemplateProjeto(){
 	$('#espacoFormNovoTemplateProjeto').attr('hidden',true);
 }
 
+
 function criaNovoTemplateProjeto(){
+	if(templateJaExiste(document.getElementById("nomeNovoTemplateProjeto").value)) return;
 	projetoEmManutencao.templates.push(
 		document.getElementById("nomeNovoTemplateProjeto").value
 		);
+	criaNovoTemplateProjetoNoServer();
 	atualizaQuadroDados();
+}
+
+function templateJaExiste(nome){
+	var arrayLength = projetoEmManutencao.templates.length;
+	for (var i = 0; i < arrayLength; i++) {
+		if(projetoEmManutencao.templates[i] === nome){
+			return true;
+		}
+	}
+	return false;
+}
+
+function excluiTemplateProjeto(nome){
+	var xmlhttps = new XMLHttpRequest();
+	var url = "/api/excluiTemplateProjeto";
+	xmlhttps.open("POST", url, true);
+	xmlhttps.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+	var template = newTemplateSpecs();
+	template.projeto = projetoEmManutencao.nome;
+	template.nome = nome;
+	xmlhttps.send(JSON.stringify(template));
+	loadProjeto();
+	atualizaQuadroDados();
+}
+
+function editaTemplateExterno(nome){
+	var xmlhttps = new XMLHttpRequest();
+	var url = "/api/editaTemplateProjeto";
+	xmlhttps.open("POST", url, true);
+	xmlhttps.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+	var template = newTemplateSpecs();
+	template.projeto = projetoEmManutencao.nome;
+	template.nome = nome;
+	xmlhttps.send(JSON.stringify(template));
+}
+
+
+function criaNovoTemplateProjetoNoServer(){
+	var xmlhttps = new XMLHttpRequest();
+	var url = "/api/addTemplateProjeto";
+	xmlhttps.open("POST", url, true);
+	xmlhttps.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+	var template = newTemplateSpecs();
+	template.projeto = projetoEmManutencao.nome;
+	template.nome = document.getElementById("nomeNovoTemplateProjeto").value;
+	xmlhttps.send(JSON.stringify(template));
 }
