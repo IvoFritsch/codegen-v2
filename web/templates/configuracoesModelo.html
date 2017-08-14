@@ -1,0 +1,37 @@
+<h3>Configurações do modelo:</h3>
+<div class="row">
+	<div class="col-md-4">
+		<h4>Configurações default:
+		<a title="Ajuda" class="btn pull-right text-info"><span class="glyphicon glyphicon-question-sign"></span></a>
+		</h4>
+		<table class="table">
+			<tr>
+				<th>Nome</th>
+				<th>Valor</th>
+				<th>Opções</th>
+			</tr>
+		{{#defaults}}
+		<tr>
+			<td>{{.}}</td>
+			<td><input id="valorConfigDefault{{.}}Model" type="text" class="form-control" onfocusout="atualizaConfigDefaultModel('{{.}}');"></td>
+			<td><a title="Remover configuracão" class='btn btn-danger' onclick='removeConfigDefaultModel("{{.}}");'><span class='glyphicon glyphicon-remove'></span></a></td>
+		</tr>
+		{{/defaults}}
+		</table>
+
+		<table class="table">
+			<tr id="espacoFormNovoDefaultModelo" hidden="true">
+				<td>Nome:<input id="nomeNovoDefaultModelo" type="text" class="form-control"></td>
+				<td><br/><a title="Confirmar" class="btn btn-success" onclick="criaNovoDefaultModelo();"><span class="glyphicon glyphicon-ok"></span></a>
+					<a  title="Cancelar" class="btn btn-danger" onclick="fechaCriacaoDefaultModelo();"><span class="glyphicon glyphicon-remove"></span></a></td>
+			</tr>
+		</table>
+		<div id="botaoNovoDefaultModelo">
+			<a class="btn btn-info pull-right" onclick="novoDefaultModelo();">Novo default</a>
+		</div>
+	</div>
+	<div class="col-md-4">
+	</div>
+	<div class="col-md-4">
+	</div>
+</div>

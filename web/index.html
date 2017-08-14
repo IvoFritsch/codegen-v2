@@ -1,0 +1,45 @@
+
+	${root.getSnippet("pageHeader",null)}
+		<h2>Bem vindo ao Haftware Codegen</h2>
+		<h4>Oque você quer fazer a seguir?</h4>
+		<hr/>
+	<div class="row">
+	<div class="col-md-6">
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 class="panel-title">Editar um dos modelos na lista abaixo?</h3>
+		<span>Pertencentes ao projeto atual (${root.projeto.nome})</span>
+	</div>
+	<div class="panel-body">
+		<table class="table">
+		<#list root.projeto.models as model>
+		<tr>
+		<td >
+		<h4>${model} </h4>
+		</td>
+		<td>
+		<a class="btn btn-warning pull-right" title="Editar modelo" href="editModel.html?model=${model}"><span class="glyphicon glyphicon-edit"></span> Editar esse modelo</a>
+		</td>
+		</tr>
+		</#list>
+		</table>
+	</div>
+	<div class="panel-footer">
+		<a class="btn btn-success" href="/novoModel.html">Criar um novo modelo</a>
+	</div>
+</div>
+</div>
+	<div class="col-md-6">
+		<div class="list-group">
+			<a href="/projects.html" class="list-group-item">Gerenciar outros projetos?</a>
+			<a href="/proccessFlux.html" class="list-group-item">Processar templates e gerar código?</a>
+			<a href="/help.html" class="list-group-item">Ver a seção de ajuda?</a>
+		</div>
+		<div class="list-group">
+			<a href="/about.html" class="list-group-item">Sobre o Haftware Codegen</a>
+			<a href="/contact.html" class="list-group-item">Contate a Haftware</a>
+		</div>
+		
+	</div>
+</div>
+	${root.getSnippet("pageFooter",null)}

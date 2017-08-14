@@ -1,0 +1,20 @@
+<span>Para começar, selecione quais os modelos devem ser considerados na geração:</span>
+<br/>
+<br/>
+<table class="table">
+	<tr>
+		<th>Processar</th>
+		<th>Nome do modelo</th>
+	</tr>
+<#list root.listaModels as model>
+	<tr>
+		<td class="col-md-1">
+	    	<input type="checkbox" value="processa${model.name}">
+	    </td>
+		<td>
+			${model.name}
+		</td>
+	</tr>
+</#list>
+</table>
+<a class="btn btn-warning pull-right" onclick="avancaFluxo();">Avançar <span class="glyphicon glyphicon-chevron-right"></span></a>

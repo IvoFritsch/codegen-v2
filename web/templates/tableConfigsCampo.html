@@ -1,0 +1,14 @@
+<table class="table">
+	<tr>
+		<th>Nome da configuracao</th>
+		<th>Valor</th>
+		<th>Opções</th>
+	</tr>
+	{{#.}}
+	<tr>
+		<td>{{.}}</td>
+		<td><input id="valorConfig{{.}}Campo" type="text" class="form-control" onfocusout="atualizaConfigCampo('{{.}}');"></td>
+		<td><a title="Remover configuracão" class='btn btn-danger' onclick='removeConfigCampo("{{.}}");'><span class='glyphicon glyphicon-remove'></span></a></td>
+	</tr>
+	{{/.}}
+</table>

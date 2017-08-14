@@ -1,0 +1,16 @@
+<table class='table'>
+    <tr>
+        <th >Nome</th>
+        <th >Tipo</th>
+        <th >Opções</th>
+    </tr>
+    {{#listaCampos}}
+    <tr>
+        <td>{{nome}}</td>
+        <td>{{tipoAsString}}</td>
+        <td ><a title="Editar informações do campo" class='btn btn-success' onclick='preparaEdicaoCampo("{{nome}}");'><span class='glyphicon glyphicon-pencil'></span></a>
+        <a title="Configurações do campo" class='btn btn-warning' onclick='preparaCampoConfig("{{nome}}");'><span class='glyphicon glyphicon-cog'></span></a>
+        <a title="Remover campo" class='btn btn-danger' onclick='removeCampoModel("{{nome}}");'><span class='glyphicon glyphicon-remove'></span></a></td>
+    </tr>
+    {{/listaCampos}}
+</table>

@@ -1,0 +1,74 @@
+	${root.getSnippet("pageHeader",null)}
+	<h2>Editando o modelo <span id="nomeModelEmEdicao">null</span><span id="asteriscoNaoSalvo" hidden="true"class="text-danger">*</span>
+		<a class="btn btn-danger pull-right" onclick="salvarModel();">Salvar</a>
+	</h2>
+	<h4 >A partir desse página você pode criar campos, assim como configurar o modelo e os campos existentes.</h4>
+	<hr/>
+	<a class='btn btn-warning' onclick='alternaEspacoConfiguracoesModelo();'><span class='glyphicon glyphicon-cog'></span> Configurações do modelo <span id="setaBotaoConfigsModelo" class='glyphicon glyphicon-chevron-down'></span></a>
+	<div id="espacoConfiguracoesModelo">
+	</div>
+	<hr/>
+	<h3>Campos do modelo:</h3>
+	<div id="tableCamposContent">
+	</div>
+	<table class="table">
+		<tr id="espacoFormNovoCampo" hidden="true">
+			<td>Digite os dados do campo a criar:</td>
+			<td id="nomeNovoCampoContainer">Nome:<input id="nomeNovoCampo" type="text" class="form-control">
+			<span id="erroNomeNovoCampo" class="help-block"></span></td>
+			<td id="tipoNovoCampoContainer">Tipo:<input id="tipoNovoCampo" type="text" class="form-control">
+			<span id="erroTipoNovoCampo" class="help-block"></span></td>
+			<td><br/><a title="Confirmar" class="btn btn-success" onclick="criaNovoCampoModel();"><span class="glyphicon glyphicon-ok"></span></a>
+				<a  title="Cancelar" class="btn btn-danger" onclick="fechaCriacaoCampo();"><span class="glyphicon glyphicon-remove"></span></a>
+			</td>
+		</tr>
+		<tr id="espacoFormEdicaoCampo" hidden="true">
+			<td>Digite os novos dados do campo:</td>
+			<td id="nomeCampoEdicaoContainer">
+			Nome:<input id="nomeCampoEdicao" type="text" class="form-control"></td>
+			<td id="tipoCampoEdicaoContainer">Tipo:<input id="tipoCampoEdicao" type="text" class="form-control"></td>
+			<td><br/><a title="Confirmar" class="btn btn-success" onclick="editaDadosCampo();"><span class="glyphicon glyphicon-ok"></span></a>
+				<a  title="Cancelar" class="btn btn-danger" onclick="fechaEdicaoDadosCampo();"><span class="glyphicon glyphicon-remove"></span></a>
+			</td>
+		</tr>
+	</table>
+	<div id="botaoNovoCampoModel">
+		<a class="btn btn-success pull-right" onclick="novoCampoModel();">Novo campo</a>
+	</div>
+	<br/><br/>
+	<div id="configsCampoSection" hidden="true">
+		<hr/>
+		<a title="Gravar e fechar" class="btn pull-right btn-warning" onclick="apagaConfigsCampoSection();"><span class="glyphicon glyphicon-open"></span> Gravar e fechar</a>
+		<h3>Configurações do campo <span id="nomeCampoConfig">null</span>:</h3>
+		<div class="row">
+			<div class="col-md-7">
+				<div  id="tableConfigsCampoContent">
+					<img src="/static/load.gif"/>
+				</div>
+				<br/>
+				<table class="table">
+					<tr id="espacoFormNovaConfigCampo" hidden="true">
+						<td>Nome:<input id="nomeNovaConfigCampo" type="text" class="form-control"></td>
+						<td>Tipo:<select id="tipoNovaConfigCampo" type="text" class="form-control">
+							<option value="simples">Simples</option>
+							<option value="comSubConfig">Com SubConfigs</option>
+							</select>
+						</td>
+						<td><br/><a title="Confirmar" class="btn btn-success" onclick="criaNovaConfigCampo();"><span class="glyphicon glyphicon-ok"></span></a>
+							<a  title="Cancelar" class="btn btn-danger" onclick="fechaCriacaoConfigCampo();"><span class="glyphicon glyphicon-remove"></span></a></td>
+					</tr>
+				</table>
+				<div id="botaoNovaConfigCampo">
+					<a class="btn btn-info pull-right" onclick="novaConfigCampo();">Nova Configuração</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script src="js/objsFactory.js"></script>
+	<script src="js/editModel.js"></script>
+	<script src="js/editConfigModelo.js"></script>
+	
+	
+	
+
+	${root.getSnippet("pageFooter",null)}

@@ -1,0 +1,37 @@
+${root.getSnippet("pageHeader",null)}
+	
+		<#if root.projeto.isPseudo()>
+		<h3 class="text-danger">Para usar o Codegen é necessário que algum projeto esteja selecionado como atual.</h3>
+		<h5 class="text-danger">Use o dropdown acima(simbolo de inbox) ou a lista abaixo</h5>
+		<br/>
+		</#if>
+		<h2>Gerenciar projetos</h2>
+		<h4 >A partir desse página você pode criar novos projetos, assim como editar os projetos existentes.</h4>
+		<hr/>
+		<span >Selecione um dos projetos na lista abaixo:</span>
+		<table class="table">
+			<tr>
+			<th>Nome</th>
+			<th>Opções</th>
+			</tr>
+		<#list root.listaProjetos as projeto>
+			<tr>
+			<td class="col-md-10">
+			<h4>${projeto.nome} </h4>
+			</td>
+			<td>
+			<a class="btn btn-success" title="Selecionar este projeto como atual" href="/api/setProjetoAtual?project=${projeto.nome}"><span class="glyphicon glyphicon-check"></span></a>
+			<#if !root.projeto.isPseudo()>
+			<a class="btn btn-warning" title="Editar projeto" href="manageProject.html?project=${projeto.nome}"><span class="glyphicon glyphicon-edit"></span></a>
+			</#if>
+			<a class="btn btn-danger" title="Excluir projeto" onclick="excluirModelo('${projeto.nome}');"><span class="glyphicon glyphicon-remove"></span></a>
+			</td>
+			</tr>
+		</#list>
+		</table>
+		
+		<a class="btn btn-success pull-right" href="/newProject.html">Crie um novo projeto</a>
+</div>
+	
+	
+${root.getSnippet("pageFooter",null)}

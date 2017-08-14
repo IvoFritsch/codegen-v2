@@ -1,0 +1,12 @@
+	${root.getSnippet("pageHeader",null)}
+	<h2>Criar um novo modelo:</h2>
+	<h4>Modelo será criado no projeto ${root.projeto.nome}</h4>
+	<hr/>
+  <form class="form-horizontal">
+	  Nome do modelo:<br>
+	  <input type="text" id="nome" name="nome" class="form-control"><br>
+      <a id="confirmaCriacaoModel" class="btn btn-success" onclick="confirmaCriacaoModel();">Criar!</a>
+	</form>
+	<script src="js/novoModel.js"></script>
+	<script src="js/objsFactory.js"></script>
+	${root.getSnippet("pageFooter",null)}

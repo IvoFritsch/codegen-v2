@@ -1,0 +1,21 @@
+	${root.getSnippet("pageHeader",null)}
+	<h2>Configurações globais do Codegen:</h2>
+	<hr/>
+	
+  <form class="form-horizontal">
+  <div class="form-group">
+    Localização dos templates:
+	<br/>
+    <input id="templatesLocation" type="text" class="form-control">
+    Saída da geração:
+	<br/>
+    <input id="genOutput" type="text" class="form-control">
+    Local para salvar e procurar os modelos (.cgm):
+	<br/>
+    <input id="modelsLocation" type="text" class="form-control">
+	<br/>
+    <a id="enviaGlobalConfig" class="btn btn-success" onclick="enviaGlobalConfig();">Salvar</a>
+	</div>
+  </form>
+	<script src="js/editConfig.js"></script>
+	${root.getSnippet("pageFooter",null)}

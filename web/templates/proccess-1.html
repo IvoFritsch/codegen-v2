@@ -1,0 +1,22 @@
+<span>Agora indique o projeto:</span>
+<br/>
+<br/>
+<table class="table">
+	<tr>
+		<th>Processar</th>
+		<th>Nome do projeto</th>
+	</tr>
+<#list root.listaProjetos as model>
+	<tr>
+		<td class="col-md-1">
+	    	<input type="radio" name="projeto" value="${model.name}">
+	    </td>
+		<td>
+			${model.name}
+		</td>
+	</tr>
+</#list>
+</table>
+<br/>
+<a class="btn btn-danger" onclick="voltaFluxo();"><span class="glyphicon glyphicon-chevron-left"></span> Voltar</a>
+<a class="btn btn-warning pull-right" onclick="avancaFluxo();">Avançar <span class="glyphicon glyphicon-chevron-right"></span></a>

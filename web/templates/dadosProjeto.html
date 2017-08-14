@@ -1,0 +1,23 @@
+<table class='table'>
+    <tr>
+        <th >Nome</th>
+        <th >Opções</th>
+    </tr>
+{{#templates}}
+    <tr>
+        <td>{{.}}</td>
+        <td ><a title="Editar esse template com o editor externo" class='btn btn-success' onclick='editaTemplateExterno("{{.}}");'><span class='glyphicon glyphicon-pencil'></span></a></td>
+    </tr>
+{{/templates}}
+</table>
+
+<table class="table">
+	<tr id="espacoFormNovoTemplateProjeto" hidden="true">
+		<td>Caminho/Nome:<input id="nomeNovoTemplateProjeto" type="text" class="form-control"></td>
+		<td><br/><a title="Confirmar" class="btn btn-success" onclick="criaNovoTemplateProjeto();"><span class="glyphicon glyphicon-ok"></span></a>
+			<a  title="Cancelar" class="btn btn-danger" onclick="fechaCriacaoTemplateProjeto();"><span class="glyphicon glyphicon-remove"></span></a></td>
+	</tr>
+</table>
+<div id="botaoNovoTemplateProjeto">
+	<a class="btn btn-info pull-right" onclick="novoTemplateProjeto();">Novo template</a>
+</div>

@@ -1,0 +1,57 @@
+<!DOCTYPE html> 
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8">
+
+  <title>Haftware Codegen</title>
+  <meta name="description" content="Codegen">
+  
+    <!-- Bootstrap -->
+    <link href="static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+	<nav class="navbar navbar-inverse ">
+		  <div class="container">
+			<div class="navbar-header">
+			  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			  </button>
+			  <a class="navbar-brand" href="/index.html">Haftware Codegen</a>
+			</div>
+			<div id="navbar" class="collapse navbar-collapse">
+			  <ul class="nav navbar-nav">
+				<li ><a title="Projeto em uso atualmente" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+				<span class="glyphicon glyphicon-inbox"></span> 
+				<#if root.projeto.isPseudo()>
+					Nenhum
+				<#else>
+					${root.projeto.nome}
+				</#if>
+				</a>
+				  <ul class="dropdown-menu">
+					
+				  
+		<#list root.listaProjetos as projeto>
+					<li><a href="/api/setProjetoAtual?project=${projeto.nome}">${projeto.nome}</a></li>
+		</#list>
+            <li role="separator" class="divider"></li>
+            <li><a href="/projects.html">Gerenciar projetos</a></li>
+				  </ul>
+				
+				
+				</li>
+				<li ><a href="/proccessFlux.html">Processar templates</a></li>
+				<li ><a href="/help.html">Ajuda</a></li>
+			  </ul>
+			  <ul class="nav navbar-nav navbar-right">
+				<li ><a href="/about.html">Sobre nós</a></li>
+				<li ><a href="/contact.html">Contate-nos</a></li>
+			  </ul>
+			</div><!--/.nav-collapse -->
+		  </div>
+		</nav>
+<div id="pageContent" class="container">
