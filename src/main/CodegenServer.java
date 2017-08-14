@@ -104,6 +104,10 @@ public class CodegenServer extends AbstractHandler {
         target = target.replace("/api/", "");
 
         switch (target) {
+            case "turnoff":
+                ConsolePrinter.printInfo("Desligando o servidor do Codegen...");
+                System.exit(0);
+                break;
             case "getGlobalConfig":
                 //writer.println(CodegenGlobalConfig.loadConfig().toJson());
                 break;

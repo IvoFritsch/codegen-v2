@@ -1,5 +1,4 @@
-<span>Para começar, selecione quais os modelos devem ser considerados na geração:</span>
-<br/>
+<h5>Para começar, selecione quais os modelos devem ser considerados na geração:</h5>
 <br/>
 <table class="table">
 	<tr>
@@ -9,7 +8,7 @@
 <#list root.projeto.models as model>
 	<tr>
 		<td class="col-md-1">
-	    	<input type="checkbox" value="processa${model}">
+	    	<input name="processaModelo" type="checkbox" value="processa${model}" checked>
 	    </td>
 		<td>
 			${model}
@@ -17,4 +16,4 @@
 	</tr>
 </#list>
 </table>
-<a class="btn btn-warning pull-right" onclick="avancaFluxo();">Avançar <span class="glyphicon glyphicon-chevron-right"></span></a>
+<a class="btn btn-warning pull-right" onclick="coletaModelosSelecionados();avancaFluxo();">Avançar <span class="glyphicon glyphicon-chevron-right"></span></a>

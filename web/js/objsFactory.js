@@ -21,6 +21,14 @@ function newCampo(){
 	}
 }
 
+function newProccessSpecs(){
+	return {
+		projeto:"",
+		modelos:[],
+		config:{},
+	}
+}
+
 function newTemplateSpecs(){
 	return {
 		projeto:"",

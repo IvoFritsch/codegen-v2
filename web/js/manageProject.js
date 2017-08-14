@@ -23,10 +23,10 @@ function loadProjeto() {
 function atualizaQuadroDados(){
 	poeGifLoading("espacoDadosProjeto");
 	projetoEmManutencao.templates.sort(function(a, b){
-    if(a < b) return -1;
-    if(a > b) return 1;
-    return 0;
-})
+	    if(a < b) return -1;
+	    if(a > b) return 1;
+	    return 0;
+	})
 	$.get('templates/dadosProjeto.html', function(template) {
 		var html = Mustache.to_html(template, projetoEmManutencao);
 		$('#espacoDadosProjeto').html(html);
@@ -48,6 +48,7 @@ function criaNovoTemplateProjeto(){
 		document.getElementById("nomeNovoTemplateProjeto").value
 		);
 	criaNovoTemplateProjetoNoServer();
+	loadProjeto();
 	atualizaQuadroDados();
 }
 

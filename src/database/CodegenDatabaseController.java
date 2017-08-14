@@ -10,6 +10,10 @@ import auxiliar.Utils;
 import com.google.gson.Gson;
 import java.awt.Desktop;
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.DirectoryNotEmptyException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import model.ServerModel;
@@ -82,6 +86,23 @@ public class CodegenDatabaseController {
         saveDb();
     }
 
+    public static void removeFileAndParentsIfEmpty(Path path, String basePath)
+        throws IOException {
+    if(path == null || path.endsWith(basePath)) return;
+
+    if (Files.isRegularFile(path)) {
+        Files.deleteIfExists(path);
+    } else if(Files.isDirectory(path)) {
+        try {
+            Files.delete(path);
+        } catch(DirectoryNotEmptyException e) {
+            return;
+        }
+    }
+    removeFileAndParentsIfEmpty(path.getParent(), basePath);
+}
+    
+    
     public static String getArquivoModelo(String projeto, String modelo) {
         try {
             return FileUtils.readFileToString(new File("codegenDB/projects/" + projeto + "/models/" + modelo+".cgm"), "UTF-8");
@@ -112,12 +133,15 @@ public class CodegenDatabaseController {
         }
     }
     public static void removeArquivoTemplate(String projeto, String nome) {
+        String caminho = "codegenDB/projects/" + projeto + "/templates/"+nome;
         try {
-            String caminho = "codegenDB/projects/" + projeto + "/templates/"+nome;
             caminho = Utils.formalizaCaminho(caminho);
             FileUtils.deleteQuietly(new File(caminho));
         } catch (Exception ex) {
         }
+        try{
+        removeFileAndParentsIfEmpty(new File(Utils.pegaPastaPaiArquivo(caminho)).toPath(), "codegenDB/projects/" + projeto + "/templates/");
+        } catch(Exception e){}
     }
 
     public static void newTemplate(TemplateSpecs specs) {
