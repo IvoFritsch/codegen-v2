@@ -104,11 +104,13 @@ public class CodegenDatabaseController {
     
     
     public static String getArquivoModelo(String projeto, String modelo) {
+        File file = new File("codegenDB/projects/" + projeto + "/models/" + modelo+".cgm");
+        if(!file.exists()) return null;
         try {
-            return FileUtils.readFileToString(new File("codegenDB/projects/" + projeto + "/models/" + modelo+".cgm"), "UTF-8");
+            return FileUtils.readFileToString(file, "UTF-8");
         } catch (Exception e) {
         }
-        return "";
+        return null;
     }
     
     public static void addModel(String projeto, ServerModel modelo){
@@ -161,5 +163,9 @@ public class CodegenDatabaseController {
     public static void excluiTemplate(TemplateSpecs specs) {
         getProjetoViaNome(specs.getProjeto()).excluiTemplate(specs.getNome());
         saveDb();
+    }
+    
+    public static String getCaminhoTemplates(String projeto){
+        return "codegenDB/projects/" + projeto + "/templates/";
     }
 }

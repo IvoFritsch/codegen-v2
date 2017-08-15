@@ -12,7 +12,7 @@ import java.util.Map;
  *
  * @author Ivo Fritsch
  */
-class CodegenFieldConfig {
+public class CodegenFieldConfig {
     
     @Expose
     private Map<String,String> conf;

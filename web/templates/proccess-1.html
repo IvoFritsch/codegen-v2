@@ -14,6 +14,10 @@
 			<td>{{.}}</td>
 			<td><input id="valorConfigGeracao{{.}}" type="text" class="form-control" onfocusout="atualizaConfigGeracao('{{.}}');"></td>
 			<td><a title="Remover configuracão" class='btn btn-danger' onclick='removeConfigGeracao("{{.}}");'><span class='glyphicon glyphicon-remove'></span></a></td>
+			<script type="text/javascript">
+
+				document.getElementById("valorConfigGeracao{{.}}").value = proccessSpecs.config['{{.}}'];
+			</script>
 		</tr>
 		{{/configsList}}
 

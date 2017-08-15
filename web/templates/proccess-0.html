@@ -8,7 +8,8 @@
 <#list root.projeto.models as model>
 	<tr>
 		<td class="col-md-1">
-	    	<input name="processaModelo" type="checkbox" value="processa${model}" checked>
+	    	<input name="processaModelo" type="checkbox" value="${model}" 
+	    	checked>
 	    </td>
 		<td>
 			${model}
@@ -17,3 +18,11 @@
 </#list>
 </table>
 <a class="btn btn-warning pull-right" onclick="coletaModelosSelecionados();avancaFluxo();">Avançar <span class="glyphicon glyphicon-chevron-right"></span></a>
+<script type="text/javascript">
+
+  var checkboxes = document.getElementsByName('processaModelo');
+  // loop over them all
+  for (var i=0; i<checkboxes.length; i++) {
+  		checkboxes[i].checked = deveProcessarModelo(checkboxes[i].value);
+  }
+</script>

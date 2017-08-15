@@ -15,6 +15,23 @@ document.addEventListener('DOMContentLoaded', function() {
 	exibeEtapaAtualFluxo();
 }, false);
 
+function comandaProcessar(){
+	proccessSpecs.projeto = '${root.projeto.nome}';
+
+
+	var xmlhttps = new XMLHttpRequest();
+	var url = "/api/processaTemplate";
+	xmlhttps.open("POST", url, true);
+	xmlhttps.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+	xmlhttps.onreadystatechange = function() {
+	    if (this.readyState == 4 && this.status == 200) {
+	       console.log("Terminou");
+	    }
+	};
+	xmlhttps.send(JSON.stringify(proccessSpecs));
+	avancaFluxo();
+}
+
 function avancaFluxo(){
 	etapaFluxo++;
 	exibeEtapaAtualFluxo();
@@ -59,7 +76,16 @@ function removeConfigGeracao(nome){
 
 function coletaModelosSelecionados(){
   	proccessSpecs.modelos = getCheckedBoxes("processaModelo");
-  	console.log(proccessSpecs.modelos);
+}
+
+function deveProcessarModelo(nome){
+	if(proccessSpecs.modelos == null) return false;
+  	for (var i = proccessSpecs.modelos.length - 1; i >= 0; i--) {
+  		if(proccessSpecs.modelos[i] === nome){
+  			return true;
+  		}
+  	}
+  	return false;
 }
 
 function getCheckedBoxes(chkboxName) {

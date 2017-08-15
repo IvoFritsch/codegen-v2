@@ -25,6 +25,7 @@ import org.apache.commons.io.FileUtils;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.AbstractHandler;
+import proccessor.ProccessSpecs;
 
 /**
  *
@@ -152,6 +153,9 @@ public class CodegenServer extends AbstractHandler {
                 cookieProjeto.setPath("/");
                 response.addCookie(cookieProjeto);
                 response.sendRedirect("/index.html");
+            case "processaTemplate":
+                ProccessSpecs.fromJson(leTodasLinhas(request.getReader()));
+                break;
         }
     }
 
