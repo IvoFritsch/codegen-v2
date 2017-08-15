@@ -7,6 +7,7 @@ package proccessor;
 
 import auxiliar.ModifiableString;
 import auxiliar.ConsolePrinter;
+import database.CodegenDatabaseController;
 
 /**
  *
@@ -22,9 +23,17 @@ public class TemplatesDataSupplier {
         this.projeto = projeto;
     }
 
+    public TemplatesModel getModel() {
+        return model;
+    }
+
+    public String getProjeto() {
+        return projeto;
+    }
+    
     // Processa e retorna o snippet, considerando o objeto recebido
     public String getSnippet(String nomeSnippet, Object obj){
-        TemplatesProcessor snip = new TemplatesProcessor(projeto+"/templates/microSnippets/"+nomeSnippet+".snip");
+        TemplatesProcessor snip = new TemplatesProcessor(projeto, CodegenDatabaseController.getCaminhoTemplates(projeto)+"microSnippets/"+nomeSnippet+".snip");
         if(!snip.pronto()){
             ConsolePrinter.printError("Não foi possível encontrar o Snippet '"+nomeSnippet+".snip' "
                     + "\n   ou ocorreu um erro no seu processamento"

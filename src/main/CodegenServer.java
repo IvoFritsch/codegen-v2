@@ -6,8 +6,10 @@
 package main;
 
 import auxiliar.ConsolePrinter;
+import auxiliar.FilesSandBox;
 import auxiliar.ServerTemplatesDataSupplier;
 import auxiliar.ServerTemplatesProcessor;
+import com.google.gson.Gson;
 import database.CodegenDatabaseController;
 import database.TemplateSpecs;
 import database.Project;
@@ -26,6 +28,7 @@ import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.AbstractHandler;
 import proccessor.ProccessSpecs;
+import proccessor.ProccessorCore;
 
 /**
  *
@@ -154,7 +157,10 @@ public class CodegenServer extends AbstractHandler {
                 response.addCookie(cookieProjeto);
                 response.sendRedirect("/index.html");
             case "processaTemplate":
-                ProccessSpecs.fromJson(leTodasLinhas(request.getReader()));
+                FilesSandBox.init("saida_codegen/");
+                ProccessorCore proccessorCore = new ProccessorCore(ProccessSpecs.fromJson(leTodasLinhas(request.getReader())));
+                System.out.println(proccessorCore);
+                proccessorCore.process();
                 break;
         }
     }

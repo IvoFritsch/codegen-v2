@@ -30,16 +30,16 @@ public class TemplatesProcessor {
     private Configuration cfg;
     private String projeto;
     
-    public boolean init(String projeto) {
-        this.projeto = projeto;
+    public boolean init() {
         try {
-            freemarker.log.Logger.selectLoggerLibrary(freemarker.log.Logger.LIBRARY_NONE);
-        } catch (ClassNotFoundException ex) {
+            //freemarker.log.Logger.selectLoggerLibrary(freemarker.log.Logger.LIBRARY_NONE);
+        } catch (Exception ex) {
         }
         cfg = new Configuration();
         try {
-            cfg.setDirectoryForTemplateLoading(new File(CodegenDatabaseController.getCaminhoTemplates(projeto)));
+            cfg.setDirectoryForTemplateLoading(new File("temp/"));
         } catch (Exception ex) {
+            ex.printStackTrace();
             if (ex.getClass() == FileNotFoundException.class) {
                 ConsolePrinter.printError("Não foi encontrada a pasta de templates.");
                 return false;
@@ -48,7 +48,7 @@ public class TemplatesProcessor {
         }
         cfg.setDefaultEncoding("UTF-8");
         cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
-
+        pronto = true;
         return true;
     }
 
@@ -56,18 +56,21 @@ public class TemplatesProcessor {
     private Map root;
 
     private String templateName;
-    private boolean pronto = true;
+    private boolean pronto = false;
 
-    public TemplatesProcessor(String templateName) {
-        this.templateName = templateName + "proc";
+    public TemplatesProcessor(String projeto, String templateName) {
+        this.projeto = projeto;
+        this.templateName = projeto+"/" + templateName + "proc";
+        init();
         try {
             String conteudo = FileUtils.readFileToString(new File(CodegenDatabaseController.getCaminhoTemplates(projeto) + templateName), "UTF-8");
             conteudo = conteudo.replace("#{", "${r\"#{\"}");
-            FileUtils.write(new File("temp/"+projeto+"/" + this.templateName), conteudo, "UTF-8", false);
+            FileUtils.write(new File(this.templateName), conteudo, "UTF-8", false);
         } catch (Exception e) {
+            e.printStackTrace();
             pronto = false;
         }
-
+        System.out.println(this.templateName);
         try {
             tmp = cfg.getTemplate(this.templateName);
             root = new HashMap();
@@ -98,12 +101,12 @@ public class TemplatesProcessor {
         try {
             StringWriter output = new StringWriter();
             tmp.process(root, output);
-            FileUtils.deleteQuietly(new File("temp/" +projeto+"/"+ this.templateName));
+            FileUtils.deleteQuietly(new File(this.templateName));
             return output.toString();
         } catch (Exception ex) {
             ConsolePrinter.printError("Ocorreu um erro ao tentar processar o template '" + this.templateName + "', erro:\n"
                     + ex.getLocalizedMessage().replace(" in " + this.templateName, ""));
-            FileUtils.deleteQuietly(new File("temp/"+projeto+"/" + this.templateName));
+            FileUtils.deleteQuietly(new File(this.templateName));
             return null;
         }
     }
@@ -118,7 +121,7 @@ public class TemplatesProcessor {
             ConsolePrinter.printError("Ocorreu um erro ao tentar processar o template '" + this.templateName + "', erro:\n"
                     + ex.getLocalizedMessage().replace(" in " + this.templateName, ""));
         }
-        FileUtils.deleteQuietly(new File("temp/"+projeto+"/" + this.templateName));
+        FileUtils.deleteQuietly(new File(this.templateName));
     }
 
 }

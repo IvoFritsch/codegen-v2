@@ -7,6 +7,7 @@ package proccessor;
 
 import auxiliar.FilesSandBox;
 import auxiliar.Utils;
+import com.google.gson.Gson;
 import database.CodegenDatabaseController;
 import java.io.File;
 
@@ -18,57 +19,74 @@ public class ProccessorCore {
 
     private final ProccessSpecs specs;
     private TemplatesDataSupplier root;
-    
+
     public ProccessorCore(ProccessSpecs specs) {
         this.specs = specs;
     }
-    
-    public void process(){
+
+    public void process() {
+        System.out.println(new Gson().toJson(specs));
         specs.getModelos().forEach(m -> {
-            root = new TemplatesDataSupplier(specs.getProjeto(), 
-                                            TemplatesModel.fromJson(
-                                                    CodegenDatabaseController.getArquivoModelo(
-                                                            specs.getProjeto(), 
-                                                            m)));
-            processaTemplatesDiretorio(CodegenDatabaseController.getCaminhoTemplates(specs.getProjeto()));
+            System.out.println(m);
+            root = new TemplatesDataSupplier(specs.getProjeto(),
+                    TemplatesModel.fromJson(
+                            CodegenDatabaseController.getArquivoModelo(
+                                    specs.getProjeto(),
+                                    m)));
+            processaTemplatesProjeto(specs.getProjeto());
+        });
+    }
+
+    private void processaTemplatesProjeto(String projeto){
+        System.out.println(CodegenDatabaseController.getProjetoViaNome(projeto).getTemplates());
+        CodegenDatabaseController.getProjetoViaNome(projeto).getTemplates().forEach(t -> {
+            TemplatesProcessor temp = new TemplatesProcessor(projeto,t);
+            System.out.println(t+"  Pronto: "+temp.pronto());
+            temp.put("root", root);
+            temp.proccessToFile("saida_codegen/"+t);
         });
     }
     
-    
-    
-    private void processaTemplatesDiretorio(String diretorio){
+    private void processaTemplatesDiretorio(String diretorio) {
         diretorio = Utils.formalizaCaminho(diretorio);
-        
+        System.out.println("Processando diretorio "+diretorio);
+
         // Ignora o diretorio de snippets
-        if(diretorio.endsWith("microSnippets")) return;
+        if (diretorio.endsWith("microSnippets")) {
+            return;
+        }
         String dirSaida;
         dirSaida = diretorio.replaceAll("\\[nomeModel\\]", root.getModel().getNome());
-        dirSaida = dirSaida.replaceAll("\\[nomeProj\\]", root.getProjNome());
-        
-        FilesSandBox.criaDiretorio(App.PASTA_SAIDA+dirSaida.replaceFirst(caminhoTemplates, ""));
+        dirSaida = dirSaida.replaceAll("\\[nomeProj\\]", root.getProjeto());
+
+        FilesSandBox.criaDiretorio("saida_codegen/" + dirSaida.replaceFirst(CodegenDatabaseController.getCaminhoTemplates(specs.getProjeto()), ""));
         File arq = new File(diretorio);
         File[] listaArquivos = arq.listFiles();
         if (listaArquivos != null) {
-          for (File filho : listaArquivos) {
-            if(filho.isDirectory()){
-                processaTemplatesDiretorio(filho.toString());
-            } else if (filho.isFile()){
-                processaTemplate(filho.toString(),App.PASTA_SAIDA+filho.toString());
+            for (File filho : listaArquivos) {
+                if (filho.isDirectory()) {
+                    processaTemplatesDiretorio(filho.toString());
+                } else if (filho.isFile()) {
+                    processaTemplate(filho.toString(), "saida_codegen/" + filho.toString());
+                }
             }
-          }
         }
     }
-    
-    private void processaTemplate(String entrada, String saida){
+
+    private void processaTemplate(String entrada, String saida) {
         entrada = Utils.formalizaCaminho(entrada);
         saida = Utils.formalizaCaminho(saida);
+        System.out.println(entrada+ "  "+ saida);
+        
         entrada = entrada.replaceFirst("templates/", "");
         saida = saida.replaceAll("\\[nomeModel\\]", root.getModel().getNome());
-        saida = saida.replaceAll("\\[nomeProj\\]", root.getProjNome());
-        saida = saida.replaceAll(caminhoTemplates, "");
-        TemplatesProcessor temp = new TemplatesProcessor(entrada);
+        saida = saida.replaceAll("\\[nomeProj\\]", root.getProjeto());
+        saida = saida.replaceAll(CodegenDatabaseController.getCaminhoTemplates(specs.getProjeto()), "");
+        TemplatesProcessor temp = new TemplatesProcessor(specs.getProjeto(), entrada);
+        temp.init();
         temp.put("root", root);
         temp.proccessToFile(saida);
         //System.out.println();
+        
     }
 }

@@ -56,6 +56,10 @@ public class Project {
     public List<String> getModels() {
         return models;
     }
+
+    public List<String> getTemplates() {
+        return templates;
+    }
     
     public void addModel(ServerModel model){
         if(models.contains(model.getNome())) return;
@@ -82,5 +86,6 @@ public class Project {
         templates.remove(nome);
         CodegenDatabaseController.removeArquivoTemplate(this.nome, nome);
     }
+     
     
 }
