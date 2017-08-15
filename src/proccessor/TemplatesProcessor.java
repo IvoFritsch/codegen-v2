@@ -32,6 +32,7 @@ public class TemplatesProcessor {
     
     public boolean init() {
         try {
+            new File("temp/").mkdir();
             //freemarker.log.Logger.selectLoggerLibrary(freemarker.log.Logger.LIBRARY_NONE);
         } catch (Exception ex) {
         }
@@ -60,7 +61,7 @@ public class TemplatesProcessor {
 
     public TemplatesProcessor(String projeto, String templateName) {
         this.projeto = projeto;
-        this.templateName = projeto+"/" + templateName + "proc";
+        this.templateName = "temp/"+projeto+"/" + templateName + "proc";
         init();
         try {
             String conteudo = FileUtils.readFileToString(new File(CodegenDatabaseController.getCaminhoTemplates(projeto) + templateName), "UTF-8");

@@ -25,7 +25,7 @@ public class TemplatesModel {
         return nome;
     }
 
-    public List<TemplatesField> getListaCampos() {
+    public List<TemplatesField> getListaTodosCampos() {
         return listaCampos;
     }
 

@@ -1,1 +1,1 @@
-{"projetos":[{"nome":"medicaldesk","models":["Usuario","Clinica"],"templates":["create_table_[nomeModel].sql"]}]}
+{"projetos":[{"nome":"medicaldesk","models":["Usuario","Clinica"],"templates":["teste.sql"]}]}

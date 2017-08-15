@@ -16,4 +16,29 @@ public class CodegenFieldConfig {
     
     @Expose
     private Map<String,String> conf;
+    
+    public String getValorConfig(String config){
+        if(!temConfig(config)) return null;
+        try{
+        return conf.get(config);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
+    public String get(String config){
+        return getValorConfig(config);
+    }
+    
+    public boolean temConfig(String config){
+        if(conf == null) return false;
+        return conf.containsKey(config);
+    }
+    
+    public boolean temConfigIgualA(String config, String valor) {
+        if(conf == null) return false;
+        if(!temConfig(config)) return false;
+        return getValorConfig(config).equals(valor);
+    }
 }
