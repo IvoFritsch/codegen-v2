@@ -33,38 +33,44 @@ import org.apache.commons.io.FileUtils;
  */
 public class FilesSandBox {
 
-    private static Map<String, Writer> arquivosCriados;
-    private static List<String> diretoriosCriar;
-    private static String saidaBase;
+    private Map<String, Writer> arquivosCriados;
+    private List<String> diretoriosCriar;
+    private String saidaBase;
+    
+    private final String PASTA_SANDBOX = "sandbox_"+hashCode()+"/";
 
-    private static int mudancas;
+    private int mudancas;
 
-    public static void init(String saidaBase) {
-        FilesSandBox.saidaBase = saidaBase;
-        ConsolePrinter.printInfo("Inicializando sandbox de arquivos...");
+    public FilesSandBox(String saidaBase) {
+        init(saidaBase);
+    }
+    
+    public void init(String saidaBase) {
+        this.saidaBase = saidaBase;
+        ConsolePrinter.printInfo("Inicializando sandbox de arquivos nº "+hashCode()+"...");
         arquivosCriados = new HashMap<>();
         diretoriosCriar = new ArrayList<>();
     }
 
-    public static Writer getFileWriter(String caminho) throws Exception {
+    public Writer getFileWriter(String caminho) throws Exception {
 
-        File file = new File(caminho.replaceFirst(saidaBase, "sandbox/"));
+        File file = new File(caminho.replaceFirst(saidaBase, PASTA_SANDBOX));
         Writer out = new OutputStreamWriter(new FileOutputStream(file));
         arquivosCriados.put(caminho, out);
         return out;
     }
 
-    public static void criaDiretorio(String caminho) {
-        //ConsolePrinter.printInfo("Colocando diretório no sandbox: " + caminho);
+    public void criaDiretorio(String caminho) {
+        ConsolePrinter.printInfo("Colocando diretório no sandbox nº "+hashCode()+": " + caminho);
         diretoriosCriar.add(caminho);
-        new File(caminho.replaceFirst(saidaBase, "sandbox/")).mkdirs();
+        new File(caminho.replaceFirst(saidaBase, PASTA_SANDBOX)).mkdirs();
     }
 
-    public static void commitaArquivos() {
-        ConsolePrinter.printInfo("Consolidando sandbox de arquivos...\n"
+    public void commitaArquivos() {
+        ConsolePrinter.printInfo("Consolidando sandbox de arquivos nº "+hashCode()+"...\n"
                 + "Arquivos modificados serão abertos para comparação");
         mudancas = 0;
-        ConsolePrinter.printInfo("Fechando os arquivos do Sandbox...");
+        ConsolePrinter.printInfo("Fechando os arquivos do Sandbox nº "+hashCode()+"...");
         arquivosCriados.forEach((c, w) -> {
             try {
                 w.close();
@@ -73,31 +79,31 @@ public class FilesSandBox {
                         + ex.getLocalizedMessage());
             }
         });
-        arquivosCriados.forEach((c, w) -> escreveMensagemCopyrightNoFimDoArquivo(c.replaceFirst(saidaBase, "sandbox/")));
-        arquivosCriados.forEach((c, w) -> escreveChecksumNoFinalDoArquivo(c.replaceFirst(saidaBase, "sandbox/")));
+        arquivosCriados.forEach((c, w) -> escreveMensagemCopyrightNoFimDoArquivo(c.replaceFirst(saidaBase, PASTA_SANDBOX)));
+        arquivosCriados.forEach((c, w) -> escreveChecksumNoFinalDoArquivo(c.replaceFirst(saidaBase, PASTA_SANDBOX)));
         diretoriosCriar.forEach(d -> new File(d).mkdirs());
 
         arquivosCriados.forEach((c, w) -> {
             File f = new File(c);
             if (precisaFazerWinmerge(f)) {
-                runWinMerge(c.replaceFirst(saidaBase, "sandbox/"), c);
+                runWinMerge(c.replaceFirst(saidaBase, PASTA_SANDBOX), c);
             } else {
-                copiaArquivo(c.replaceFirst(saidaBase, "sandbox/"), c);
+                copiaArquivo(c.replaceFirst(saidaBase, PASTA_SANDBOX), c);
             }
         });
         if (mudancas == 0) {
             ConsolePrinter.printInfo("Nada mudou...");
         }
         try {
-            ConsolePrinter.printInfo("Deletando o Sandbox de arquivos...");
-            FileUtils.deleteDirectory(new File("sandbox/"));
+            ConsolePrinter.printInfo("Deletando o Sandbox nº "+hashCode()+"de arquivos...");
+            FileUtils.deleteDirectory(new File(PASTA_SANDBOX));
         } catch (IOException ex) {
-            ConsolePrinter.printError("Erro ao deletar o Sandbox:\n\t\t"
+            ConsolePrinter.printError("Erro ao deletar o Sandbox nº "+hashCode()+":\n\t\t"
                     + ex.getLocalizedMessage());
         }
     }
 
-    private static boolean precisaFazerWinmerge(File arquivo) {
+    private boolean precisaFazerWinmerge(File arquivo) {
         try {
             if (arquivo.exists() && !arquivo.isDirectory()) {
 
@@ -129,7 +135,7 @@ public class FilesSandBox {
         }
     }
 
-    private static String getComentarioChecksum(long checksum, String extensao) {
+    private String getComentarioChecksum(long checksum, String extensao) {
         return Utils.formataComentario(extensao,
                 "Não apagar nem modificar esse comentário\n"
                 + "Gerenciado pelo Sandbox do Codegen\n"
@@ -138,7 +144,7 @@ public class FilesSandBox {
                 + String.valueOf(checksum));
     }
 
-    private static void copiaArquivo(String origem, String destino) {
+    private void copiaArquivo(String origem, String destino) {
         mudancas++;
         File ori = new File(origem);
         File dest = new File(destino);
@@ -149,7 +155,7 @@ public class FilesSandBox {
         }
     }
 
-    private static void runWinMerge(String origem, String destino) {
+    private void runWinMerge(String origem, String destino) {
         File ori = new File(origem);
         File dest = new File(destino);
         try {
@@ -171,7 +177,7 @@ public class FilesSandBox {
         }
     }
 
-    private static void escreveChecksumNoFinalDoArquivo(String arquivo) {
+    private void escreveChecksumNoFinalDoArquivo(String arquivo) {
         try {
             String texto = new String(Files.readAllBytes(Paths.get(arquivo)));
 
@@ -186,7 +192,7 @@ public class FilesSandBox {
         }
     }
 
-    private static void escreveMensagemCopyrightNoFimDoArquivo(String arquivo) {
+    private void escreveMensagemCopyrightNoFimDoArquivo(String arquivo) {
         String data;
 
         SimpleDateFormat sdfDate = new SimpleDateFormat("dd/MM/yyyy - HH:mm:ss");//dd/MM/yyyy
@@ -203,7 +209,7 @@ public class FilesSandBox {
     }
 
     // Normaliza as quebras de linha e retorna a checksum
-    private static long getChecksum(String texto, int posicaoFinal) {
+    private long getChecksum(String texto, int posicaoFinal) {
 
         if (texto.length() != posicaoFinal) {
             texto = texto.substring(0, posicaoFinal);

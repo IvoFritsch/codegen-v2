@@ -157,7 +157,6 @@ public class CodegenServer extends AbstractHandler {
                 response.addCookie(cookieProjeto);
                 response.sendRedirect("/index.html");
             case "processaTemplate":
-                FilesSandBox.init("saida_codegen/");
                 ProccessorCore proccessorCore = new ProccessorCore(ProccessSpecs.fromJson(leTodasLinhas(request.getReader())));
                 System.out.println(proccessorCore);
                 proccessorCore.process();

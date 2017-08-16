@@ -29,8 +29,9 @@ public class TemplatesProcessor {
 
     private Configuration cfg;
     private String projeto;
+    private FilesSandBox fsb;
     
-    public boolean init() {
+    public final boolean init() {
         try {
             new File("temp/").mkdir();
             //freemarker.log.Logger.selectLoggerLibrary(freemarker.log.Logger.LIBRARY_NONE);
@@ -59,14 +60,19 @@ public class TemplatesProcessor {
     private String templateName;
     private boolean pronto = false;
 
-    public TemplatesProcessor(String projeto, String templateName) {
+    public TemplatesProcessor(String projeto, String templateName){
+        this(projeto,templateName, null);
+    }
+    
+    public TemplatesProcessor(String projeto, String templateName, FilesSandBox fsb) {
         this.projeto = projeto;
-        this.templateName = "temp/"+projeto+"/" + templateName + "proc";
+        this.fsb = fsb;
+        this.templateName = projeto+"/" + templateName + "proc";
         init();
         try {
             String conteudo = FileUtils.readFileToString(new File(CodegenDatabaseController.getCaminhoTemplates(projeto) + templateName), "UTF-8");
             conteudo = conteudo.replace("#{", "${r\"#{\"}");
-            FileUtils.write(new File(this.templateName), conteudo, "UTF-8", false);
+            FileUtils.write(new File("temp/"+this.templateName), conteudo, "UTF-8", false);
         } catch (Exception e) {
             e.printStackTrace();
             pronto = false;
@@ -89,8 +95,7 @@ public class TemplatesProcessor {
     
     public void put(String name, Object object) {
         if (root == null) {
-            ConsolePrinter.printError("Ocorreu um erro fatal, o Codegen será encerrado\n"
-                    + "Verifique a sintaxe dos templates, provavelmente algo está errado\n"
+            ConsolePrinter.printError("Verifique a sintaxe dos templates, provavelmente algo está errado\n"
                     + "Erro do Codegen:\n"
                     + "O TemplateProcessor tentou executar um put sendo que o root não está devidamente instanciado");
             System.exit(1);
@@ -105,22 +110,28 @@ public class TemplatesProcessor {
             FileUtils.deleteQuietly(new File(this.templateName));
             return output.toString();
         } catch (Exception ex) {
-            ConsolePrinter.printError("Ocorreu um erro ao tentar processar o template '" + this.templateName + "', erro:\n"
+            ConsolePrinter.printError("1Ocorreu um erro ao tentar processar o template '" + this.templateName + "', erro:\n"
                     + ex.getLocalizedMessage().replace(" in " + this.templateName, ""));
             FileUtils.deleteQuietly(new File(this.templateName));
             return null;
+            
         }
     }
 
+    
+    
+    
     public void proccessToFile(String caminho) {
         ConsolePrinter.printInfo("Processando " + caminho.substring(caminho.lastIndexOf("/") + 1) + "...");
 
+        fsb.criaDiretorio(caminho.substring(0,caminho.lastIndexOf("/")+1));
         try {
-            Writer out = FilesSandBox.getFileWriter(caminho);
+            Writer out = fsb.getFileWriter(caminho);
             tmp.process(root, out);
         } catch (Exception ex) {
-            ConsolePrinter.printError("Ocorreu um erro ao tentar processar o template '" + this.templateName + "', erro:\n"
-                    + ex.getLocalizedMessage().replace(" in " + this.templateName, ""));
+            ex.printStackTrace();
+            //ConsolePrinter.printError("2Ocorreu um erro ao tentar processar o template '" + this.templateName + "', erro:\n"
+              //      + ex.getLocalizedMessage().replace(" in " + this.templateName, ""));
         }
         FileUtils.deleteQuietly(new File(this.templateName));
     }
