@@ -26,28 +26,34 @@ public class ProccessorCore {
         this.specs = specs;
     }
 
-    public void process() {
+    public ProccessLog process() {
+        
+        ProccessLog log = new ProccessLog();
         
         
         fsb = new FilesSandBox("saida_codegen/");
         
         System.out.println(new Gson().toJson(specs));
         specs.getModelos().forEach(m -> {
+            log.startNewModel(m);
             System.out.println(m);
             root = new TemplatesDataSupplier(specs.getProjeto(),
                     TemplatesModel.fromJson(
                             CodegenDatabaseController.getArquivoModelo(
                                     specs.getProjeto(),
                                     m)));
-            processaTemplatesProjeto(specs.getProjeto());
+            processaTemplatesProjeto(specs.getProjeto(),log);
         });
         fsb.commitaArquivos();
+        return log;
     }
 
-    private void processaTemplatesProjeto(String projeto){
+    private void processaTemplatesProjeto(String projeto, ProccessLog log){
         System.out.println(CodegenDatabaseController.getProjetoViaNome(projeto).getTemplates());
         CodegenDatabaseController.getProjetoViaNome(projeto).getTemplates().forEach(t -> {
+            log.startNewTemplate(t);
             TemplatesProcessor temp = new TemplatesProcessor(projeto,t, fsb);
+            temp.setLogger(log);
             System.out.println(t+"  Pronto: "+temp.pronto());
             temp.put("root", root);
             temp.proccessToFile("saida_codegen/"+t);

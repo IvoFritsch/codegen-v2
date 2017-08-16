@@ -23,9 +23,10 @@ function comandaProcessar(){
 	var url = "/api/processaTemplate";
 	xmlhttps.open("POST", url, true);
 	xmlhttps.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-	xmlhttps.onreadystatechange = function() {
+	xmlhttps.onreadystatechange = function(data) {
 	    if (this.readyState == 4 && this.status == 200) {
-	       console.log("Terminou");
+			var ttt = JSON.parse(data.currentTarget.response);
+	       console.log(pegaModelsLog(ttt));
 	    }
 	};
 	xmlhttps.send(JSON.stringify(proccessSpecs));
@@ -40,6 +41,16 @@ function avancaFluxo(){
 function voltaFluxo(){
 	etapaFluxo--;
 	exibeEtapaAtualFluxo();
+}
+
+function pegaModelsLog(log){
+	var listaConfs = [];
+	for (var property in log.mensagens) {
+		if (log.mensagens.hasOwnProperty(property)) {
+			listaConfs.push(property);
+		}
+	}
+	return listaConfs;
 }
 
 function pegaConfigsGeracao(){

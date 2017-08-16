@@ -30,6 +30,48 @@ public class TemplatesProcessor {
     private Configuration cfg;
     private String projeto;
     private FilesSandBox fsb;
+    private ProccessLog log = new ProccessLog();
+    private Template tmp;
+    private Map root;
+
+    private String templateName;
+    private boolean pronto = false;
+
+    public TemplatesProcessor(String projeto, String templateName){
+        this(projeto,templateName, null);
+    }
+    
+    public TemplatesProcessor(String projeto, String templateName, FilesSandBox fsb) {
+        log.startNewTemplate(templateName);
+        this.projeto = projeto;
+        this.fsb = fsb;
+        this.templateName = projeto+"/" + templateName + "proc";
+        init();
+        try {
+            String conteudo = FileUtils.readFileToString(new File(CodegenDatabaseController.getCaminhoTemplates(projeto) + templateName), "UTF-8");
+            conteudo = conteudo.replace("#{", "${r\"#{\"}");
+            FileUtils.write(new File("temp/"+this.templateName), conteudo, "UTF-8", false);
+        } catch (Exception ex) {
+            String mensagem = "Ocorreu um erro ao tentar ler o template, erro:\n"
+                    + ex.getLocalizedMessage().replace(" in " + this.templateName, "");
+            log.putMessage(mensagem);
+            ConsolePrinter.printError(mensagem);
+            pronto = false;
+        }
+        System.out.println(this.templateName);
+        try {
+            tmp = cfg.getTemplate(this.templateName);
+            root = new HashMap();
+        } catch (Exception ex) {
+            String mensagem = "Ocorreu um erro ao tentar parsear o template, erro:\n"
+                    + ex.getLocalizedMessage().replace(" in " + this.templateName, "");
+            log.putMessage(mensagem);
+            ConsolePrinter.printError(mensagem);
+            pronto = false;
+        }
+    }
+
+    
     
     public final boolean init() {
         try {
@@ -43,7 +85,9 @@ public class TemplatesProcessor {
         } catch (Exception ex) {
             ex.printStackTrace();
             if (ex.getClass() == FileNotFoundException.class) {
-                ConsolePrinter.printError("Não foi encontrada a pasta de templates.");
+                String mensagem = "Não foi encontrada a pasta de templates.";
+                ConsolePrinter.printError(mensagem);
+                log.putMessage(mensagem);
                 return false;
             }
             Logger.getLogger(TemplatesProcessor.class.getName()).log(Level.SEVERE, null, ex);
@@ -54,40 +98,7 @@ public class TemplatesProcessor {
         return true;
     }
 
-    private Template tmp;
-    private Map root;
-
-    private String templateName;
-    private boolean pronto = false;
-
-    public TemplatesProcessor(String projeto, String templateName){
-        this(projeto,templateName, null);
-    }
     
-    public TemplatesProcessor(String projeto, String templateName, FilesSandBox fsb) {
-        this.projeto = projeto;
-        this.fsb = fsb;
-        this.templateName = projeto+"/" + templateName + "proc";
-        init();
-        try {
-            String conteudo = FileUtils.readFileToString(new File(CodegenDatabaseController.getCaminhoTemplates(projeto) + templateName), "UTF-8");
-            conteudo = conteudo.replace("#{", "${r\"#{\"}");
-            FileUtils.write(new File("temp/"+this.templateName), conteudo, "UTF-8", false);
-        } catch (Exception e) {
-            e.printStackTrace();
-            pronto = false;
-        }
-        System.out.println(this.templateName);
-        try {
-            tmp = cfg.getTemplate(this.templateName);
-            root = new HashMap();
-        } catch (Exception ex) {
-            ConsolePrinter.printError("Ocorreu um erro ao tentar ler o template '" + this.templateName + "', erro:\n"
-                    + ex.getLocalizedMessage().replace(" in " + this.templateName, ""));
-            pronto = false;
-        }
-    }
-
     public boolean pronto() {
         return pronto;
     }
@@ -95,10 +106,12 @@ public class TemplatesProcessor {
     
     public void put(String name, Object object) {
         if (root == null) {
-            ConsolePrinter.printError("Verifique a sintaxe dos templates, provavelmente algo está errado\n"
+            String mensagem = "Verifique a sintaxe dos templates, provavelmente algo está errado\n"
                     + "Erro do Codegen:\n"
-                    + "O TemplateProcessor tentou executar um put sendo que o root não está devidamente instanciado");
-            System.exit(1);
+                    + "O TemplateProcessor tentou executar um put sendo que o root não está devidamente instanciado";
+            ConsolePrinter.printError(mensagem);
+            log.putMessage(mensagem);
+            return;
         }
         root.put(name, object);
     }
@@ -110,8 +123,10 @@ public class TemplatesProcessor {
             FileUtils.deleteQuietly(new File(this.templateName));
             return output.toString();
         } catch (Exception ex) {
-            ConsolePrinter.printError("1Ocorreu um erro ao tentar processar o template '" + this.templateName + "', erro:\n"
-                    + ex.getLocalizedMessage().replace(" in " + this.templateName, ""));
+            String mensagem = "Ocorreu um erro ao tentar processar o template, erro:\n"
+                    + ex.getLocalizedMessage().replace(" in " + this.templateName, "");
+            ConsolePrinter.printError(mensagem);
+            log.putMessage(mensagem);
             FileUtils.deleteQuietly(new File(this.templateName));
             return null;
             
@@ -129,11 +144,16 @@ public class TemplatesProcessor {
             Writer out = fsb.getFileWriter(caminho);
             tmp.process(root, out);
         } catch (Exception ex) {
-            ex.printStackTrace();
-            //ConsolePrinter.printError("2Ocorreu um erro ao tentar processar o template '" + this.templateName + "', erro:\n"
-              //      + ex.getLocalizedMessage().replace(" in " + this.templateName, ""));
+            String mensagem = "Ocorreu um erro ao tentar processar o template, erro:\n"
+                    + ex.getLocalizedMessage().replace(" in " + this.templateName, "");
+            ConsolePrinter.printError(mensagem);
+            log.putMessage(mensagem);
         }
         FileUtils.deleteQuietly(new File(this.templateName));
+    }
+
+    void setLogger(ProccessLog log) {
+        this.log = log;
     }
 
 }
