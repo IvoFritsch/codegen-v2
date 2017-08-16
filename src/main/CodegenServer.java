@@ -29,6 +29,7 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.AbstractHandler;
 import proccessor.ProccessSpecs;
 import proccessor.ProccessorCore;
+import proccessor.TemplatesProcessor;
 
 /**
  *
@@ -110,6 +111,7 @@ public class CodegenServer extends AbstractHandler {
         switch (target) {
             case "turnoff":
                 ConsolePrinter.printInfo("Desligando o servidor do Codegen...");
+                TemplatesProcessor.encerra();
                 System.exit(0);
                 break;
             case "getGlobalConfig":
@@ -159,7 +161,6 @@ public class CodegenServer extends AbstractHandler {
             case "processaTemplate":
                 ProccessorCore proccessorCore = new ProccessorCore(ProccessSpecs.fromJson(leTodasLinhas(request.getReader())));
                 String log = proccessorCore.process().toJson();
-                System.out.println("Log: "+log);
                 writer.println(log);
                 break;
         }

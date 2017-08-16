@@ -1,0 +1,45 @@
+// Modificar esse arquivo, gerado integramente pelo Codegen
+
+function adicionaMascarasCampos_Cliente(){
+        $("#form_quadroClientes\\:telefoneCliente").mask('(00) 00000-0000');
+}
+
+function selecionaPrimeiraAba_Cliente(){
+    $("#tabCatCliente0_id").click();
+}
+
+function atualizaValidacoesAbas_Cliente(){
+	var foiPraGuia = false;
+	$("#tabCatCliente0_id").html("Dados");
+    if($("#form_quadroClientes\\:messNomeCliente").html().length > 0){
+		$("#tabCatCliente0_id").html("Dados <span style='color:red'>*</span>");
+		if(!foiPraGuia){
+			$("#tabCatCliente0_id").click();
+		}
+		foiPraGuia = true;
+    }
+	$("#tabCatCliente1_id").html("Contato");
+	$("#tabCatCliente2_id").html("Dados Pessoais");
+    if($("#form_quadroClientes\\:messEnderecoCliente").html().length > 0){
+		$("#tabCatCliente2_id").html("Dados Pessoais <span style='color:red'>*</span>");
+		if(!foiPraGuia){
+			$("#tabCatCliente2_id").click();
+		}
+		foiPraGuia = true;
+    }
+}
+
+function utilsInternalContinue_Cliente(){
+	$("#form_quadroClientes\\:botSalvarCliente").click(trataCliqueSalvar_Cliente);
+    adicionaMascarasCampos_Cliente();
+    selecionaPrimeiraAba_Cliente();
+	atualizaValidacoesAbas_Cliente();
+}
+
+function trataCliqueSalvar_Cliente(){
+}
+/*
+    Esse arquivo foi gerado pelo Haftware Codegen em:
+    22/06/2017 - 14:53:06
+    Todos os direitos reservados à Haftware SI
+*/

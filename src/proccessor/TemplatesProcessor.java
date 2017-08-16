@@ -13,6 +13,7 @@ import freemarker.template.Template;
 import freemarker.template.TemplateExceptionHandler;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.HashMap;
@@ -36,7 +37,7 @@ public class TemplatesProcessor {
 
     private String templateName;
     private boolean pronto = false;
-
+    
     public TemplatesProcessor(String projeto, String templateName){
         this(projeto,templateName, null);
     }
@@ -96,6 +97,14 @@ public class TemplatesProcessor {
         cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
         pronto = true;
         return true;
+    }
+    
+    public static void encerra(){
+        try {
+            ConsolePrinter.printInfo("Deletando pasta dos templates temporários...");
+            FileUtils.deleteDirectory(new File("temp/"));
+        } catch (Exception ex) {
+        }
     }
 
     

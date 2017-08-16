@@ -1,0 +1,109 @@
+// Não modificar essa função, necessária para o funcionamento do código gerado pelo codegen
+function codegenAutoContinue_Cliente(){
+    HW_loadScript('/fotografia/system/componentes/quadroClientes/js/quadroClientesUtils.js', function(){
+        utilsInternalContinue_Cliente();
+    });   
+}
+
+
+function novoClientePeloQuadro() {
+    $.ajax({
+        type: "POST",
+        url: "componentes/quadroClientes/jsp/quadroClientes.jsp",
+        data: {
+            requisicao: "novoClientePeloQuadro",
+        }
+    }).success(function (data) {
+        mostraModalClientes();
+        loadTemplate('modalClienteContent', 'componentes/quadroClientes/templates/formCliente', null,codegenAutoContinue_Cliente);
+    });
+}
+
+function editarCliente(idCliente) {
+    $.ajax({
+        type: "POST",
+        url: "componentes/quadroClientes/jsp/quadroClientes.jsp",
+        data: {
+            requisicao: "editaCliente",
+            id: idCliente,
+        },
+    }).success(function (data) {
+        mostraModalClientes();
+        loadTemplate('modalClienteContent', 'componentes/quadroClientes/templates/formCliente', null,codegenAutoContinue_Cliente);
+    });
+}
+
+function excluirCliente(idCliente) {
+    $.ajax({
+        type: "POST",
+        url: "componentes/quadroClientes/jsp/quadroClientes.jsp",
+        data: {
+            requisicao: "excluiCliente",
+            id: idCliente,
+        },
+    }).success(function (data) {
+        montaTabelaClientes();
+    });
+}
+
+
+
+function escondeModalClientes() {
+    $("#modalCliente").modal('toggle');
+}
+
+function mostraModalClientes() {
+    $("#modalCliente").modal('toggle');
+}
+
+function montaTabelaClientes() {
+    $.ajax({
+        type: "POST",
+        url: "componentes/quadroClientes/jsp/quadroClientes.jsp",
+        data: {
+            requisicao: "buscarClientesQuadro"
+        },
+    }).success(function (data) {
+        var clientes = JSON.parse(data);
+        loadTemplate('conteudo_quadroClientes', 'componentes/quadroClientes/templates/quadroClientes', {clientes: clientes});
+    });
+}
+
+function montaQuadroClientesSimples() {
+    loadTemplate('quadroClientes', 'componentes/quadroBase', {
+        titulo_quadro: "Clientes",
+        id_quadro: "quadroClientes",
+        botao_config: "Gerenciamento de Clientes",
+        botao_config_link: "clientes.xhtml",
+        botao_config_id: ""
+    });
+}
+function montaQuadroClientesCompleto() {
+    loadTemplate('quadroClientes', 'componentes/quadroBase', {
+        titulo_quadro: "Gerenciamento de Clientes",
+        id_quadro: "quadroClientes",
+        botao_config: "",
+        botao_config_link: "",
+        botao_config_id: ""
+    });
+}
+
+function montaQuadroClientes() {
+    // Caso não exista o quadro de Clientes na página
+    if (!$('#quadroClientes').length) {
+        return;
+    }
+
+    if ($("#quadroClientes").hasClass("quadroCompleto")) {
+        montaQuadroClientesCompleto();
+    } else {
+        montaQuadroClientesSimples();
+    }
+    montaTabelaClientes();
+}
+
+montaQuadroClientes();
+/*
+    Esse arquivo foi gerado pelo Haftware Codegen em:
+    Todos os direitos reservados à Haftware SI
+*/

@@ -16,21 +16,20 @@ document.addEventListener('DOMContentLoaded', function() {
 }, false);
 
 function comandaProcessar(){
+	avancaFluxo();
 	proccessSpecs.projeto = '${root.projeto.nome}';
-
-
 	var xmlhttps = new XMLHttpRequest();
 	var url = "/api/processaTemplate";
 	xmlhttps.open("POST", url, true);
 	xmlhttps.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
 	xmlhttps.onreadystatechange = function(data) {
 	    if (this.readyState == 4 && this.status == 200) {
+	    	document.getElementById("espacoEtapasFluxo").innerHTML = data.currentTarget.response;
 			var ttt = JSON.parse(data.currentTarget.response);
-	       console.log(pegaModelsLog(ttt));
+	       	console.log(pegaModelsLog(ttt));
 	    }
 	};
 	xmlhttps.send(JSON.stringify(proccessSpecs));
-	avancaFluxo();
 }
 
 function avancaFluxo(){

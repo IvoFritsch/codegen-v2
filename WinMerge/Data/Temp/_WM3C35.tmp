@@ -1,0 +1,118 @@
+package br.com.haftware.fotografia.bean;
+
+import br.com.haftware.fotografia.dao.ClientesDao;
+import java.io.Serializable;
+
+import javax.inject.Named;
+
+import br.com.haftware.fotografia.model.Cliente;
+import br.com.haftware.fotografia.model.TipoPessoa;
+import br.com.haftware.fotografia.util.Transactional;
+import br.com.haftware.fotografia.util.UsuarioLogado;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import java.util.List;
+import javax.annotation.PostConstruct;
+import javax.enterprise.context.SessionScoped;
+import javax.inject.Inject;
+import javax.servlet.http.HttpSession;
+import org.primefaces.context.RequestContext;
+
+@Named
+@SessionScoped
+public class ClientesBean implements Serializable {
+
+    @Inject
+    private HttpSession session;
+    @Inject
+    private ClientesDao clientesDao;
+    @Inject
+    private UsuarioLogado usuarioLogado;
+
+    private Cliente cliente = new Cliente();
+
+    public void novoClientePeloQuadro() {
+        cliente = new Cliente();
+		
+
+		->/*
+			Mensagem do HW Codegen ao desenvolvedor:
+		
+			Aqui adicionar alguma regra de negÃ³cio especÃ­fica para quando o 
+		  usuÃ¡rio clica para adicionar um novo cliente atravÃ©s do quadro de clientes
+		*/ 
+    }
+    
+    public List<Cliente> buscaClientesQuadro() {
+		/*
+			Mensagem do HW Codegen ao desenvolvedor:
+		
+			Aqui adicionar a regra de negÃ³cio para buscar os clientes que devem aparecer no quadro
+		*/
+		
+    }
+
+    private boolean validaClienteParaUsuario(Cliente clienteValidar){
+		/*
+			Mensagem do HW Codegen ao desenvolvedor:
+		
+			Aqui adicionar a regra de negÃ³cio para validar se o usuÃ¡rio pode alterar o cliente
+			 que clicou para alterar
+		*/
+    }
+
+    // -------------------------------------------------------------------------------------------------------------
+    // As funÃ§Ãµes abaixo foram geradas inteiramente pelo Codegen e Ã  principio nÃ£o precisam ser alteradas
+    @PostConstruct
+    public void init() {
+        session.setAttribute("clientesBean", this);
+    }
+
+    public String buscaClientesQuadroJson() {
+        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+        return gson.toJson(buscaClientesQuadro());
+    }
+
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+    }
+    
+    @Transactional
+    public void salvarCliente() {
+        if (cliente.getId() != null) {
+            Cliente novoCliente = clientesDao.buscaPorId(cliente.getId());
+            if(validaClienteParaUsuario(novoCliente)){
+                clientesDao.atualiza(cliente);
+            }
+        } else {
+            clientesDao.adiciona(cliente);
+        }
+        escondeModal();
+    }
+
+    public void editaCliente(String id) {
+        cliente = clientesDao.buscaPorId(Long.parseLong(id));
+        if (!validaClienteParaUsuario(cliente)) {
+            novoClientePeloQuadro();
+        }
+    }
+    
+	public TipoPessoa[] getTipoPessoaPossiveis() {
+        return TipoPessoa.values();
+    }
+	
+    private void escondeModal() {
+        RequestContext requestContext = RequestContext.getCurrentInstance();
+        requestContext.execute("escondeModalClientes();");
+        requestContext.execute("montaTabelaClientes();");
+    }
+
+}
+/*
+    Esse arquivo foi gerado pelo Haftware Codegen em:
+    Todos os direitos reservados Ã  Haftware SI
+*/

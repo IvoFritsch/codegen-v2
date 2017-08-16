@@ -1,1 +1,1 @@
-{"projetos":[{"nome":"medicaldesk","models":["Usuario","Clinica"],"templates":["teste.sql"]}]}
+{"projetos":[{"nome":"medicaldesk","models":["Usuario","Clinica"],"templates":["[nomeModel]ttt.java"]}]}

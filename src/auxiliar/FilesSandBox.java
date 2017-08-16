@@ -45,7 +45,7 @@ public class FilesSandBox {
         init(saidaBase);
     }
     
-    public void init(String saidaBase) {
+    private void init(String saidaBase) {
         this.saidaBase = saidaBase;
         ConsolePrinter.printInfo("Inicializando sandbox de arquivos nº "+hashCode()+"...");
         arquivosCriados = new HashMap<>();
@@ -95,7 +95,7 @@ public class FilesSandBox {
             ConsolePrinter.printInfo("Nada mudou...");
         }
         try {
-            ConsolePrinter.printInfo("Deletando o Sandbox nº "+hashCode()+"de arquivos...");
+            ConsolePrinter.printInfo("Deletando o Sandbox nº "+hashCode()+"...");
             FileUtils.deleteDirectory(new File(PASTA_SANDBOX));
         } catch (IOException ex) {
             ConsolePrinter.printError("Erro ao deletar o Sandbox nº "+hashCode()+":\n\t\t"

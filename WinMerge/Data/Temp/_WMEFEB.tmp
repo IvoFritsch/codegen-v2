@@ -1,0 +1,59 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <div id="modalCliente" class="modal fade" tabindex="-1" role="dialog"
+         aria-labelledby="myModalLabel" aria-hidden="true"
+         style="display: none;">
+        <div class="modal-dialog">
+            <div id="modalClienteContent" class="modal-content"></div>
+        </div>
+    </div>
+
+    <div class="row">
+        
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="Procurar cliente..."   />
+            <span class="input-group-btn">
+                <button class="btn btn-primary" type="button">Vai!</button>
+            </span>
+        </div>
+        <br/>
+        <table class="table">
+            <thead>
+                <tr>
+					<th>Nome</th>
+					<th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                {{#each clientes}}
+                <tr>
+					<td>{{nome}}</td>
+                <td>
+                <a onclick="event.preventDefault();editarCliente({{id}});"
+                                class="btn btn-xs btn-warning float-right" title="Editar Cliente">
+                                <i class="glyph-icon icon-edit"></i>
+                            </a>
+                    </td>
+                    
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+        <a class="btn btn-success float-right "
+           onclick="novoClientePeloQuadro();">
+            <i class="glyph-icon icon-plus font-size-14"></i>
+        </a>
+
+    </div>
+</html>
+
+<!--
+    Esse arquivo foi gerado pelo Haftware Codegen:
+    22/06/2017 - 14:53:06
+    Todos os direitos reservados à Haftware SI
+-->

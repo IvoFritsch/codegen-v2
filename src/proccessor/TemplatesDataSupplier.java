@@ -8,6 +8,7 @@ package proccessor;
 import auxiliar.ModifiableString;
 import auxiliar.ConsolePrinter;
 import database.CodegenDatabaseController;
+import java.util.Map;
 
 /**
  *
@@ -17,10 +18,12 @@ public class TemplatesDataSupplier {
 
     private final TemplatesModel model;
     private final String projeto;
+    private final Map<String, String> proccessConfigs;
 
-    public TemplatesDataSupplier(String projeto, TemplatesModel model) {
+    public TemplatesDataSupplier(String projeto, TemplatesModel model, Map<String, String> proccessConfigs) {
         this.model = model;
         this.projeto = projeto;
+        this.proccessConfigs = proccessConfigs;
     }
 
     public TemplatesModel getModel() {
@@ -29,6 +32,11 @@ public class TemplatesDataSupplier {
 
     public String getProjeto() {
         return projeto;
+    }
+    
+    public String getConfig(String config){
+        if(!proccessConfigs.containsKey(config)) return "";
+        return proccessConfigs.get(config);
     }
     
     // Processa e retorna o snippet, considerando o objeto recebido

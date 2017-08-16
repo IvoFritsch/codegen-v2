@@ -1,0 +1,132 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+<h:form id="form_quadroClientes">
+
+
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal"
+			aria-hidden="true">×</button>
+		<h4 class="modal-title">Cliente</h4>
+	</div>
+	<div class="modal-body">
+            <h:inputHidden value="#{clientesBean.cliente.id}" />
+			<div id="form-wizard-Clientes">
+                <ul class="nav nav-pills">
+                    <li><a href="#tabCatCliente0" data-toggle="tab"
+                    id="tabCatCliente0_id" >Dados</a></li>
+                    <li><a href="#tabCatCliente1" data-toggle="tab"
+                    id="tabCatCliente1_id" >Contato</a></li>
+                    <li><a href="#tabCatCliente2" data-toggle="tab"
+                    id="tabCatCliente2_id" >Dados Pessoais</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane" id="tabCatCliente0">
+
+                            	<div class="row">
+		<div class="form-group">
+			<label class="col-sm-3 control-label">Nome</label>
+			<div class="col-sm-12">
+				<h:inputText id="nomeCliente"
+					value="#{clientesBean.cliente.nome}"
+											required="true" 
+											requiredMessage="Este campo é obrigatório"
+											styleClass="form-control" >
+										<f:ajax event="blur" render="messNomeCliente @this"/>
+									</h:inputText>
+			</div>
+			<h:message id="messNomeCliente" 
+			for="nomeCliente" styleClass="parsley-required pull-right"/>
+		</div>
+	</div>
+                            	<div class="row">
+		<div class="form-group">
+			<label class="col-sm-3 control-label">Pessoa</label>
+			<div class="col-sm-12">
+		<h:selectOneMenu id="pessoaCliente" styleClass="form-control"
+					value="#{clientesBean.cliente.pessoa}">
+					<f:selectItems value="#{clientesBean.tipoPessoaPossiveis}" />
+				</h:selectOneMenu>
+	
+			</div>
+			<h:message id="messPessoaCliente" 
+			for="pessoaCliente" styleClass="parsley-required pull-right"/>
+		</div>
+	</div>
+
+                    </div>
+                    <div class="tab-pane" id="tabCatCliente1">
+
+                            	<div class="row">
+		<div class="form-group">
+			<label class="col-sm-3 control-label">E-mail</label>
+			<div class="col-sm-12">
+				<h:inputText id="emailCliente"
+					value="#{clientesBean.cliente.email}"
+											styleClass="form-control" >
+										<f:ajax event="blur" render="messEmailCliente @this"/>
+									</h:inputText>
+			</div>
+			<h:message id="messEmailCliente" 
+			for="emailCliente" styleClass="parsley-required pull-right"/>
+		</div>
+	</div>
+                            	<div class="row">
+		<div class="form-group">
+			<label class="col-sm-3 control-label">Telefone</label>
+			<div class="col-sm-12">
+				<h:inputText id="telefoneCliente"
+					value="#{clientesBean.cliente.telefone}"
+											styleClass="form-control" >
+										<f:ajax event="blur" render="messTelefoneCliente @this"/>
+									</h:inputText>
+			</div>
+			<h:message id="messTelefoneCliente" 
+			for="telefoneCliente" styleClass="parsley-required pull-right"/>
+		</div>
+	</div>
+
+                    </div>
+                    <div class="tab-pane" id="tabCatCliente2">
+
+                            	<div class="row">
+		<div class="form-group">
+			<label class="col-sm-3 control-label">Endereço</label>
+			<div class="col-sm-12">
+				<h:inputText id="enderecoCliente"
+					value="#{clientesBean.cliente.endereco}"
+											required="true" 
+											requiredMessage="Este campo é obrigatório"
+											styleClass="form-control" >
+										<f:ajax event="blur" render="messEnderecoCliente @this"/>
+									</h:inputText>
+			</div>
+			<h:message id="messEnderecoCliente" 
+			for="enderecoCliente" styleClass="parsley-required pull-right"/>
+		</div>
+	</div>
+
+                    </div>
+                </div>
+            </div>
+	</div>
+	<div class="modal-footer">
+		<a class="btn btn-default" data-dismiss="modal">Fechar</a>
+		<h:commandButton type="submit" id="botSalvarCliente" styleClass="btn btn-primary" action="#{clientesBean.salvarCliente}"
+			value="Salvar">
+			<f:ajax execute="@form" render="@form"/>
+		</h:commandButton>
+	</div>
+    <script type="text/javascript">
+        utilsInternalContinue_Cliente();
+    </script>
+</h:form>
+</html>
+<!--
+    Esse arquivo foi gerado pelo Haftware Codegen:
+    22/06/2017 - 15:05:12
+    Todos os direitos reservados à Haftware SI
+-->

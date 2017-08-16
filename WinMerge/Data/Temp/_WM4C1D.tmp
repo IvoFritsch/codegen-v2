@@ -1,0 +1,40 @@
+<%@page import="com.google.gson.Gson"%>
+<%@page import="javax.inject.Inject"%>
+<%@page import="br.com.haftware.fotografia.bean.ClientesBean"%>
+<%@page import="java.io.OutputStream"%>
+<%@page trimDirectiveWhitespaces="true"%>
+<%
+	OutputStream os = response.getOutputStream();
+
+	String resposta = null;
+
+	ClientesBean clientesBean = (ClientesBean) session.getAttribute("clientesBean");
+	String requisicao = request.getParameter( "requisicao" );
+	switch(requisicao){
+		case "buscarClientesQuadro":
+			resposta = clientesBean.buscaClientesQuadroJson();
+			break;
+			
+		case "novoClientePeloQuadro":
+			clientesBean.novoClientePeloQuadro();
+			break;
+                        
+		case "editaCliente":
+			clientesBean.editaCliente(request.getParameter( "id" ));
+			break;
+                        
+	}
+
+	response.setCharacterEncoding("UTF-8");
+	if (resposta != null){
+		os.write(resposta.getBytes("UTF-8"));
+	}
+	os.flush();
+	os.close();
+	return;
+%>
+
+<%--
+    Esse arquivo foi gerado pelo Haftware Codegen:
+    Todos os direitos reservados Ã  Haftware SI
+--%>
