@@ -8,7 +8,6 @@ package model;
 import auxiliar.Utils;
 import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;
-import database.CodegenDatabase;
 import java.util.ArrayList;
 import java.util.List;
 

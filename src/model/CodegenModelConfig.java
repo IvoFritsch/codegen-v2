@@ -5,10 +5,17 @@
  */
 package model;
 
+import com.google.gson.annotations.Expose;
+import java.util.Map;
+
 /**
  *
  * @author Ivo Fritsch
  */
 public class CodegenModelConfig {
+    
+    @Expose
+    Map<String, String> defaults;
+    
     
 }

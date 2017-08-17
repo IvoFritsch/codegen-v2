@@ -1,0 +1,38 @@
+<div class="list-group">
+	{{#.}}
+		<div class="list-group-item">
+		{{#ok}}
+			<span class="glyphicon glyphicon-ok text-success"></span>
+		{{/ok}}
+		{{^ok}}
+			<span class="glyphicon glyphicon-remove text-danger"></span>
+		{{/ok}}
+		{{nome}}
+		<div class="list-group">
+			{{#templates}}
+				<div class="list-group-item">
+					{{#ok}}
+						<span class="glyphicon glyphicon-ok text-success"></span>
+					{{/ok}}
+					{{^ok}}
+						<span class="glyphicon glyphicon-remove text-danger"></span>
+					{{/ok}}
+					{{nome}}
+					
+					{{^ok}}
+					<div class="list-group">
+						{{#mensagens}}
+							<div class="list-group-item">
+								{{.}}
+							</div>
+						{{/mensagens}}
+					</div>
+					{{/ok}}
+					
+				</div>
+			{{/templates}}
+		</div>
+		</div>
+		
+	{{/.}}
+</div>

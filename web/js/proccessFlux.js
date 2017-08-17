@@ -24,12 +24,68 @@ function comandaProcessar(){
 	xmlhttps.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
 	xmlhttps.onreadystatechange = function(data) {
 	    if (this.readyState == 4 && this.status == 200) {
-	    	document.getElementById("espacoEtapasFluxo").innerHTML = data.currentTarget.response;
-			var ttt = JSON.parse(data.currentTarget.response);
-	       	console.log(pegaModelsLog(ttt));
+	    	//document.getElementById("espacoResultadoProccess").innerHTML = data.currentTarget.response;
+			$("#tituloProcessando").html("Resultado do processamento:");
+			var result = JSON.parse(data.currentTarget.response);
+			exibeResultadoModelos(result);
 	    }
 	};
 	xmlhttps.send(JSON.stringify(proccessSpecs));
+}
+
+function novoModelObjResultados(){
+	return {
+		nome:"",
+		ok:true,
+		templates:[]
+	};
+}
+
+function novoTemplateObjResultados(){
+	return {
+		nome:"",
+		ok:true,
+		mensagens:[]
+	};
+}
+
+function montaObjetoResultados(proccessLog){
+	
+	var saida = [];
+	var models = pegaModelsLog(proccessLog);
+	for(var m in models){
+		console.log(models[m]);
+		var modelInserir = novoModelObjResultados();
+		modelInserir.nome = models[m];
+		
+		var templates = pegaTemplatesModelLog(proccessLog.mensagens[modelInserir.nome]);
+		
+		for(var t in templates){
+			var templateInserir = novoTemplateObjResultados();
+			templateInserir.nome = templates[t];
+			templateInserir.mensagens = proccessLog.mensagens[modelInserir.nome][templateInserir.nome];
+			if(templateInserir.mensagens.length > 0) {
+				templateInserir.ok = false;
+				modelInserir.ok = false;
+			}
+			modelInserir.templates.push(templateInserir);
+		}
+		saida.push(modelInserir);
+	}
+	console.log(saida);
+	return saida;
+	
+}
+
+
+function exibeResultadoModelos(result){
+	//document.getElementById('espacoResultadoProccess').innerHTML = "<img src='/static/load.gif'/>"
+	$.get('templates/proccessResults-models.html', function(template) {
+		var html = Mustache.to_html(template, 
+			montaObjetoResultados(result)
+		);
+		$('#espacoResultadoProccess').html(html);
+	});
 }
 
 function avancaFluxo(){
@@ -46,6 +102,16 @@ function pegaModelsLog(log){
 	var listaConfs = [];
 	for (var property in log.mensagens) {
 		if (log.mensagens.hasOwnProperty(property)) {
+			listaConfs.push(property);
+		}
+	}
+	return listaConfs;
+}
+
+function pegaTemplatesModelLog(model){
+	var listaConfs = [];
+	for (var property in model) {
+		if (model.hasOwnProperty(property)) {
 			listaConfs.push(property);
 		}
 	}
