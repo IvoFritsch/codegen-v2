@@ -50,7 +50,10 @@ function novoTemplateObjResultados(){
 
 function montaObjetoResultados(proccessLog){
 	
-	var saida = [];
+	var saida = {
+		results:[],
+		ok:true
+	};
 	var models = pegaModelsLog(proccessLog);
 	for(var m in models){
 		console.log(models[m]);
@@ -69,10 +72,11 @@ function montaObjetoResultados(proccessLog){
 				}
 				templateInserir.ok = false;
 				modelInserir.ok = false;
+				saida.ok = false;
 			}
 			modelInserir.templates.push(templateInserir);
 		}
-		saida.push(modelInserir);
+		saida.results.push(modelInserir);
 	}
 	console.log(saida);
 	return saida;
@@ -81,12 +85,12 @@ function montaObjetoResultados(proccessLog){
 
 
 function exibeResultadoModelos(result){
-	$("#tituloProcessando").html("Resultado do processamento:");
-	$.get('templates/proccessResults-models.html', function(template) {
+	$.get('templates/proccessResults.html', function(template) {
 		var html = Mustache.to_html(template, 
 			montaObjetoResultados(result)
 		);
 		$('#espacoResultadoProccess').html(html);
+		$("#tituloProcessando").html("Resultado do processamento:");
 	});
 }
 

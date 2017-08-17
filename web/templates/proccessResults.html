@@ -1,6 +1,6 @@
 <span>Modelos:</span>
 <div class="list-group">
-	{{#.}}
+	{{#results}}
 		<div class="list-group-item">
 		{{#ok}}
 			<span class="glyphicon glyphicon-ok text-success"></span>
@@ -41,6 +41,13 @@
 			{{/templates}}
 		</div>
 		</div>
-		
-	{{/.}}
+	{{/results}}
 </div>
+{{^ok}}
+<div class="text-danger">
+	<strong>Ouveram erros, verifique o log no console do Codegen para possíveis mais detalhes<br/><br/>
+	Corrija os erros e clique em "Processar novamente" abaixo para utilizar as mesmas configurações
+	de processamento
+	</strong>
+</div>
+{{/ok}}

@@ -1,0 +1,5 @@
+Vai testando plz
+
+<#list root.model.listaTodosCampos as campo>
+SNIPPET
+</#list>

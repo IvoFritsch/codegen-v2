@@ -160,7 +160,12 @@ public class CodegenServer extends AbstractHandler {
                 response.sendRedirect("/index.html");
             case "processaTemplate":
                 ProccessorCore proccessorCore = new ProccessorCore(ProccessSpecs.fromJson(leTodasLinhas(request.getReader())));
-                String log = proccessorCore.process().toJson();
+                String log = null;
+                try{
+                    log = proccessorCore.process().toJson();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
                 writer.println(log);
                 break;
         }

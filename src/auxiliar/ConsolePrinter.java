@@ -26,7 +26,11 @@ public class ConsolePrinter {
     public static void printError(String message){
         qtdErros++;
         flush();
-        System.err.printf("[Erro        ]:         "+message.replaceAll("\n", "\n                        ")+"\n");
+        try{
+            System.err.printf("[Erro        ]:         "+message.replaceAll("\n", "\n                        ")+"\n");
+        }catch(Exception e){
+            System.err.printf("[Erro        ]:         Esse erro é inexibivel, erro de conversão ASCII\n");
+        }
     }
         
     public static void printWarning(String message){

@@ -13,7 +13,6 @@ import freemarker.template.Template;
 import freemarker.template.TemplateExceptionHandler;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.HashMap;
@@ -34,8 +33,10 @@ public class TemplatesProcessor {
     private ProccessLog log = new ProccessLog();
     private Template tmp;
     private Map root;
+    private boolean iniciado = false;
 
     private String templateName;
+    private String originalTemplateName;
     private boolean pronto = false;
     
     public TemplatesProcessor(String projeto, String templateName){
@@ -46,35 +47,15 @@ public class TemplatesProcessor {
         log.startNewTemplate(templateName);
         this.projeto = projeto;
         this.fsb = fsb;
+        this.originalTemplateName = templateName;
         this.templateName = projeto+"/" + templateName + "proc";
-        init();
-        try {
-            String conteudo = FileUtils.readFileToString(new File(CodegenDatabaseController.getCaminhoTemplates(projeto) + templateName), "UTF-8");
-            conteudo = conteudo.replace("#{", "${r\"#{\"}");
-            FileUtils.write(new File("temp/"+this.templateName), conteudo, "UTF-8", false);
-        } catch (Exception ex) {
-            String mensagem = "Ocorreu um erro ao tentar ler o template, erro:\n"
-                    + ex.getLocalizedMessage().replace(" in " + this.templateName, "");
-            log.putMessage(mensagem);
-            ConsolePrinter.printError(mensagem);
-            pronto = false;
-        }
-        System.out.println(this.templateName);
-        try {
-            tmp = cfg.getTemplate(this.templateName);
-            root = new HashMap();
-        } catch (Exception ex) {
-            String mensagem = "Ocorreu um erro ao tentar parsear o template, erro:\n"
-                    + ex.getLocalizedMessage().replace(" in " + this.templateName, "");
-            log.putMessage(mensagem);
-            ConsolePrinter.printError(mensagem);
-            pronto = false;
-        }
+        this.root = new HashMap();
     }
 
     
     
     public final boolean init() {
+        if(iniciado) return true;
         try {
             new File("temp/").mkdir();
             //freemarker.log.Logger.selectLoggerLibrary(freemarker.log.Logger.LIBRARY_NONE);
@@ -96,6 +77,28 @@ public class TemplatesProcessor {
         cfg.setDefaultEncoding("UTF-8");
         cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
         pronto = true;
+        
+        try {
+            String conteudo = FileUtils.readFileToString(new File(CodegenDatabaseController.getCaminhoTemplates(projeto) + originalTemplateName), "UTF-8");
+            conteudo = conteudo.replace("#{", "${r\"#{\"}");
+            FileUtils.write(new File("temp/"+this.templateName), conteudo, "UTF-8", false);
+        } catch (Exception ex) {
+            String mensagem = "Ocorreu um erro ao tentar ler o template, erro:\n"
+                    + ex.getLocalizedMessage().replace(" in " + this.templateName, "");
+            log.putMessage(mensagem);
+            ConsolePrinter.printError(mensagem);
+            pronto = false;
+        }
+        try {
+            tmp = cfg.getTemplate(this.templateName);
+        } catch (Exception ex) {
+            String mensagem = "Ocorreu um erro ao tentar parsear o template, erro:\n"
+                    + ex.getLocalizedMessage().replace(" in " + this.templateName, "");
+            log.putMessage(mensagem);
+            ConsolePrinter.printError(mensagem);
+            pronto = false;
+        }
+        iniciado = true;
         return true;
     }
     
@@ -120,12 +123,15 @@ public class TemplatesProcessor {
                     + "O TemplateProcessor tentou executar um put sendo que o root não está devidamente instanciado";
             ConsolePrinter.printError(mensagem);
             log.putMessage(mensagem);
+            pronto = false;
             return;
         }
         root.put(name, object);
     }
 
     public String proccessAndReturn() {
+        init();
+        if(!pronto) return "";
         try {
             StringWriter output = new StringWriter();
             tmp.process(root, output);
@@ -143,8 +149,11 @@ public class TemplatesProcessor {
     }
 
     public void proccessToFile(String caminho) {
+        init();
         ConsolePrinter.printInfo("Processando " + caminho.substring(caminho.lastIndexOf("/") + 1) + "...");
-
+        if(!pronto) {
+            return;
+        }
         fsb.criaDiretorio(caminho.substring(0,caminho.lastIndexOf("/")+1));
         try {
             Writer out = fsb.getFileWriter(caminho);

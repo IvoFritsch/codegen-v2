@@ -5,6 +5,7 @@
  */
 package proccessor;
 
+import auxiliar.Utils;
 import model.CodegenFieldConfig;
 
 /**
@@ -46,4 +47,10 @@ public class TemplatesField {
     public boolean temConfigIgualA(String config, String valor) {
         return this.config.temConfigIgualA(config, valor);
     }
+    
+    
+    public String getNomePriCharMai() {
+        return Utils.priCharMai(nome);
+    }
+    
 }
