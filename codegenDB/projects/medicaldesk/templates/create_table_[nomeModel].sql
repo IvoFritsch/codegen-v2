@@ -1,0 +1,1 @@
+Nome do modelo: ${root.model}  ---  Config: ${root.getConfig("teste")}

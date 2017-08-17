@@ -17,3 +17,14 @@ function getParameterByName(name, url) {
     if (!results[2]) return '';
     return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
+
+function editaTemplateExterno(nome, projeto){
+	var xmlhttps = new XMLHttpRequest();
+	var url = "/api/editaTemplateProjeto";
+	xmlhttps.open("POST", url, true);
+	xmlhttps.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+	var template = newTemplateSpecs();
+	template.projeto = projeto;
+	template.nome = nome;
+	xmlhttps.send(JSON.stringify(template));
+}

@@ -25,7 +25,6 @@ function comandaProcessar(){
 	xmlhttps.onreadystatechange = function(data) {
 	    if (this.readyState == 4 && this.status == 200) {
 	    	//document.getElementById("espacoResultadoProccess").innerHTML = data.currentTarget.response;
-			$("#tituloProcessando").html("Resultado do processamento:");
 			var result = JSON.parse(data.currentTarget.response);
 			exibeResultadoModelos(result);
 	    }
@@ -65,6 +64,9 @@ function montaObjetoResultados(proccessLog){
 			templateInserir.nome = templates[t];
 			templateInserir.mensagens = proccessLog.mensagens[modelInserir.nome][templateInserir.nome];
 			if(templateInserir.mensagens.length > 0) {
+				for(var m in templateInserir.mensagens){
+					templateInserir.mensagens[m] = templateInserir.mensagens[m].replace(/\n/g, "<br/>");
+				}
 				templateInserir.ok = false;
 				modelInserir.ok = false;
 			}
@@ -79,7 +81,7 @@ function montaObjetoResultados(proccessLog){
 
 
 function exibeResultadoModelos(result){
-	//document.getElementById('espacoResultadoProccess').innerHTML = "<img src='/static/load.gif'/>"
+	$("#tituloProcessando").html("Resultado do processamento:");
 	$.get('templates/proccessResults-models.html', function(template) {
 		var html = Mustache.to_html(template, 
 			montaObjetoResultados(result)
@@ -152,6 +154,11 @@ function removeConfigGeracao(nome){
 
 function coletaModelosSelecionados(){
   	proccessSpecs.modelos = getCheckedBoxes("processaModelo");
+	if(proccessSpecs.modelos === null) {
+		$("#erroProccess0").html("Selecione ao menos um modelo");
+		return;
+	}
+	avancaFluxo();
 }
 
 function deveProcessarModelo(nome){

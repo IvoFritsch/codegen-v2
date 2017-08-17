@@ -17,7 +17,6 @@ public class TemplatesField {
     //private final TipoCampo tipo;
     private String tipoAsString;
     private CodegenFieldConfig config;
-    private String codegenConfigAsString;
     private TemplatesModel model;
 
     public String getNome() {
@@ -32,12 +31,19 @@ public class TemplatesField {
         return config;
     }
 
-    public String getCodegenConfigAsString() {
-        return codegenConfigAsString;
-    }
-
     public TemplatesModel getModel() {
         return model;
     }
-    
+
+    public String getValorConfig(String config) {
+        return this.config.getValorConfig(config);
+    }
+
+    public boolean temConfig(String config) {
+        return this.config.temConfig(config);
+    }
+
+    public boolean temConfigIgualA(String config, String valor) {
+        return this.config.temConfigIgualA(config, valor);
+    }
 }

@@ -9,7 +9,7 @@
 		{{#templates}}
 			<tr>
 				<td>{{.}}</td>
-				<td ><a title="Editar esse template com o editor externo configurado no sistema operacional" class='btn btn-success' onclick='editaTemplateExterno("{{.}}");'><span class='glyphicon glyphicon-pencil'></span>  
+				<td ><a title="Editar esse template com o editor externo configurado no sistema operacional" class='btn btn-success' onclick='editaTemplateExterno("{{.}}", "${root.projeto.nome}");'><span class='glyphicon glyphicon-pencil'></span>  
 				<span class='glyphicon glyphicon-share'></span></a>
 				<a title="Excluir esse template" class='btn btn-danger' onclick='excluiTemplateProjeto("{{.}}");'><span class='glyphicon glyphicon-remove'></span></a></td>
 			</tr>

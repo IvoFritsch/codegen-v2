@@ -18,13 +18,8 @@ public class CodegenFieldConfig {
     private Map<String,String> conf;
     
     public String getValorConfig(String config){
-        if(!temConfig(config)) return null;
-        try{
+        if(!temConfig(config)) return "";
         return conf.get(config);
-        } catch (Exception e){
-            e.printStackTrace();
-        }
-        return null;
     }
     
     public String get(String config){

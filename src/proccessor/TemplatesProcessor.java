@@ -142,9 +142,6 @@ public class TemplatesProcessor {
         }
     }
 
-    
-    
-    
     public void proccessToFile(String caminho) {
         ConsolePrinter.printInfo("Processando " + caminho.substring(caminho.lastIndexOf("/") + 1) + "...");
 

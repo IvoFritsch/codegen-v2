@@ -75,17 +75,6 @@ function excluiTemplateProjeto(nome){
 	atualizaQuadroDados();
 }
 
-function editaTemplateExterno(nome){
-	var xmlhttps = new XMLHttpRequest();
-	var url = "/api/editaTemplateProjeto";
-	xmlhttps.open("POST", url, true);
-	xmlhttps.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-	var template = newTemplateSpecs();
-	template.projeto = projetoEmManutencao.nome;
-	template.nome = nome;
-	xmlhttps.send(JSON.stringify(template));
-}
-
 
 function criaNovoTemplateProjetoNoServer(){
 	var xmlhttps = new XMLHttpRequest();
