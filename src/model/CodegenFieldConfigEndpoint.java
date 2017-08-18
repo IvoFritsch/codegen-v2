@@ -17,6 +17,8 @@ public class CodegenFieldConfigEndpoint {
     @Expose
     private Map<String,String> subconfs;
     @Expose
+    private String nome;
+    @Expose
     private String valor;
     @Expose
     private boolean temSubConfs;

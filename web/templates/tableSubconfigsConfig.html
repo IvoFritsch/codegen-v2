@@ -1,0 +1,27 @@
+<table class="table">
+	<tr>
+		<th>Nome da Subconfig</th>
+		<th>Valor</th>
+		<th>Opções</th>
+	</tr>
+	{{#.}}
+	<tr>
+		<td>{{.}}</td>
+		<td>
+		<input id="valorSubconfig{{.}}Config" type="text" class="form-control" onfocusout="atualizaSubconfigConfig('{{.}}');">
+		</td>
+		<td><a title="Remover subconfig" class='btn btn-danger' onclick='removeSubconfigConfig("{{.}}");'><span class='glyphicon glyphicon-remove'></span></a></td>
+	</tr>
+	{{/.}}
+</table>
+<br/>
+<table class="table">
+	<tr id="espacoFormNovaConfigCampo" hidden="true">
+		<td>Nome:<input id="nomeNovaSubconfigConfig" type="text" class="form-control"></td>
+		<td><br/><a title="Confirmar" class="btn btn-success" onclick="criaNovaSubconfigConfig();"><span class="glyphicon glyphicon-ok"></span></a>
+			<a  title="Cancelar" class="btn btn-danger" onclick="fechaCriacaoSubconfigConfig();"><span class="glyphicon glyphicon-remove"></span></a></td>
+	</tr>
+</table>
+<div id="botaoNovaSubconfigConfig">
+	<a class="btn btn-info pull-right" onclick="novaSubconfigConfig();">Nova Subconfig</a>
+</div>

@@ -6,12 +6,32 @@
 	</tr>
 	{{#.}}
 	<tr>
-		<td>{{.}}</td>
+		<td>{{nome}}</td>
 		<td>
-		
-		<input id="valorConfig{{.}}Campo" type="text" class="form-control" onfocusout="atualizaConfigCampo('{{.}}');">
+		{{^temSubConfs}}
+		<input id="valorConfig{{nome}}Campo" type="text" class="form-control" onfocusout="atualizaConfigCampo('{{nome}}');">
+		{{/temSubConfs}}
+		{{#temSubConfs}}
+		<a class="btn btn-warning pull-right" onclick="editaSubconfigsDaConfig('{{nome}}');">Editar subconfigs <span class="glyphicon glyphicon-chevron-right"></span><span class="glyphicon glyphicon-chevron-right"></span></a>
+		{{/temSubConfs}}
 		</td>
-		<td><a title="Remover configuracão" class='btn btn-danger' onclick='removeConfigCampo("{{.}}");'><span class='glyphicon glyphicon-remove'></span></a></td>
+		<td><a title="Remover configuracão" class='btn btn-danger' onclick='removeConfigCampo("{{nome}}");'><span class='glyphicon glyphicon-remove'></span></a></td>
 	</tr>
 	{{/.}}
 </table>
+<br/>
+<table class="table">
+	<tr id="espacoFormNovaConfigCampo" hidden="true">
+		<td>Nome:<input id="nomeNovaConfigCampo" type="text" class="form-control"></td>
+		<td>Tipo:<select id="tipoNovaConfigCampo" type="text" class="form-control">
+			<option value="simples">Simples</option>
+			<option value="comSubConfig">Com SubConfigs</option>
+			</select>
+		</td>
+		<td><br/><a title="Confirmar" class="btn btn-success" onclick="criaNovaConfigCampo();"><span class="glyphicon glyphicon-ok"></span></a>
+			<a  title="Cancelar" class="btn btn-danger" onclick="fechaCriacaoConfigCampo();"><span class="glyphicon glyphicon-remove"></span></a></td>
+	</tr>
+</table>
+<div id="botaoNovaConfigCampo">
+	<a class="btn btn-info pull-right" onclick="novaConfigCampo();">Nova Configuração</a>
+</div>

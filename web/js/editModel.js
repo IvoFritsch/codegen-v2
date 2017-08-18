@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
 var modeloEmManutencao;
 var campoEmConfig;
 var campoEmEdicao;
+var configComSubConfigsEmEdicao;
 
 
 function loadModel() {
@@ -169,9 +170,10 @@ function novaConfigCampo(){
 function criaNovaConfigCampo(){
 	if(!validaCriacaoConfigCampo()) return;
 	if(document.getElementById("tipoNovaConfigCampo").value === "comSubConfig"){
-		campoEmConfig.config.conf[document.getElementById("nomeNovaConfigCampo").value] = newFieldConfigWithSubConfigs();
+		campoEmConfig.config.conf[document.getElementById("nomeNovaConfigCampo").value] = newFieldConfigWithSubConfigs(document.getElementById("nomeNovaConfigCampo").value);
 	}else{
-		campoEmConfig.config.conf[document.getElementById("nomeNovaConfigCampo").value] = newSimpleFieldConfig();
+		//console.log(newSimpleFieldConfig(document.getElementById("nomeNovaConfigCampo").value));
+		campoEmConfig.config.conf[document.getElementById("nomeNovaConfigCampo").value] = newSimpleFieldConfig(document.getElementById("nomeNovaConfigCampo").value);
 	}
 	indicaNaoSalvo();
 	fechaCriacaoConfigCampo();
@@ -188,8 +190,10 @@ function exibeConfigsCampoSection(){
 
 		var arrayLength = listaConfigs.length;
 		for (var i = 0; i < arrayLength; i++) {
-			document.getElementById("valorConfig"+listaConfigs[i]+"Campo").value = 
-				campoEmConfig.config.conf[listaConfigs[i]];
+			if(!campoEmConfig.config.conf[listaConfigs[i].nome].temSubConfs){
+				document.getElementById("valorConfig"+listaConfigs[i].nome+"Campo").value = 
+					campoEmConfig.config.conf[listaConfigs[i].nome].valor;
+			}
 		}
 	});
 }
@@ -215,7 +219,7 @@ function apagaConfigsCampoSection(){
 }
 
 function atualizaConfigCampo(config){
-	campoEmConfig.config.conf[config] = 
+	campoEmConfig.config.conf[config].valor = 
 		document.getElementById("valorConfig"+config+"Campo").value;
 	indicaNaoSalvo();
 }
@@ -240,11 +244,38 @@ function validaCriacaoConfigCampo(){
 	return retorno;
 }
 
+function editaSubconfigsDaConfig(nome){
+	configComSubConfigsEmEdicao = campoEmConfig.config.conf[nome];
+	
+	$.get('templates/tableSubconfigsConfig.html', function(template) {
+		var html = Mustache.to_html(template, pegaSubconfigsDaConfig(campoEmConfig));
+		$('#tableSubconfigsConfigContent').html(html);
+		var listaConfigs = pegaSubconfigsDaConfig();
+		var arrayLength = listaConfigs.length;
+		for (var i = 0; i < arrayLength; i++) {
+			console.log("valorSubconfig"+listaConfigs[i]+"Config");
+			document.getElementById("valorSubconfig"+listaConfigs[i]+"Config").value = 
+				configComSubConfigsEmEdicao.subconfs[listaConfigs[i]];
+		}
+	});
+	
+}
+
+function pegaSubconfigsDaConfig(){
+	var listaConfs = [];
+	for (var property in configComSubConfigsEmEdicao.subconfs) {
+		if (configComSubConfigsEmEdicao.subconfs.hasOwnProperty(property)) {
+			listaConfs.push(property);
+		}
+	}
+	return listaConfs;
+}
+
 function pegaConfigsDoCampo(){
 	var listaConfs = [];
 	for (var property in campoEmConfig.config.conf) {
 		if (campoEmConfig.config.conf.hasOwnProperty(property)) {
-			listaConfs.push(property);
+			listaConfs.push(campoEmConfig.config.conf[property]);
 		}
 	}
 	return listaConfs;

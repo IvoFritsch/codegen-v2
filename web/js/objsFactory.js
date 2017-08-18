@@ -21,15 +21,19 @@ function newCampo(){
 	}
 }
 
-function newFieldConfigWithSubConfigs(){
-	{
-		subconfs:{},
-		temSubConfs:true
+function newFieldConfigWithSubConfigs(nomeConfig){
+	return {
+		nome:nomeConfig,
+		temSubConfs:true,
+		subconfs: {
+			test:"funcionou"
+		}
 	}
 }
 
-function newSimpleFieldConfig(){
-	{
+function newSimpleFieldConfig(nomeConfig){
+	return {
+		nome:nomeConfig,
 		valor:"",
 		temSubConfs:false
 	}
