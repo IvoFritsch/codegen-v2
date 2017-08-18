@@ -12,7 +12,7 @@
 		<input id="valorConfig{{nome}}Campo" type="text" class="form-control" onfocusout="atualizaConfigCampo('{{nome}}');">
 		{{/temSubConfs}}
 		{{#temSubConfs}}
-		<a class="btn btn-warning pull-right" onclick="editaSubconfigsDaConfig('{{nome}}');">Editar subconfigs <span class="glyphicon glyphicon-chevron-right"></span><span class="glyphicon glyphicon-chevron-right"></span></a>
+		<a id="btn-editaSubConfigsConfig-{{nome}}" class="btn btn-warning pull-right" onclick="editaSubconfigsDaConfig('{{nome}}');">Editar subconfigs <span class="glyphicon glyphicon-chevron-right"></span><span class="glyphicon glyphicon-chevron-right"></span></a>
 		{{/temSubConfs}}
 		</td>
 		<td><a title="Remover configuracão" class='btn btn-danger' onclick='removeConfigCampo("{{nome}}");'><span class='glyphicon glyphicon-remove'></span></a></td>

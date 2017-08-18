@@ -6,7 +6,10 @@
 package proccessor;
 
 import auxiliar.Utils;
+import java.util.ArrayList;
+import java.util.List;
 import model.CodegenFieldConfig;
+import model.CodegenFieldConfigEndpoint;
 
 /**
  *
@@ -32,10 +35,18 @@ public class TemplatesField {
         return config;
     }
 
+    public CodegenFieldConfigEndpoint getConfigEndpoint(String config) {
+        return this.config.getConfigEndpoint(config);
+    }
+
     public TemplatesModel getModel() {
         return model;
     }
 
+    public List<String> getListaConfigsCampo() {
+        return config.getListaConfigsCampo();
+    }
+    
     public String getValorConfig(String config) {
         return this.config.getValorConfig(config);
     }
@@ -47,7 +58,18 @@ public class TemplatesField {
     public boolean temConfigIgualA(String config, String valor) {
         return this.config.temConfigIgualA(config, valor);
     }
-    
+
+    public List<String> getSubconfigsDaConfig(String config) {
+        return this.config.getSubconfigsDaConfig(config);
+    }
+
+    public String getValorSubconfigDaConfig(String config, String subconfig) {
+        return this.config.getValorSubconfigDaConfig(config, subconfig);
+    }
+
+    public boolean subconfigDaConfigTemValorIgualA(String config, String subconfig, String valor) {
+        return this.config.subconfigDaConfigTemValorIgualA(config, subconfig, valor);
+    }
     
     public String getNomePriCharMai() {
         return Utils.priCharMai(nome);

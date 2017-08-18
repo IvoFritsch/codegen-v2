@@ -29,7 +29,6 @@ public class TemplatesModel {
     public String getNome() {
         return nome;
     }
-
     
     public List<TemplatesField> getListaCamposComAConfig(String config) {
         return listaCampos.stream().filter(c -> c.temConfig(config)).collect(Collectors.toList());

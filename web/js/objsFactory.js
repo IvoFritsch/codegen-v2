@@ -26,7 +26,6 @@ function newFieldConfigWithSubConfigs(nomeConfig){
 		nome:nomeConfig,
 		temSubConfs:true,
 		subconfs: {
-			test:"funcionou"
 		}
 	}
 }
