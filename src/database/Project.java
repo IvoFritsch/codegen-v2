@@ -18,13 +18,16 @@ import model.ServerModel;
 public class Project {
     
     @Expose
-    private String nome;
+    private final String nome;
     
     @Expose
     private final List<String> models;
     
     @Expose
     private final List<String> templates;
+    
+    @Expose
+    private final List<String> snippets;
     
     @Expose
     private String saidaGeracao;
@@ -37,12 +40,14 @@ public class Project {
         this.nome = "";
         this.models = new ArrayList<>();
         this.templates = new ArrayList<>();
+        this.snippets = new ArrayList<>();
     }
     
     public Project(String nome) {
         this.nome = nome;
         this.models = new ArrayList<>();
         this.templates = new ArrayList<>();
+        this.snippets = new ArrayList<>();
     }
 
     public boolean isPseudo() {
@@ -80,6 +85,12 @@ public class Project {
         templates.add(nome);
         CodegenDatabaseController.criaArquivoTemplate(this.nome, nome);
     }
+    
+    public void addSnippet(String nome) {
+        if(snippets.contains(nome)) return;
+        snippets.add(nome);
+        CodegenDatabaseController.criaArquivoSnippet(this.nome, nome);
+    }
 
     void excluiTemplate(String nome) {
         if(!templates.contains(nome)) return;
@@ -87,5 +98,10 @@ public class Project {
         CodegenDatabaseController.removeArquivoTemplate(this.nome, nome);
     }
      
+    void excluiSnippet(String nome) {
+        if(!snippets.contains(nome)) return;
+        snippets.remove(nome);
+        CodegenDatabaseController.removeArquivoSnippet(this.nome, nome);
+    }
     
 }

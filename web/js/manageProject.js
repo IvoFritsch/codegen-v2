@@ -86,3 +86,60 @@ function criaNovoTemplateProjetoNoServer(){
 	template.nome = document.getElementById("nomeNovoTemplateProjeto").value;
 	xmlhttps.send(JSON.stringify(template));
 }
+
+
+
+function novoSnippetProjeto(){
+	$('#espacoFormNovoSnippetProjeto').removeAttr('hidden');
+}
+
+function fechaCriacaoSnippetProjeto(){
+	$('#espacoFormNovoSnippetProjeto').attr('hidden',true);
+}
+
+
+function criaNovoSnippetProjeto(){
+	if(snippetJaExiste(document.getElementById("nomeNovoSnippetProjeto").value)) return;
+	projetoEmManutencao.snippets.push(
+		document.getElementById("nomeNovoSnippetProjeto").value
+		);
+	criaNovoSnippetProjetoNoServer();
+	loadProjeto();
+	atualizaQuadroDados();
+}
+
+function excluiSnippetProjeto(nome){
+	var xmlhttps = new XMLHttpRequest();
+	var url = "/api/excluiSnippetProjeto";
+	xmlhttps.open("POST", url, true);
+	xmlhttps.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+	var snippet = newTemplateSpecs();
+	snippet.projeto = projetoEmManutencao.nome;
+	snippet.nome = nome;
+	xmlhttps.send(JSON.stringify(snippet));
+	loadProjeto();
+	atualizaQuadroDados();
+}
+
+
+function criaNovoSnippetProjetoNoServer(){
+	var xmlhttps = new XMLHttpRequest();
+	var url = "/api/addSnippetProjeto";
+	xmlhttps.open("POST", url, true);
+	xmlhttps.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+	var snippet = newTemplateSpecs();
+	snippet.projeto = projetoEmManutencao.nome;
+	snippet.nome = document.getElementById("nomeNovoSnippetProjeto").value;
+	xmlhttps.send(JSON.stringify(snippet));
+}
+
+
+function snippetJaExiste(nome){
+	var arrayLength = projetoEmManutencao.snippets.length;
+	for (var i = 0; i < arrayLength; i++) {
+		if(projetoEmManutencao.snippets[i] === nome){
+			return true;
+		}
+	}
+	return false;
+}

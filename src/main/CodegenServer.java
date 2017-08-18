@@ -146,11 +146,21 @@ public class CodegenServer extends AbstractHandler {
             case "addTemplateProjeto":
                 CodegenDatabaseController.newTemplate(TemplateSpecs.fromJson(leTodasLinhas(request.getReader())));
                 break;
+            case "addSnippetProjeto":
+                CodegenDatabaseController.newSnippet(TemplateSpecs.fromJson(leTodasLinhas(request.getReader())));
+                break;
             case "editaTemplateProjeto":
                 CodegenDatabaseController.openTemplate(TemplateSpecs.fromJson(leTodasLinhas(request.getReader())));
                 break;
             case "excluiTemplateProjeto":
                 CodegenDatabaseController.excluiTemplate(TemplateSpecs.fromJson(leTodasLinhas(request.getReader())));
+                break;
+            case "editaSnippetProjeto":
+                System.out.println("Editando snippet");
+                CodegenDatabaseController.openSnippet(TemplateSpecs.fromJson(leTodasLinhas(request.getReader())));
+                break;
+            case "excluiSnippetProjeto":
+                CodegenDatabaseController.excluiSnippet(TemplateSpecs.fromJson(leTodasLinhas(request.getReader())));
                 break;
             case "setProjetoAtual":
                 Cookie cookieProjeto = new Cookie("project", baseRequest.getParameter("project"));
@@ -158,6 +168,7 @@ public class CodegenServer extends AbstractHandler {
                 cookieProjeto.setPath("/");
                 response.addCookie(cookieProjeto);
                 response.sendRedirect("/index.html");
+                break;
             case "processaTemplate":
                 ProccessorCore proccessorCore = new ProccessorCore(ProccessSpecs.fromJson(leTodasLinhas(request.getReader())));
                 String log = null;
@@ -168,6 +179,8 @@ public class CodegenServer extends AbstractHandler {
                 }
                 writer.println(log);
                 break;
+            default:
+                ConsolePrinter.printError("Chamou a api usando um metodo não reconhecido: "+target);
         }
     }
 
@@ -185,6 +198,7 @@ public class CodegenServer extends AbstractHandler {
 
     public static void main(String[] args) throws Exception {
         //System.setErr(new PrintStream(new File("log.txt")));
+        int porta = 8080;
         System.out.println("HW Codegen\n"
                 + "  Gerador de fontes da Haftware\n"
                 + "  Todos os direitos reservados à Haftware Sistemas ltda.\n");
@@ -193,10 +207,10 @@ public class CodegenServer extends AbstractHandler {
         CodegenDatabaseController.init();
         //FilesSandBox.init(CodegenGlobalConfig.loadConfig().getGenOutput());
         ServerTemplatesProcessor.init();
-        Server server = new Server(8080);
+        Server server = new Server(porta);
         server.setHandler(new CodegenServer());
         server.start();
-        ConsolePrinter.printInfo("Inicializado OK...");
+        ConsolePrinter.printInfo("Inicializado OK:\n    Porta "+porta);
         server.join();
     }
 

@@ -21,6 +21,20 @@ function newCampo(){
 	}
 }
 
+function newFieldConfigWithSubConfigs(){
+	{
+		subconfs:{},
+		temSubConfs:true
+	}
+}
+
+function newSimpleFieldConfig(){
+	{
+		valor:"",
+		temSubConfs:false
+	}
+}
+
 function newProccessSpecs(){
 	return {
 		projeto:"",
@@ -41,7 +55,8 @@ function newProject(){
 	return {
 		nome:"",
 		models:[],
-		templates:[]
+		templates:[],
+		snippets:[]
 	}
 }
 

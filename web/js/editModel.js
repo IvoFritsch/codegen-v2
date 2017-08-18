@@ -168,7 +168,11 @@ function novaConfigCampo(){
 
 function criaNovaConfigCampo(){
 	if(!validaCriacaoConfigCampo()) return;
-	campoEmConfig.config.conf[document.getElementById("nomeNovaConfigCampo").value] = "";
+	if(document.getElementById("tipoNovaConfigCampo").value === "comSubConfig"){
+		campoEmConfig.config.conf[document.getElementById("nomeNovaConfigCampo").value] = newFieldConfigWithSubConfigs();
+	}else{
+		campoEmConfig.config.conf[document.getElementById("nomeNovaConfigCampo").value] = newSimpleFieldConfig();
+	}
 	indicaNaoSalvo();
 	fechaCriacaoConfigCampo();
 	exibeConfigsCampoSection();

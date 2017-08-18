@@ -126,6 +126,7 @@ public class CodegenDatabaseController {
         } catch (Exception ex) {
         }
     }
+    
     public static void criaArquivoTemplate(String projeto, String nome) {
         try {
             String caminho = "codegenDB/projects/" + projeto + "/templates/"+nome;
@@ -134,6 +135,16 @@ public class CodegenDatabaseController {
         } catch (Exception ex) {
         }
     }
+    
+    public static void criaArquivoSnippet(String projeto, String nome) {
+        try {
+            String caminho = "codegenDB/projects/" + projeto + "/templates/microSnippets/"+nome+".snip";
+            caminho = Utils.formalizaCaminho(caminho);
+            FileUtils.write(new File(caminho), "", "UTF-8");
+        } catch (Exception ex) {
+        }
+    }
+    
     public static void removeArquivoTemplate(String projeto, String nome) {
         String caminho = "codegenDB/projects/" + projeto + "/templates/"+nome;
         try {
@@ -146,8 +157,24 @@ public class CodegenDatabaseController {
         } catch(Exception e){}
     }
 
+    public static void removeArquivoSnippet(String projeto, String nome) {
+        String caminho = "codegenDB/projects/" + projeto + "/templates/microSnippets/"+nome+".snip";
+        try {
+            caminho = Utils.formalizaCaminho(caminho);
+            FileUtils.deleteQuietly(new File(caminho));
+        } catch (Exception ex) {
+        }
+        try{
+        removeFileAndParentsIfEmpty(new File(Utils.pegaPastaPaiArquivo(caminho)).toPath(), "codegenDB/projects/" + projeto + "/templates/microSnippets/");
+        } catch(Exception e){}
+    }
+    
     public static void newTemplate(TemplateSpecs specs) {
         getProjetoViaNome(specs.getProjeto()).addTemplate(specs.getNome());
+        saveDb();
+    }
+    public static void newSnippet(TemplateSpecs specs) {
+        getProjetoViaNome(specs.getProjeto()).addSnippet(specs.getNome());
         saveDb();
     }
 
@@ -160,8 +187,21 @@ public class CodegenDatabaseController {
         } catch (Exception ex) {}
     }
 
+    public static void openSnippet(TemplateSpecs specs) {
+        Desktop dt = Desktop.getDesktop();
+        try {
+            String caminho = "codegenDB/projects/" + specs.getProjeto() + "/templates/microSnippets/"+specs.getNome()+".snip";
+            caminho = Utils.formalizaCaminho(caminho);
+            dt.open(new File(caminho));
+        } catch (Exception ex) {}
+    }
+
     public static void excluiTemplate(TemplateSpecs specs) {
         getProjetoViaNome(specs.getProjeto()).excluiTemplate(specs.getNome());
+        saveDb();
+    }
+    public static void excluiSnippet(TemplateSpecs specs) {
+        getProjetoViaNome(specs.getProjeto()).excluiSnippet(specs.getNome());
         saveDb();
     }
     

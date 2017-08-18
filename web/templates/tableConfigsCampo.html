@@ -7,7 +7,10 @@
 	{{#.}}
 	<tr>
 		<td>{{.}}</td>
-		<td><input id="valorConfig{{.}}Campo" type="text" class="form-control" onfocusout="atualizaConfigCampo('{{.}}');"></td>
+		<td>
+		
+		<input id="valorConfig{{.}}Campo" type="text" class="form-control" onfocusout="atualizaConfigCampo('{{.}}');">
+		</td>
 		<td><a title="Remover configuracão" class='btn btn-danger' onclick='removeConfigCampo("{{.}}");'><span class='glyphicon glyphicon-remove'></span></a></td>
 	</tr>
 	{{/.}}

@@ -19,11 +19,13 @@ public class TemplatesDataSupplier {
     private final TemplatesModel model;
     private final String projeto;
     private final Map<String, String> proccessConfigs;
+    private ProccessLog log;
 
     public TemplatesDataSupplier(String projeto, TemplatesModel model, Map<String, String> proccessConfigs) {
         this.model = model;
         this.projeto = projeto;
         this.proccessConfigs = proccessConfigs;
+        this.log = new ProccessLog();
     }
 
     public TemplatesModel getModel() {
@@ -41,7 +43,9 @@ public class TemplatesDataSupplier {
     
     // Processa e retorna o snippet, considerando o objeto recebido
     public String getSnippet(String nomeSnippet, Object obj){
-        TemplatesProcessor snip = new TemplatesProcessor(projeto, CodegenDatabaseController.getCaminhoTemplates(projeto)+"microSnippets/"+nomeSnippet+".snip");
+        TemplatesProcessor snip = new TemplatesProcessor(projeto, "microSnippets/"+nomeSnippet+".snip");
+        snip.setLogger(this.log);
+        snip.setIsSnippet(true);
         if(!snip.pronto()){
             ConsolePrinter.printError("Não foi possível encontrar o Snippet '"+nomeSnippet+".snip' "
                     + "\n   ou ocorreu um erro no seu processamento"
@@ -65,5 +69,10 @@ public class TemplatesDataSupplier {
     
     public ModifiableString modifyString(String s){
         return new ModifiableString(s);
+    }
+
+    // Logger a ser passado para o processador dos microSnippets
+    public void setLogger(ProccessLog log) {
+        this.log = log;
     }
 }

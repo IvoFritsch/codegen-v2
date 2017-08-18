@@ -28,3 +28,14 @@ function editaTemplateExterno(nome, projeto){
 	template.nome = nome;
 	xmlhttps.send(JSON.stringify(template));
 }
+
+function editaSnippetExterno(nome, projeto){
+	var xmlhttps = new XMLHttpRequest();
+	var url = "/api/editaSnippetProjeto";
+	xmlhttps.open("POST", url, true);
+	xmlhttps.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+	var template = newTemplateSpecs();
+	template.projeto = projeto;
+	template.nome = nome;
+	xmlhttps.send(JSON.stringify(template));
+}

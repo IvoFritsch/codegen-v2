@@ -38,6 +38,10 @@ public class TemplatesProcessor {
     private String templateName;
     private String originalTemplateName;
     private boolean pronto = false;
+    private boolean isSnippet = false;
+    private String palavraIdentificadora;
+    private String palavraIdentificadoraComLink;
+    
     
     public TemplatesProcessor(String projeto, String templateName){
         this(projeto,templateName, null);
@@ -47,6 +51,8 @@ public class TemplatesProcessor {
         log.startNewTemplate(templateName);
         this.projeto = projeto;
         this.fsb = fsb;
+        this.palavraIdentificadora = "template";
+        this.palavraIdentificadoraComLink = "template";
         this.originalTemplateName = templateName;
         this.templateName = projeto+"/" + templateName + "proc";
         this.root = new HashMap();
@@ -83,16 +89,17 @@ public class TemplatesProcessor {
             conteudo = conteudo.replace("#{", "${r\"#{\"}");
             FileUtils.write(new File("temp/"+this.templateName), conteudo, "UTF-8", false);
         } catch (Exception ex) {
-            String mensagem = "Ocorreu um erro ao tentar ler o template, erro:\n"
+            String mensagem = "Ocorreu um erro ao tentar ler o "+this.palavraIdentificadora+", erro:\n"
                     + ex.getLocalizedMessage().replace(" in " + this.templateName, "");
             log.putMessage(mensagem);
             ConsolePrinter.printError(mensagem);
             pronto = false;
+            return false;
         }
         try {
             tmp = cfg.getTemplate(this.templateName);
         } catch (Exception ex) {
-            String mensagem = "Ocorreu um erro ao tentar parsear o template, erro:\n"
+            String mensagem = "Ocorreu um erro ao tentar parsear o "+this.palavraIdentificadoraComLink+", erro:\n"
                     + ex.getLocalizedMessage().replace(" in " + this.templateName, "");
             log.putMessage(mensagem);
             ConsolePrinter.printError(mensagem);
@@ -138,7 +145,7 @@ public class TemplatesProcessor {
             FileUtils.deleteQuietly(new File(this.templateName));
             return output.toString();
         } catch (Exception ex) {
-            String mensagem = "Ocorreu um erro ao tentar processar o template, erro:\n"
+            String mensagem = "Ocorreu um erro ao tentar processar o "+this.palavraIdentificadoraComLink+", erro:\n"
                     + ex.getLocalizedMessage().replace(" in " + this.templateName, "");
             ConsolePrinter.printError(mensagem);
             log.putMessage(mensagem);
@@ -159,7 +166,7 @@ public class TemplatesProcessor {
             Writer out = fsb.getFileWriter(caminho);
             tmp.process(root, out);
         } catch (Exception ex) {
-            String mensagem = "Ocorreu um erro ao tentar processar o template, erro:\n"
+            String mensagem = "Ocorreu um erro ao tentar processar o "+this.palavraIdentificadoraComLink+", erro:\n"
                     + ex.getLocalizedMessage().replace(" in " + this.templateName, "");
             ConsolePrinter.printError(mensagem);
             log.putMessage(mensagem);
@@ -171,4 +178,16 @@ public class TemplatesProcessor {
         this.log = log;
     }
 
+    public void setIsSnippet(boolean isSnippet) {
+        this.isSnippet = isSnippet;
+        if(isSnippet){
+            this.palavraIdentificadora = "snippet "+
+                    this.originalTemplateName.substring(0, this.originalTemplateName.lastIndexOf(".")).replace("microSnippets/", "")+"";
+            
+            this.palavraIdentificadoraComLink = "snippet <a title=\"Editar esse snippet com o editor externo configurado no sistema operacional\" "
+                    + "class=\"btn btn-warning btn-xs\" onclick=\"editaSnippetExterno('"+
+                    this.originalTemplateName.substring(0, this.originalTemplateName.lastIndexOf(".")).replace("microSnippets/", "")+
+                    "','"+this.projeto+"')\">"+this.originalTemplateName.replace("microSnippets/", "")+"</a>";
+        }
+    }
 }

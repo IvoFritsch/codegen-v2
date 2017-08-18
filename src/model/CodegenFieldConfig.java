@@ -14,12 +14,14 @@ import java.util.Map;
  */
 public class CodegenFieldConfig {
     
+   // @Expose
+    //private Map<String,String> conf;
     @Expose
-    private Map<String,String> conf;
+    private Map<String,CodegenFieldConfigEndpoint> conf;
     
     public String getValorConfig(String config){
         if(!temConfig(config)) return "";
-        return conf.get(config);
+        return conf.get(config).getValor();
     }
     
     public String get(String config){

@@ -42,6 +42,7 @@ public class ProccessorCore {
                                     m)),
                                     specs.getConfig()
                     );
+            root.setLogger(log);
             processaTemplatesProjeto(specs.getProjeto(),log);
         });
         fsb.commitaArquivos();
