@@ -1,0 +1,24 @@
+	${root.getSnippet("pageHeader",null)}
+	<h2>Importar um projeto existente:</h2>
+	<h4>Você também pode <a href="/newProject.html">criar um projeto do zero</a>.</h4>
+	<hr/>
+	<div class="col-md-7">
+  <form class="form-horizontal">
+	  Localização do arquivo do projeto (.cgp):<br>
+
+
+  <div class="input-group">
+    <input type="text" id="caminhoCgp" name="caminhoCgp" class="form-control" disabled>
+    <div class="input-group-btn">
+      <a class="btn btn-default" onclick="selecionaProjetoImportar();">
+        <i class="glyphicon glyphicon-folder-open"></i>
+      </a>
+    </div>
+  </div>
+  <br/>
+      <a id="confirmaCriacaoProjeto" class="btn btn-success pull-right" onclick="confirmaImportarProjeto();">Importar!</a>
+	</form>
+	</div>
+	<script src="js/newProject.js"></script>
+	<script src="js/objsFactory.js"></script>
+	${root.getSnippet("pageFooter",null)}

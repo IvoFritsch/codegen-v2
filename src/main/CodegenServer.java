@@ -10,6 +10,7 @@ import auxiliar.FileChooser;
 import auxiliar.ServerTemplatesDataSupplier;
 import auxiliar.ServerTemplatesProcessor;
 import database.CodegenDatabaseController;
+import database.ProjectSpecs;
 import database.TemplateSpecs;
 import java.io.BufferedReader;
 import java.io.File;
@@ -88,7 +89,7 @@ public class CodegenServer extends AbstractHandler {
             target = "/index.html";
         }
         if (projeto.equals("nenhum") && !target.equals("/projects.html") && !target.equals("/newProject.html")
-                && !target.startsWith("/js") && !target.startsWith("/templates")) {
+                && !target.equals("/importProject.html") && !target.startsWith("/js") && !target.startsWith("/templates")) {
             response.sendRedirect("/projects.html");
             return;
         }
@@ -139,9 +140,12 @@ public class CodegenServer extends AbstractHandler {
                 writer.println(CodegenDatabaseController.getProjetoViaNome(proj).toJson());
                 break;
             case "chooseProjectFile":
-                String escolha = new FileChooser().getFile("Arquivo de projeto do Codegen","cgp");
-                
+                String escolha = new FileChooser().getFile("Arquivo de projeto do Codegen (.cgp)","cgp");
                 writer.println(escolha);
+                break;
+            case "importProject":
+                CodegenDatabaseController.importaProjetoExistente(ProjectSpecs.fromJson(leTodasLinhas(request.getReader())).
+                        getCaminho());
                 break;
             case "novoProjeto":
                 CodegenDatabaseController.criaNovoProjetoNoDestino("", "");
@@ -214,7 +218,7 @@ public class CodegenServer extends AbstractHandler {
         server.setHandler(new CodegenServer());
         server.start();
         ConsolePrinter.printInfo("Inicializado OK:\n    Porta " + porta);
-        CodegenDatabaseController.criaNovoProjetoNoDestino("C:\\Users\\Ivo Fritsch\\Desktop", "teste");
+        //CodegenDatabaseController.criaNovoProjetoNoDestino("C:\\Users\\ivoaf\\Documents", "teste");
         server.join();
     }
 

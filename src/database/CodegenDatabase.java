@@ -29,6 +29,10 @@ public class CodegenDatabase {
         projetos1 = new HashMap<>();
     }
 
+    public void removeProjeto(String nome){
+        projetos1.remove(nome);
+    }
+    
     public void addProjeto(String nome, String caminhoArquivo){
         projetos1.put(nome, caminhoArquivo);
     }

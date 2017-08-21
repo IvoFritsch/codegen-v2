@@ -33,7 +33,16 @@ public class CodegenDatabaseController {
         new File("codegenDB/").mkdirs();
         new File("codegenDB/").mkdirs();
         loadDb();
-        
+        List<String> projsRemover = new ArrayList<>();
+        db.getProjetos().forEach(p -> {
+            if(!new File(db.getCaminhoProjeto(p)).exists()){
+                ConsolePrinter.printWarning("Projeto "+p+" não encontrado, sendo removido do banco de dados do Codegen...\n"
+                        + "Essa mensagem é normal caso o Codegen foi transferido para outro computador");
+                projsRemover.add(p);
+            }
+        });
+        projsRemover.forEach(p -> db.removeProjeto(p));
+        saveDb();
         try {
             FileUtils.write(new File("codegenDB/NUNCA EDITAR ESSE DIRETÓRIO MANUALMENTE.txt"), 
                     "Sempre utilizar o Microservidor do Codegen para fazer edições", "UTF-8");
@@ -56,6 +65,16 @@ public class CodegenDatabaseController {
             FileUtils.write(db, CodegenDatabaseController.db.toJson(), "UTF-8");
         } catch (Exception e){}
     }
+    
+    
+    private static void saveProj(Project proj) {
+        System.out.println("Salvando: "+db.getCaminhoProjeto(proj.getNome()));
+        File projFile = new File(db.getCaminhoProjeto(proj.getNome()));
+        try {
+            FileUtils.write(projFile, proj.toJson(), "UTF-8");
+        } catch (Exception e){}
+    }
+    
 
     public static List<String> getListaModelosProjeto(String nome) {
         Project projeto = loadProjetoFromFile(db.getCaminhoProjeto(nome));
@@ -75,7 +94,6 @@ public class CodegenDatabaseController {
     public static List<Project> getListaProjetos() {
         List<Project> saida = new ArrayList<>();
         db.getProjetos().forEach(p -> {
-            System.err.println(db.getCaminhoProjeto(p));
             saida.add(loadProjetoFromFile(db.getCaminhoProjeto(p)));
         });
         return saida;
@@ -151,21 +169,27 @@ public class CodegenDatabaseController {
     }
     
     public static void addModel(String projeto, ServerModel modelo){
-        Project proj = loadProjetoFromFile(db.getCaminhoProjeto(projeto));
+        Project proj = getProjetoViaNome(projeto);
         if(proj == null) return;
         proj.addModel(modelo);
         saveDb();
+        saveProj(proj);
     }
     
     public static void gravaArquivoModelo(String projeto, ServerModel modelo) {
+        
+        System.out.println(Utils.pegaPastaPaiArquivo(Utils.formalizaCaminho(db.getCaminhoProjeto(projeto)))+"models/"+modelo.getNome()+".cgm");
         try {
-            FileUtils.write(new File("codegenDB/projects/" + projeto + "/models/"+modelo.getNome()+".cgm"), new Gson().toJson(modelo), "UTF-8");
+            FileUtils.write(new File(Utils.pegaPastaPaiArquivo(Utils.formalizaCaminho(db.getCaminhoProjeto(projeto)))+"models/"+modelo.getNome()+".cgm"), new Gson().toJson(modelo), "UTF-8");
         } catch (Exception ex) {
         }
     }
     
     public static void criaArquivoTemplate(String projeto, String nome) {
         try {
+            String cam = Utils.pegaPastaPaiArquivo(db.getCaminhoProjeto(projeto));
+            System.out.println(cam);
+            if (1 == 1) return;
             String caminho = "codegenDB/projects/" + projeto + "/templates/"+nome;
             caminho = Utils.formalizaCaminho(caminho);
             FileUtils.write(new File(caminho), "", "UTF-8");

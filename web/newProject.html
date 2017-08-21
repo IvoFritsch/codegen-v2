@@ -1,8 +1,11 @@
 	${root.getSnippet("pageHeader",null)}
 	<h2>Criar um novo Projeto:</h2>
+	<h4>Você também pode <a href="/importProject.html">importar um projeto existente</a>.</h4>
 	<hr/>
   <form class="form-horizontal">
 	  Nome do projeto:<br>
+	  <input type="text" id="nome" name="nome" class="form-control"><br>
+	  Localização do projeto (no diretorio indicado será criada uma pasta "codegenProject":<br>
 	  <input type="text" id="nome" name="nome" class="form-control"><br>
       <a id="confirmaCriacaoProjeto" class="btn btn-success" onclick="confirmaCriacaoProjeto();">Criar!</a>
 	</form>

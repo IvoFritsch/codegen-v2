@@ -8,6 +8,7 @@ package auxiliar;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.UIManager;
+import javax.swing.WindowConstants;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
@@ -20,6 +21,7 @@ public class FileChooser {
         frame = new JFrame();
         frame.setTitle("Escolhedor de arquivos do Codegen");
         frame.setVisible(true);
+        frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         BringToFront();
     }
     public String getFile(String descricao, String... extensoes) {
@@ -33,18 +35,20 @@ public class FileChooser {
         fc.setDialogTitle("Escolhedor de arquivos do Codegen");
         FileNameExtensionFilter filter = new FileNameExtensionFilter(descricao, extensoes);
         fc.setFileFilter(filter);
+        fc.setAcceptAllFileFilterUsed(false);
         if(JFileChooser.APPROVE_OPTION == fc.showOpenDialog(null)){
             frame.setVisible(false);
+            frame.dispose();
             return fc.getSelectedFile().toString();
         }else {
-            return null;
+            frame.dispose();
+            return "";
         }
     }
 
     private void BringToFront() {                  
         frame.setExtendedState(JFrame.ICONIFIED);
         frame.setExtendedState(JFrame.NORMAL);
-
     }
 
 }
