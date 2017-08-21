@@ -103,5 +103,4 @@ public class Project {
         snippets.remove(nome);
         CodegenDatabaseController.removeArquivoSnippet(this.nome, nome);
     }
-    
 }

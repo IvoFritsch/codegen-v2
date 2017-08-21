@@ -6,13 +6,11 @@
 package main;
 
 import auxiliar.ConsolePrinter;
-import auxiliar.FilesSandBox;
+import auxiliar.FileChooser;
 import auxiliar.ServerTemplatesDataSupplier;
 import auxiliar.ServerTemplatesProcessor;
-import com.google.gson.Gson;
 import database.CodegenDatabaseController;
 import database.TemplateSpecs;
-import database.Project;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -121,7 +119,7 @@ public class CodegenServer extends AbstractHandler {
                 //CodegenGlobalConfig.constroiDoJson(leTodasLinhas(request.getReader())).saveConfig();
                 break;
             case "novoModel":
-                 CodegenDatabaseController.addModel(retornaCookiePorNome(request.getCookies(), "project", "").getValue(), 
+                CodegenDatabaseController.addModel(retornaCookiePorNome(request.getCookies(), "project", "").getValue(),
                         ServerModel.fromJson(leTodasLinhas(request.getReader())));
                 break;
             case "getModel":
@@ -133,15 +131,20 @@ public class CodegenServer extends AbstractHandler {
                         )).toJson());
                 break;
             case "setModel":
-                CodegenDatabaseController.gravaArquivoModelo(retornaCookiePorNome(request.getCookies(), "project", "nenhum").getValue(), 
+                CodegenDatabaseController.gravaArquivoModelo(retornaCookiePorNome(request.getCookies(), "project", "nenhum").getValue(),
                         ServerModel.fromJson(request.getReader().lines().findFirst().get()));
                 break;
             case "getProject":
                 String proj = baseRequest.getParameter("project");
                 writer.println(CodegenDatabaseController.getProjetoViaNome(proj).toJson());
                 break;
+            case "chooseProjectFile":
+                String escolha = new FileChooser().getFile("Arquivo de projeto do Codegen","cgp");
+                
+                writer.println(escolha);
+                break;
             case "novoProjeto":
-                 CodegenDatabaseController.adicionaProjeto(Project.fromJson(leTodasLinhas(request.getReader())));
+                CodegenDatabaseController.criaNovoProjetoNoDestino("", "");
                 break;
             case "addTemplateProjeto":
                 CodegenDatabaseController.newTemplate(TemplateSpecs.fromJson(leTodasLinhas(request.getReader())));
@@ -172,15 +175,15 @@ public class CodegenServer extends AbstractHandler {
             case "processaTemplate":
                 ProccessorCore proccessorCore = new ProccessorCore(ProccessSpecs.fromJson(leTodasLinhas(request.getReader())));
                 String log = null;
-                try{
+                try {
                     log = proccessorCore.process().toJson();
-                } catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
                 writer.println(log);
                 break;
             default:
-                ConsolePrinter.printError("Chamou a api usando um metodo não reconhecido: "+target);
+                ConsolePrinter.printError("Chamou a api usando um metodo não reconhecido: " + target);
         }
     }
 
@@ -210,7 +213,8 @@ public class CodegenServer extends AbstractHandler {
         Server server = new Server(porta);
         server.setHandler(new CodegenServer());
         server.start();
-        ConsolePrinter.printInfo("Inicializado OK:\n    Porta "+porta);
+        ConsolePrinter.printInfo("Inicializado OK:\n    Porta " + porta);
+        CodegenDatabaseController.criaNovoProjetoNoDestino("C:\\Users\\Ivo Fritsch\\Desktop", "teste");
         server.join();
     }
 

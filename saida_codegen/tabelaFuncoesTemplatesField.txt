@@ -1,9 +1,3 @@
-${root.getSnippet("pageHeader",null)}
-<h1>Seção de ajuda do Codegen</h1>
-<hr/>
-<h2>Funções e dados acessiveis nos templates</h2>
-
-<h3>Funções e dados da classe "Campo"</h3>
 <table class="table">
 <tr>
 	<th class="col-md-6">Nome</th>
@@ -230,4 +224,15 @@ ${root.getSnippet("pageHeader",null)}
 	<td>Retorna o valor da subconfig da config definido para esse campo, string vazia se não existir</td>
 </tr>
 </table>
-${root.getSnippet("pageFooter",null)}
+/*
+    Esse arquivo foi gerado pelo Haftware Codegen
+	    Todos os direitos reservados à Haftware SI
+	
+*/
+
+/*
+Não apagar nem modificar esse comentário
+	Gerenciado pelo Sandbox do Codegen
+	Passar essa linha pelo Winmerge também >>>
+	 checksum = 1494329760
+*/

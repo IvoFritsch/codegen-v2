@@ -30,8 +30,8 @@ public class CodegenDatabaseController {
     
     public static void init() throws Exception{
         ConsolePrinter.printInfo("Inicializando CodegenDatabase...");
-        new File("codegenDB/projects/").mkdirs();
-        new File("codegenDB/projects/").mkdirs();
+        new File("codegenDB/").mkdirs();
+        new File("codegenDB/").mkdirs();
         loadDb();
         
         try {
@@ -58,32 +58,69 @@ public class CodegenDatabaseController {
     }
 
     public static List<String> getListaModelosProjeto(String nome) {
-        Project projeto = db.getProjetoViaNome(nome);
+        Project projeto = loadProjetoFromFile(db.getCaminhoProjeto(nome));
         if(projeto == null) return new ArrayList<>();
         return projeto.getModels();
     }
     
     public static Project getProjetoViaNome(String nome) {
-        return db.getProjetoViaNome(nome);
+        String caminho = db.getCaminhoProjeto(nome);
+        if(caminho == null)
+            return new Project();
+            else
+            return loadProjetoFromFile(db.getCaminhoProjeto(nome));
         
     }
 
     public static List<Project> getListaProjetos() {
-        return db.getProjetos();
+        List<Project> saida = new ArrayList<>();
+        db.getProjetos().forEach(p -> {
+            System.err.println(db.getCaminhoProjeto(p));
+            saida.add(loadProjetoFromFile(db.getCaminhoProjeto(p)));
+        });
+        return saida;
     }
 
-    private static void criaProjeto(String nome) {
+    private static Project loadProjetoFromFile(String caminho){
+        File file = new File(caminho);
+        if(!file.exists()) return null;
+        try {
+            return Project.fromJson(FileUtils.readFileToString(file, "UTF-8"));
+        } catch (Exception e) {
+        }
+        return null;
+    }
+    
+    private static void criaProjeto(String nome, String caminho) {
         new File("codegenDB/projects/" + nome + "/models").mkdirs();
         new File("codegenDB/projects/" + nome + "/templates").mkdirs();
     }
     
-    
-    public static void adicionaProjeto(Project projeto) {
-        if(db.getProjetoViaNome(projeto.getNome()) != null) return;
-        
-        db.addProjeto(projeto);
-        criaProjeto(projeto.getNome());
+    public static void criaNovoProjetoNoDestino(String caminhoDestino, String nome){
+        caminhoDestino = Utils.formalizaCaminho(caminhoDestino);
+        if(!caminhoDestino.endsWith("/")) caminhoDestino += "/";
+        System.out.println(caminhoDestino);
+        String caminhoProjeto = caminhoDestino + "codegenProject";
+        new File(caminhoProjeto + "/models").mkdirs();
+        new File(caminhoProjeto + "/templates").mkdirs();
+        salvaArquivoProjeto(caminhoProjeto + "/project.cgp", new Project(nome));
+        db.addProjeto(nome, caminhoProjeto + "/project.cgp");
         saveDb();
+    }
+    
+    public static void importaProjetoExistente(String caminhoArquivo){
+        String nome = loadProjetoFromFile(caminhoArquivo).getNome();
+        if (nome == null) return;
+        new File(Utils.pegaPastaPaiArquivo(caminhoArquivo) + "/models").mkdirs();
+        new File(Utils.pegaPastaPaiArquivo(caminhoArquivo) + "/templates").mkdirs();
+        db.addProjeto(nome, caminhoArquivo);
+        saveDb();
+    }
+    
+    private static void salvaArquivoProjeto(String caminho, Project projeto){
+        try{
+            FileUtils.write(new File(caminho), projeto.toJson(), "UTF-8");
+        } catch(Exception e){}
     }
 
     public static void removeFileAndParentsIfEmpty(Path path, String basePath)
@@ -114,7 +151,7 @@ public class CodegenDatabaseController {
     }
     
     public static void addModel(String projeto, ServerModel modelo){
-        Project proj = db.getProjetoViaNome(projeto);
+        Project proj = loadProjetoFromFile(db.getCaminhoProjeto(projeto));
         if(proj == null) return;
         proj.addModel(modelo);
         saveDb();
