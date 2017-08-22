@@ -17,30 +17,25 @@
 </tr>
 <#list root.model.listaTodosCampos as campo>
 <tr>
-
-
 	<td>
 	<div class="row">
-		<div class="col-md-8">
+		<div class="col-md-8" style="padding-right:0px;">
 			<strong class="text-info">${campo.tipoAsString}</strong> 
 			<strong class="text-success" style="float:right;text-align:right;">${campo.nome} (
-			<#if campo.temConfig("params")>
-			<#list campo.getSubconfigsDaConfig("params") as param>
-				<br/>
-			</#list>
-				<br/>
-			</#if>
-			)
 			</strong>
 		</div>
-		<div class="col-md-4">
-			<br/>
+		<div class="col-md-4" style="padding-left:3px;">
 		<#list campo.getSubconfigsDaConfig("params") as param>
 			<strong class="text-warning">${campo.getValorSubconfigDaConfig("params",param)}</strong>
 			<strong class="text-info">${param}</strong>
 			<#sep><strong>, </strong></#sep>
+			<#if param?has_next>
 			<br/>
+			</#if>
 		</#list>
+		<strong class="text-success">
+			)
+		</strong>
 		</div>
 	</div>
 	</td>

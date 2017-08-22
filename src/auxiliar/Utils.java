@@ -74,6 +74,7 @@ public class Utils {
                 return "\n/*\n";
             case "xhtml":
             case "html":
+            case "snip":
             case "xml":
                 return "\n<!--\n";
             case "jsp":
@@ -93,6 +94,7 @@ public class Utils {
                 return "\n*/\n";
             case "xhtml":
             case "html":
+            case "snip":
             case "xml":
                 return "\n-->\n";
             case "jsp":

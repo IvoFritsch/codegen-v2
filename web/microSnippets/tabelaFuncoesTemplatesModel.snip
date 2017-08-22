@@ -1,0 +1,216 @@
+<table class="table">
+<tr>
+	<th class="col-md-6">
+		<div class="row">
+			<div class="col-md-4">
+				Tipo
+			</div>
+			<div class="col-md-4">
+				Nome
+			</div>
+			<div class="col-md-4">
+				Parâmetros
+			</div>
+		</div>
+	</th>
+	<th>Descricao</th>
+</tr>
+<tr>
+	<td>
+	<div class="row">
+		<div class="col-md-8" style="padding-right:0px;">
+			<strong class="text-info">String</strong> 
+			<strong class="text-success" style="float:right;text-align:right;">getNome (
+			</strong>
+		</div>
+		<div class="col-md-4" style="padding-left:3px;">
+		<strong class="text-success">
+			)
+		</strong>
+		</div>
+	</div>
+	</td>
+	<td>Retorna o nome do modelo</td>
+</tr>
+<tr>
+	<td>
+	<div class="row">
+		<div class="col-md-8" style="padding-right:0px;">
+			<strong class="text-info">List< Campo ></strong> 
+			<strong class="text-success" style="float:right;text-align:right;">getListaTodosCampos (
+			</strong>
+		</div>
+		<div class="col-md-4" style="padding-left:3px;">
+		<strong class="text-success">
+			)
+		</strong>
+		</div>
+	</div>
+	</td>
+	<td>Retorna uma lista com todos os campos do modelo</td>
+</tr>
+<tr>
+	<td>
+	<div class="row">
+		<div class="col-md-8" style="padding-right:0px;">
+			<strong class="text-info">List< Campo ></strong> 
+			<strong class="text-success" style="float:right;text-align:right;">getListaCamposComAConfig (
+			</strong>
+		</div>
+		<div class="col-md-4" style="padding-left:3px;">
+			<strong class="text-warning">String</strong>
+			<strong class="text-info">config</strong>
+			
+		<strong class="text-success">
+			)
+		</strong>
+		</div>
+	</div>
+	</td>
+	<td>Retorna uma lista com os campos que contém a config especificada configurada, mesmo que não tenha valor</td>
+</tr>
+<tr>
+	<td>
+	<div class="row">
+		<div class="col-md-8" style="padding-right:0px;">
+			<strong class="text-info">List< Campo ></strong> 
+			<strong class="text-success" style="float:right;text-align:right;">getListaCamposComAConfigIgualA (
+			</strong>
+		</div>
+		<div class="col-md-4" style="padding-left:3px;">
+			<strong class="text-warning">String</strong>
+			<strong class="text-info">config</strong>
+			<strong>, </strong>
+			<br/>
+			<strong class="text-warning">String</strong>
+			<strong class="text-info">valor</strong>
+			
+		<strong class="text-success">
+			)
+		</strong>
+		</div>
+	</div>
+	</td>
+	<td>Retorna uma lista com os campos que contém a config especificada, sendo que ela deve ter o valor especificado</td>
+</tr>
+<tr>
+	<td>
+	<div class="row">
+		<div class="col-md-8" style="padding-right:0px;">
+			<strong class="text-info">List< String ></strong> 
+			<strong class="text-success" style="float:right;text-align:right;">getValoresEncontradosDaConfig (
+			</strong>
+		</div>
+		<div class="col-md-4" style="padding-left:3px;">
+			<strong class="text-warning">String</strong>
+			<strong class="text-info">config</strong>
+			
+		<strong class="text-success">
+			)
+		</strong>
+		</div>
+	</div>
+	</td>
+	<td>Retorna a lista com os valores que foram configurados para a config especificada, se um valor se repetir em mais de um campo, esse valor aparece apenas uma vez na lista retornada</td>
+</tr>
+<tr>
+	<td>
+	<div class="row">
+		<div class="col-md-8" style="padding-right:0px;">
+			<strong class="text-info">Campo</strong> 
+			<strong class="text-success" style="float:right;text-align:right;">getCampoComAConfig (
+			</strong>
+		</div>
+		<div class="col-md-4" style="padding-left:3px;">
+			<strong class="text-warning">String</strong>
+			<strong class="text-info">config</strong>
+			
+		<strong class="text-success">
+			)
+		</strong>
+		</div>
+	</div>
+	</td>
+	<td>Retorna o primeiro campo que for encontrado que possua a config especificada configurada, <strong>null</strong> se nenhum campo for encontrado</td>
+</tr>
+<tr>
+	<td>
+	<div class="row">
+		<div class="col-md-8" style="padding-right:0px;">
+			<strong class="text-info">ModelConfig</strong> 
+			<strong class="text-success" style="float:right;text-align:right;">getConfig (
+			</strong>
+		</div>
+		<div class="col-md-4" style="padding-left:3px;">
+		<strong class="text-success">
+			)
+		</strong>
+		</div>
+	</div>
+	</td>
+	<td>Retorna o objeto que controla as configurações desse modelo (ver a classe ModelConfig)</td>
+</tr>
+<tr>
+	<td>
+	<div class="row">
+		<div class="col-md-8" style="padding-right:0px;">
+			<strong class="text-info">String</strong> 
+			<strong class="text-success" style="float:right;text-align:right;">getNomeMin (
+			</strong>
+		</div>
+		<div class="col-md-4" style="padding-left:3px;">
+		<strong class="text-success">
+			)
+		</strong>
+		</div>
+	</div>
+	</td>
+	<td>(Funcão auxiliar) Retorna o nome do modelo com todos os caracteres em minúsculo</td>
+</tr>
+<tr>
+	<td>
+	<div class="row">
+		<div class="col-md-8" style="padding-right:0px;">
+			<strong class="text-info">String</strong> 
+			<strong class="text-success" style="float:right;text-align:right;">getNomePriCharMin (
+			</strong>
+		</div>
+		<div class="col-md-4" style="padding-left:3px;">
+		<strong class="text-success">
+			)
+		</strong>
+		</div>
+	</div>
+	</td>
+	<td>(Funcão auxiliar) Retorna o nome do modelo com o primeiro caractere em minúsculo</td>
+</tr>
+<tr>
+	<td>
+	<div class="row">
+		<div class="col-md-8" style="padding-right:0px;">
+			<strong class="text-info">String</strong> 
+			<strong class="text-success" style="float:right;text-align:right;">getPriCharNome (
+			</strong>
+		</div>
+		<div class="col-md-4" style="padding-left:3px;">
+		<strong class="text-success">
+			)
+		</strong>
+		</div>
+	</div>
+	</td>
+	<td>(Funcão auxiliar) Retorna o primeiro caractere do nome do modelo</td>
+</tr>
+</table>
+<!--
+    Esse arquivo foi gerado pelo Haftware Codegen
+	    Todos os direitos reservados à Haftware SI
+	
+-->
+
+<!--
+Não apagar nem modificar esse comentário
+	Gerenciado pelo Sandbox do Codegen
+	Passar essa linha pelo Winmerge também >>>
+	 checksum = 3935970169
+-->

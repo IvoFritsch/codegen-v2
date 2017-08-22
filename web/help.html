@@ -3,11 +3,26 @@ ${root.getSnippet("pageHeader",null)}
 <hr/>
 <h3>Funções e dados acessiveis nos templates</h3>
 <p>Para serem acessadas nos templates, foram criadas diversas funções auxiliares, que retornam qualquer informação desejada do modelo em processamento.</p>
-<p>Essa seção apresenta todas elas, organizadas em categorias.</p>
+<p>Essa seção apresenta todas elas, organizadas em suas respectivas classes.</p>
+<br/>
 <h4>Funções e dados da classe "Root"</h4>
-<p>O ponto de partida para obtenção de qualquer dado de dentro de um template é a classe "Root", obtida pelo template através de <strong class="text-success">${r"${root}"}</strong></p>
+<p>O ponto de partida para obtenção de qualquer dado de dentro de um template é a classe "Root", obtida pelo template através de <strong >${r"${root}"}</strong></p>
 <br/>
 	${root.getSnippet("tabelaFuncoesTemplatesDataSupplier",null)}
+
+<br/>
+<h4>Funções e dados da classe "StringModificavel"</h4>
+<p>Essa é uma classe auxiliar para modificar Strings em tempo de processamento dos templates, obtida pelo template através de <strong >${r"${root.modifyString(< String a modificar >)}"}</strong></p>
+<br/>
+	${root.getSnippet("tabelaFuncoesModifiableString",null)}
+
+<br/>
+<h4>Funções e dados da classe "Model"</h4>
+<p>A partir do Root, pode-se acessar o modelo em processamento através de <strong>${r"${root.model}"} ou ${r"${root.getModel()}"}</strong></p>
+<br/>
+	${root.getSnippet("tabelaFuncoesTemplatesModel",null)}
+
+<br/>
 <h4>Funções e dados da classe "Campo"</h4>
 <div id="functionsTableTemplatesField">
 	${root.getSnippet("tabelaFuncoesTemplatesField",null)}
