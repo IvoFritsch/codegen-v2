@@ -51,7 +51,8 @@ public class Project {
     }
 
     public String getCaminhoSaidaGeracao(){
-        return getRootDir()+"saida_codegen/";
+        String saida = getRootDir()+"";
+        return saida;
     }
     
     public boolean isPseudo() {

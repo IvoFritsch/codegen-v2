@@ -1,11 +1,16 @@
 ${root.getSnippet("pageHeader",null)}
 <h1>Seção de ajuda do Codegen</h1>
 <hr/>
-<h2>Funções e dados acessiveis nos templates</h2>
-
-<h3>Funções e dados da classe "Campo"</h3>
+<h3>Funções e dados acessiveis nos templates</h3>
+<p>Para serem acessadas nos templates, foram criadas diversas funções auxiliares, que retornam qualquer informação desejada do modelo em processamento.</p>
+<p>Essa seção apresenta todas elas, organizadas em categorias.</p>
+<h4>Funções e dados da classe "Root"</h4>
+<p>O ponto de partida para obtenção de qualquer dado de dentro de um template é a classe "Root", obtida pelo template através de <strong class="text-success">${r"${root}"}</strong></p>
+<br/>
+	${root.getSnippet("tabelaFuncoesTemplatesDataSupplier",null)}
+<h4>Funções e dados da classe "Campo"</h4>
 <div id="functionsTableTemplatesField">
-	
+	${root.getSnippet("tabelaFuncoesTemplatesField",null)}
 </div>
 
 

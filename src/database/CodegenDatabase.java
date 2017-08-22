@@ -19,37 +19,34 @@ import java.util.Map;
  */
 public class CodegenDatabase {
     
-    private List<Project> projetos;
-    
     @Expose
-    private Map<String, String> projetos1;
+    private Map<String, String> projetos;
 
     public CodegenDatabase() {
-        projetos = new ArrayList<>();
-        projetos1 = new HashMap<>();
+        projetos = new HashMap<>();
     }
 
     public void removeProjeto(String nome){
-        projetos1.remove(nome);
+        projetos.remove(nome);
     }
     
     public void addProjeto(String nome, String caminhoArquivo){
-        projetos1.put(nome, caminhoArquivo);
+        projetos.put(nome, caminhoArquivo);
     }
     
     public List<String> getProjetos() {
         List<String> saida = new ArrayList<>();
-        projetos1.forEach((n,c) -> saida.add(n));
+        projetos.forEach((n,c) -> saida.add(n));
         return saida;
     }
     
     public String getCaminhoProjeto(String nome){
-        if(!projetos1.containsKey(nome)) return "";
-        return projetos1.get(nome);
+        if(!projetos.containsKey(nome)) return "";
+        return projetos.get(nome);
     }
     
     public String getProjetoViaNome(String nome){
-        return projetos1.getOrDefault(nome, null);
+        return projetos.getOrDefault(nome, null);
     }
     
     public static CodegenDatabase fromJson(String json){

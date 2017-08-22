@@ -1,1 +1,1 @@
-{"nome":"codegen","models":["TemplatesField"],"templates":["tabelaFuncoes[nomeModel].html"],"snippets":[]}
+{"nome":"codegen","models":["TemplatesField","TemplatesDataSupplier"],"templates":["web/microSnippets/tabelaFuncoes[nomeModel].snip"],"snippets":[]}

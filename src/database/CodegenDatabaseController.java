@@ -37,7 +37,9 @@ public class CodegenDatabaseController {
         db.getProjetos().forEach(p -> {
             if(!new File(db.getCaminhoProjeto(p)).exists()){
                 ConsolePrinter.printWarning("Projeto "+p+" não encontrado, sendo removido do banco de dados do Codegen...\n"
-                        + "Essa mensagem é normal caso o Codegen foi transferido para outro computador");
+                        + "Essa mensagem é normal caso o Codegen foi transferido para outro computador\n"
+                        + "Você pode reimportar os projetos não encontrados através da URL:\n"
+                        + "    http://localhost:8080/importProject.html");
                 projsRemover.add(p);
             }
         });
@@ -125,6 +127,7 @@ public class CodegenDatabaseController {
     
     public static void importaProjetoExistente(String caminhoArquivo){
         String nome = loadProjetoFromFile(caminhoArquivo).getNome();
+        caminhoArquivo = Utils.formalizaCaminho(caminhoArquivo);
         if (nome == null) return;
         new File(Utils.pegaPastaPaiArquivo(caminhoArquivo) + "/models").mkdirs();
         new File(Utils.pegaPastaPaiArquivo(caminhoArquivo) + "/templates").mkdirs();

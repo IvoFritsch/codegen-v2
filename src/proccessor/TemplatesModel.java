@@ -35,7 +35,7 @@ public class TemplatesModel {
     }
 
     public List<TemplatesField> getListaCamposComAConfigIgualA(String config, String valor) {
-        return listaCampos.stream().filter(c -> c.temConfigIgualA(config, valor)).collect(Collectors.toList());
+        return listaCampos.stream().filter(c -> c.temAConfigIgualA(config, valor)).collect(Collectors.toList());
     }
 
     public List<String> getValoresEncontradosDaConfig(String config) {

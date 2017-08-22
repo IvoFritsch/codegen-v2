@@ -55,7 +55,7 @@ public class TemplatesField {
         return this.config.temConfig(config);
     }
 
-    public boolean temConfigIgualA(String config, String valor) {
+    public boolean temAConfigIgualA(String config, String valor) {
         return this.config.temConfigIgualA(config, valor);
     }
 
