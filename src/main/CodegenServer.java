@@ -140,15 +140,19 @@ public class CodegenServer extends AbstractHandler {
                 writer.println(CodegenDatabaseController.getProjetoViaNome(proj).toJson());
                 break;
             case "chooseProjectFile":
-                String escolha = new FileChooser().getFile("Arquivo de projeto do Codegen (.cgp)","cgp");
-                writer.println(escolha);
+                String fileEscolha = new FileChooser().getFile("Arquivo de projeto do Codegen (.cgp)",false,"cgp");
+                writer.println(fileEscolha);
+                break;
+            case "chooseNewProjectFolder":
+                String dirEscolha = new FileChooser().getFile("Diretorio onde criar o novo projeto",true,"cgp");
+                writer.println(dirEscolha);
                 break;
             case "importProject":
                 CodegenDatabaseController.importaProjetoExistente(ProjectSpecs.fromJson(leTodasLinhas(request.getReader())).
                         getCaminho());
                 break;
-            case "novoProjeto":
-                CodegenDatabaseController.criaNovoProjetoNoDestino("", "");
+            case "createProject":
+                CodegenDatabaseController.criaNovoProjeto(ProjectSpecs.fromJson(leTodasLinhas(request.getReader())));
                 break;
             case "addTemplateProjeto":
                 CodegenDatabaseController.newTemplate(TemplateSpecs.fromJson(leTodasLinhas(request.getReader())));

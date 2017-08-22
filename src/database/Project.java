@@ -50,6 +50,10 @@ public class Project {
         this.snippets = new ArrayList<>();
     }
 
+    public String getCaminhoSaidaGeracao(){
+        return getRootDir()+"saida_codegen/";
+    }
+    
     public boolean isPseudo() {
         return nome.isEmpty();
     }
@@ -57,6 +61,11 @@ public class Project {
     public String getNome() {
         return nome;
     }
+    
+    public String getRootDir() {
+        return CodegenDatabaseController.getRootProjeto(this.nome);
+    }
+
 
     public List<String> getModels() {
         return models;

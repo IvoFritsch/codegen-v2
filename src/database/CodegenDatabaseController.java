@@ -68,13 +68,15 @@ public class CodegenDatabaseController {
     
     
     private static void saveProj(Project proj) {
-        System.out.println("Salvando: "+db.getCaminhoProjeto(proj.getNome()));
         File projFile = new File(db.getCaminhoProjeto(proj.getNome()));
         try {
             FileUtils.write(projFile, proj.toJson(), "UTF-8");
         } catch (Exception e){}
     }
-    
+    private static String pegaPastaPaiProjeto(String projeto){
+        String camProj = Utils.pegaPastaPaiArquivo(db.getCaminhoProjeto(projeto));
+        return Utils.formalizaCaminho(camProj);
+    }
 
     public static List<String> getListaModelosProjeto(String nome) {
         Project projeto = loadProjetoFromFile(db.getCaminhoProjeto(nome));
@@ -107,11 +109,6 @@ public class CodegenDatabaseController {
         } catch (Exception e) {
         }
         return null;
-    }
-    
-    private static void criaProjeto(String nome, String caminho) {
-        new File("codegenDB/projects/" + nome + "/models").mkdirs();
-        new File("codegenDB/projects/" + nome + "/templates").mkdirs();
     }
     
     public static void criaNovoProjetoNoDestino(String caminhoDestino, String nome){
@@ -159,7 +156,7 @@ public class CodegenDatabaseController {
     
     
     public static String getArquivoModelo(String projeto, String modelo) {
-        File file = new File("codegenDB/projects/" + projeto + "/models/" + modelo+".cgm");
+        File file = new File(pegaPastaPaiProjeto(projeto) + "models/" + modelo+".cgm");
         if(!file.exists()) return null;
         try {
             return FileUtils.readFileToString(file, "UTF-8");
@@ -178,19 +175,15 @@ public class CodegenDatabaseController {
     
     public static void gravaArquivoModelo(String projeto, ServerModel modelo) {
         
-        System.out.println(Utils.pegaPastaPaiArquivo(Utils.formalizaCaminho(db.getCaminhoProjeto(projeto)))+"models/"+modelo.getNome()+".cgm");
         try {
-            FileUtils.write(new File(Utils.pegaPastaPaiArquivo(Utils.formalizaCaminho(db.getCaminhoProjeto(projeto)))+"models/"+modelo.getNome()+".cgm"), new Gson().toJson(modelo), "UTF-8");
+            FileUtils.write(new File(pegaPastaPaiProjeto(projeto)+"models/"+modelo.getNome()+".cgm"), new Gson().toJson(modelo), "UTF-8");
         } catch (Exception ex) {
         }
     }
     
     public static void criaArquivoTemplate(String projeto, String nome) {
         try {
-            String cam = Utils.pegaPastaPaiArquivo(db.getCaminhoProjeto(projeto));
-            System.out.println(cam);
-            if (1 == 1) return;
-            String caminho = "codegenDB/projects/" + projeto + "/templates/"+nome;
+            String caminho = pegaPastaPaiProjeto(projeto) + "templates/"+nome;
             caminho = Utils.formalizaCaminho(caminho);
             FileUtils.write(new File(caminho), "", "UTF-8");
         } catch (Exception ex) {
@@ -199,7 +192,7 @@ public class CodegenDatabaseController {
     
     public static void criaArquivoSnippet(String projeto, String nome) {
         try {
-            String caminho = "codegenDB/projects/" + projeto + "/templates/microSnippets/"+nome+".snip";
+            String caminho = pegaPastaPaiProjeto(projeto) + "templates/microSnippets/"+nome+".snip";
             caminho = Utils.formalizaCaminho(caminho);
             FileUtils.write(new File(caminho), "", "UTF-8");
         } catch (Exception ex) {
@@ -207,42 +200,47 @@ public class CodegenDatabaseController {
     }
     
     public static void removeArquivoTemplate(String projeto, String nome) {
-        String caminho = "codegenDB/projects/" + projeto + "/templates/"+nome;
+        
+        String caminho = pegaPastaPaiProjeto(projeto) + "templates/"+nome;
         try {
             caminho = Utils.formalizaCaminho(caminho);
             FileUtils.deleteQuietly(new File(caminho));
         } catch (Exception ex) {
         }
         try{
-        removeFileAndParentsIfEmpty(new File(Utils.pegaPastaPaiArquivo(caminho)).toPath(), "codegenDB/projects/" + projeto + "/templates/");
+        removeFileAndParentsIfEmpty(new File(Utils.pegaPastaPaiArquivo(caminho)).toPath(), pegaPastaPaiProjeto(projeto)+"templates/");
         } catch(Exception e){}
     }
 
     public static void removeArquivoSnippet(String projeto, String nome) {
-        String caminho = "codegenDB/projects/" + projeto + "/templates/microSnippets/"+nome+".snip";
+        String caminho = pegaPastaPaiProjeto(projeto) + "templates/microSnippets/"+nome+".snip";
         try {
             caminho = Utils.formalizaCaminho(caminho);
             FileUtils.deleteQuietly(new File(caminho));
         } catch (Exception ex) {
         }
         try{
-        removeFileAndParentsIfEmpty(new File(Utils.pegaPastaPaiArquivo(caminho)).toPath(), "codegenDB/projects/" + projeto + "/templates/microSnippets/");
+        removeFileAndParentsIfEmpty(new File(Utils.pegaPastaPaiArquivo(caminho)).toPath(), pegaPastaPaiProjeto(projeto) + "templates/microSnippets/");
         } catch(Exception e){}
     }
     
     public static void newTemplate(TemplateSpecs specs) {
-        getProjetoViaNome(specs.getProjeto()).addTemplate(specs.getNome());
+        Project proj = getProjetoViaNome(specs.getProjeto());
+        proj.addTemplate(specs.getNome());
         saveDb();
+        saveProj(proj);
     }
     public static void newSnippet(TemplateSpecs specs) {
-        getProjetoViaNome(specs.getProjeto()).addSnippet(specs.getNome());
+        Project proj = getProjetoViaNome(specs.getProjeto());
+        proj.addSnippet(specs.getNome());
         saveDb();
+        saveProj(proj);
     }
 
     public static void openTemplate(TemplateSpecs specs) {
         Desktop dt = Desktop.getDesktop();
         try {
-            String caminho = "codegenDB/projects/" + specs.getProjeto() + "/templates/"+specs.getNome();
+            String caminho = pegaPastaPaiProjeto(specs.getProjeto()) + "templates/"+specs.getNome();
             caminho = Utils.formalizaCaminho(caminho);
             dt.open(new File(caminho));
         } catch (Exception ex) {}
@@ -251,22 +249,34 @@ public class CodegenDatabaseController {
     public static void openSnippet(TemplateSpecs specs) {
         Desktop dt = Desktop.getDesktop();
         try {
-            String caminho = "codegenDB/projects/" + specs.getProjeto() + "/templates/microSnippets/"+specs.getNome()+".snip";
+            String caminho = pegaPastaPaiProjeto(specs.getProjeto()) + "templates/microSnippets/"+specs.getNome()+".snip";
             caminho = Utils.formalizaCaminho(caminho);
             dt.open(new File(caminho));
         } catch (Exception ex) {}
     }
 
     public static void excluiTemplate(TemplateSpecs specs) {
-        getProjetoViaNome(specs.getProjeto()).excluiTemplate(specs.getNome());
+        Project proj = getProjetoViaNome(specs.getProjeto());
+        proj.excluiTemplate(specs.getNome());
         saveDb();
+        saveProj(proj);
     }
     public static void excluiSnippet(TemplateSpecs specs) {
-        getProjetoViaNome(specs.getProjeto()).excluiSnippet(specs.getNome());
+        Project proj = getProjetoViaNome(specs.getProjeto());
+        proj.excluiSnippet(specs.getNome());
         saveDb();
+        saveProj(proj);
     }
     
     public static String getCaminhoTemplates(String projeto){
-        return "codegenDB/projects/" + projeto + "/templates/";
+        return pegaPastaPaiProjeto(projeto) + "templates/";
+    }
+
+    public static void criaNovoProjeto(ProjectSpecs specs) {
+        criaNovoProjetoNoDestino(specs.getCaminho(), specs.getNome());
+    }
+    
+    public static String getRootProjeto(String projeto){
+        return Utils.pegaPastaPaiArquivo(Utils.pegaPastaPaiArquivo(db.getCaminhoProjeto(projeto)));
     }
 }

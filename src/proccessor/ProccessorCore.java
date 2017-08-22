@@ -20,10 +20,12 @@ public class ProccessorCore {
     private final ProccessSpecs specs;
     private TemplatesDataSupplier root;
     private FilesSandBox fsb;
+    private final String DIR_SAIDA;
     
 
     public ProccessorCore(ProccessSpecs specs) {
         this.specs = specs;
+        this.DIR_SAIDA = CodegenDatabaseController.getProjetoViaNome(specs.getProjeto()).getCaminhoSaidaGeracao();
     }
 
     public ProccessLog process() {
@@ -31,7 +33,7 @@ public class ProccessorCore {
         ProccessLog log = new ProccessLog();
         
         
-        fsb = new FilesSandBox("saida_codegen/");
+        fsb = new FilesSandBox(this.DIR_SAIDA);
         
         specs.getModelos().forEach(m -> {
             log.startNewModel(m);
@@ -59,7 +61,7 @@ public class ProccessorCore {
             TemplatesProcessor temp = new TemplatesProcessor(projeto,t, fsb);
             temp.setLogger(log);
             temp.put("root", root);
-            temp.proccessToFile("saida_codegen/"+dirSaida);
+            temp.proccessToFile(this.DIR_SAIDA+dirSaida);
         });
     }
     
@@ -75,7 +77,7 @@ public class ProccessorCore {
         dirSaida = diretorio.replaceAll("\\[nomeModel\\]", root.getModel().getNome());
         dirSaida = dirSaida.replaceAll("\\[nomeProj\\]", root.getProjeto());
 
-        fsb.criaDiretorio("saida_codegen/" + dirSaida.replaceFirst(CodegenDatabaseController.getCaminhoTemplates(specs.getProjeto()), ""));
+        fsb.criaDiretorio(this.DIR_SAIDA + dirSaida.replaceFirst(CodegenDatabaseController.getCaminhoTemplates(specs.getProjeto()), ""));
         File arq = new File(diretorio);
         File[] listaArquivos = arq.listFiles();
         if (listaArquivos != null) {

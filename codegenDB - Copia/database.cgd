@@ -1,1 +1,0 @@
-{"projetos":[{"nome":"medicaldesk","models":["Usuario"],"templates":["[nomeModel].java"],"snippets":["exibeConfig"]},{"nome":"codegen","models":["TemplatesField"],"templates":["tabelaFuncoes[nomeModel].txt"],"snippets":[]}]}

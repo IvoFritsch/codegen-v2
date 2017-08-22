@@ -24,7 +24,7 @@ public class FileChooser {
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         BringToFront();
     }
-    public String getFile(String descricao, String... extensoes) {
+    public String getFile(String descricao, boolean onlyDirs, String... extensoes) {
         
         try {
             UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
@@ -35,6 +35,8 @@ public class FileChooser {
         fc.setDialogTitle("Escolhedor de arquivos do Codegen");
         FileNameExtensionFilter filter = new FileNameExtensionFilter(descricao, extensoes);
         fc.setFileFilter(filter);
+        if(onlyDirs) 
+            fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         fc.setAcceptAllFileFilterUsed(false);
         if(JFileChooser.APPROVE_OPTION == fc.showOpenDialog(null)){
             frame.setVisible(false);

@@ -57,6 +57,7 @@ function newTemplateSpecs(){
 function newProjectSpecs(){
 	return {
 		nome:"",
+		nomeAntigo:"",
 		caminho:""
 	}
 }

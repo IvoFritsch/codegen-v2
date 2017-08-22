@@ -1,8 +1,0 @@
-<#if obj.temSubconfigs()>
-	${obj.nome}
-<#list obj.subconfigs as subconfig>
-			${subconfig}: ${obj.getValorSubConfig(subconfig)}
-</#list>
-<#else>
-	${obj.nome}: ${obj.valor}
-</#if>

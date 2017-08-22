@@ -55,6 +55,7 @@ public class Utils {
         return s.substring(s.lastIndexOf(".") + 1);
     }
     public static String pegaPastaPaiArquivo(String s){
+        if(s.endsWith("/")) s = s.substring(0, s.length() - 1);
         return s.substring(0, s.lastIndexOf("/") + 1);
     }
 

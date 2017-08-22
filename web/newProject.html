@@ -2,13 +2,23 @@
 	<h2>Criar um novo Projeto:</h2>
 	<h4>Você também pode <a href="/importProject.html">importar um projeto existente</a>.</h4>
 	<hr/>
+	<div class="col-md-7">
   <form class="form-horizontal">
 	  Nome do projeto:<br>
 	  <input type="text" id="nome" name="nome" class="form-control"><br>
-	  Localização do projeto (no diretorio indicado será criada uma pasta "codegenProject":<br>
-	  <input type="text" id="nome" name="nome" class="form-control"><br>
-      <a id="confirmaCriacaoProjeto" class="btn btn-success" onclick="confirmaCriacaoProjeto();">Criar!</a>
+	  Diretorio para salvar do projeto (no diretorio indicado será criada uma pasta "codegenProject"):<br>
+	  <div class="input-group">
+	    <input type="text" id="caminhoProjeto" name="caminhoProjeto" class="form-control" disabled>
+	    <div class="input-group-btn">
+	      <a class="btn btn-default" onclick="selecionaDestinoNovoProjeto();">
+	        <i class="glyphicon glyphicon-folder-open"></i>
+	      </a>
+	    </div>
+	  </div>
+	  <br/>
+      <a id="confirmaCriacaoProjeto" class="btn btn-success pull-right" onclick="confirmaCriacaoProjeto();">Criar!</a>
 	</form>
+	</div>
 	<script src="js/newProject.js"></script>
 	<script src="js/objsFactory.js"></script>
 	${root.getSnippet("pageFooter",null)}
