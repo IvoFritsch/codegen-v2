@@ -12,11 +12,20 @@ import auxiliar.ServerTemplatesProcessor;
 import database.CodegenDatabaseController;
 import database.ProjectSpecs;
 import database.TemplateSpecs;
+import java.awt.AWTException;
+import java.awt.Desktop;
+import java.awt.MenuItem;
+import java.awt.PopupMenu;
+import java.awt.SystemTray;
+import java.awt.Toolkit;
+import java.awt.TrayIcon;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.PrintStream;
 import java.io.PrintWriter;
+import java.net.URI;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -36,6 +45,8 @@ import proccessor.TemplatesProcessor;
  */
 public class CodegenServer extends AbstractHandler {
 
+    public static int PORTA;
+    
     @Override
     public void handle(String target,
             Request baseRequest,
@@ -208,8 +219,9 @@ public class CodegenServer extends AbstractHandler {
     }
 
     public static void main(String[] args) throws Exception {
-        //System.setErr(new PrintStream(new File("log.txt")));
-        int porta = 8080;
+        System.setOut(new PrintStream(new File("log.txt")));
+        System.setErr(new PrintStream(new File("log.txt")));
+        PORTA = 8080;
         System.out.println("HW Codegen\n"
                 + "  Gerador de fontes da Haftware\n"
                 + "  Todos os direitos reservados à Haftware Sistemas ltda.\n");
@@ -218,14 +230,67 @@ public class CodegenServer extends AbstractHandler {
         CodegenDatabaseController.init();
         //FilesSandBox.init(CodegenGlobalConfig.loadConfig().getGenOutput());
         ServerTemplatesProcessor.init();
-        Server server = new Server(porta);
+        criaIconeNaTray();
+        Server server = new Server(PORTA);
         server.setHandler(new CodegenServer());
         server.start();
-        ConsolePrinter.printInfo("Inicializado OK:\n    Porta " + porta);
+        ConsolePrinter.printInfo("Inicializado OK:\n    Porta " + PORTA);
         //CodegenDatabaseController.criaNovoProjetoNoDestino("C:\\Users\\ivoaf\\Documents", "teste");
         server.join();
     }
 
+    private static void criaIconeNaTray(){
+        if(!SystemTray.isSupported()) return;
+        final PopupMenu popup = new PopupMenu();
+        final TrayIcon trayIcon =
+                new TrayIcon(Toolkit.getDefaultToolkit().getImage("web/haftware-logo.png"));
+        final SystemTray tray = SystemTray.getSystemTray();
+       
+        // Create a pop-up menu components
+        MenuItem openItem = new MenuItem("Acessar pagina inicial");
+        openItem.addActionListener((ev) -> {
+            try{
+            Desktop.getDesktop().browse(new URI("http://localhost:"+PORTA+"/index.html"));
+            } catch (Exception e){}
+        });
+        MenuItem aboutItem = new MenuItem("Sobre");
+        aboutItem.addActionListener((ev) -> {
+            try{
+            Desktop.getDesktop().browse(new URI("http://localhost:"+PORTA+"/about.html"));
+            } catch (Exception e){}
+        });
+        MenuItem openLog = new MenuItem("Abrir arquivo de Log");
+        openLog.addActionListener((ev) -> {
+            try{
+                Desktop.getDesktop().open(new File("log.txt"));
+            } catch (Exception e){}
+        });
+        MenuItem exitItem = new MenuItem("Desligar servidor");
+        exitItem.addActionListener((ev) -> {
+            ConsolePrinter.printInfo("Desligando o servidor do Codegen...");
+            TemplatesProcessor.encerra();
+            System.exit(0);
+        });
+       
+        //Add components to pop-up menu
+        popup.add(openItem);
+        popup.add(aboutItem);
+        popup.addSeparator();
+        popup.add(openLog);
+        popup.addSeparator();
+        popup.add(exitItem);
+       
+        trayIcon.setPopupMenu(popup);
+        trayIcon.setToolTip("Servidor do Haftware Codegen está em execução");
+       
+        try {
+            tray.add(trayIcon);
+        } catch (AWTException e) {
+            ConsolePrinter.printError("Falhou ao adicionar icone na tray.");
+        }
+        
+    }
+    
     private static Cookie retornaCookiePorNome(Cookie[] cookies, String nome, String valorDefault) {
         if (cookies != null) {
             for (Cookie cookie : cookies) {
