@@ -20,6 +20,16 @@ function loadProjeto() {
 	xmlhttp.send();
 }
 
+function desvinculaProjeto(nome){
+	var xmlhttp = new XMLHttpRequest();
+	var url = "/api/unvincProject?project="+nome;
+	xmlhttp.onreadystatechange = function() {
+		location.reload(true);
+	};
+	xmlhttp.open("GET", url, true);
+	xmlhttp.send();
+}
+
 function atualizaQuadroDados(){
 	poeGifLoading("espacoDadosProjeto");
 	projetoEmManutencao.templates.sort(function(a, b){
@@ -48,8 +58,6 @@ function criaNovoTemplateProjeto(){
 		document.getElementById("nomeNovoTemplateProjeto").value
 		);
 	criaNovoTemplateProjetoNoServer();
-	loadProjeto();
-	atualizaQuadroDados();
 }
 
 function templateJaExiste(nome){
@@ -68,11 +76,14 @@ function excluiTemplateProjeto(nome){
 	xmlhttps.open("POST", url, true);
 	xmlhttps.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
 	var template = newTemplateSpecs();
+	xmlhttps.onreadystatechange = function() {
+	    if (this.readyState == 4 && this.status == 200) {
+			loadProjeto();
+	    }
+	};
 	template.projeto = projetoEmManutencao.nome;
 	template.nome = nome;
 	xmlhttps.send(JSON.stringify(template));
-	loadProjeto();
-	atualizaQuadroDados();
 }
 
 
@@ -84,6 +95,12 @@ function criaNovoTemplateProjetoNoServer(){
 	var template = newTemplateSpecs();
 	template.projeto = projetoEmManutencao.nome;
 	template.nome = document.getElementById("nomeNovoTemplateProjeto").value;
+	xmlhttps.onreadystatechange = function() {
+	    if (this.readyState == 4 && this.status == 200) {
+			loadProjeto();
+	    }
+	};
+	
 	xmlhttps.send(JSON.stringify(template));
 }
 
@@ -104,8 +121,6 @@ function criaNovoSnippetProjeto(){
 		document.getElementById("nomeNovoSnippetProjeto").value
 		);
 	criaNovoSnippetProjetoNoServer();
-	loadProjeto();
-	atualizaQuadroDados();
 }
 
 function excluiSnippetProjeto(nome){
@@ -113,12 +128,15 @@ function excluiSnippetProjeto(nome){
 	var url = "/api/excluiSnippetProjeto";
 	xmlhttps.open("POST", url, true);
 	xmlhttps.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+	xmlhttps.onreadystatechange = function() {
+	    if (this.readyState == 4 && this.status == 200) {
+			loadProjeto();
+	    }
+	};
 	var snippet = newTemplateSpecs();
 	snippet.projeto = projetoEmManutencao.nome;
 	snippet.nome = nome;
 	xmlhttps.send(JSON.stringify(snippet));
-	loadProjeto();
-	atualizaQuadroDados();
 }
 
 
@@ -128,6 +146,11 @@ function criaNovoSnippetProjetoNoServer(){
 	xmlhttps.open("POST", url, true);
 	xmlhttps.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
 	var snippet = newTemplateSpecs();
+	xmlhttps.onreadystatechange = function() {
+	    if (this.readyState == 4 && this.status == 200) {
+			loadProjeto();
+	    }
+	};
 	snippet.projeto = projetoEmManutencao.nome;
 	snippet.nome = document.getElementById("nomeNovoSnippetProjeto").value;
 	xmlhttps.send(JSON.stringify(snippet));

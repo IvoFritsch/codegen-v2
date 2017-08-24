@@ -1,8 +1,9 @@
 ${root.getSnippet("pageHeader",null)}
 	
 		<#if root.projeto.isPseudo()>
-		<h3 class="text-danger">Para usar o Codegen é necessário que algum projeto esteja selecionado como atual.</h3>
-		<h5 class="text-danger">Use o dropdown acima(simbolo de inbox) ou a lista abaixo</h5>
+		<h2>Bem vindo ao Haftware Codegen</h2>
+		<h3 class="text-danger">Para usar o sistema é necessário que algum projeto esteja selecionado como atual.</h3>
+		<h5 class="text-danger">Use o dropdown acima(simbolo de inbox) ou a lista abaixo(botão verde) para selecionar o projeto atual</h5>
 		<br/>
 		</#if>
 		<h2>Gerenciar projetos</h2>
@@ -24,7 +25,7 @@ ${root.getSnippet("pageHeader",null)}
 			<#if !root.projeto.isPseudo()>
 			<a class="btn btn-warning" title="Editar projeto" href="manageProject.html?project=${projeto.nome}"><span class="glyphicon glyphicon-edit"></span></a>
 			</#if>
-			<a class="btn btn-danger" title="Excluir projeto" onclick="excluirModelo('${projeto.nome}');"><span class="glyphicon glyphicon-remove"></span></a>
+			<a class="btn btn-danger" title="Remover projeto (Não exclui os arquivos, apenas desvincula do Codegen)" onclick="desvinculaProjeto('${projeto.nome}');"><span class="glyphicon glyphicon-remove"></span></a>
 			</td>
 			</tr>
 		</#list>
@@ -33,5 +34,6 @@ ${root.getSnippet("pageHeader",null)}
 		<a class="btn btn-success pull-right" href="/newProject.html">Adicionar um novo projeto</a>
 </div>
 	
+	<script src="js/manageProject.js"></script>
 	
 ${root.getSnippet("pageFooter",null)}

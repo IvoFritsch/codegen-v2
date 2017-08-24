@@ -88,7 +88,7 @@ public class CodegenDatabaseController {
     
     public static Project getProjetoViaNome(String nome) {
         String caminho = db.getCaminhoProjeto(nome);
-        if(caminho == null)
+        if(caminho.isEmpty())
             return new Project();
             else
             return loadProjetoFromFile(db.getCaminhoProjeto(nome));
@@ -281,5 +281,10 @@ public class CodegenDatabaseController {
     
     public static String getRootProjeto(String projeto){
         return Utils.pegaPastaPaiArquivo(Utils.pegaPastaPaiArquivo(db.getCaminhoProjeto(projeto)));
+    }
+
+    public static void desvinculaProjeto(String projToUnvinc) {
+        db.removeProjeto(projToUnvinc);
+        saveDb();
     }
 }

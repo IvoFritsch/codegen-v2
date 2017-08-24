@@ -57,7 +57,19 @@ public class CodegenServer extends AbstractHandler {
         response.setContentType("text/html; charset=utf-8");
         // Declare response status code
         response.setStatus(HttpServletResponse.SC_OK);
-        //System.out.println(target + " -- "+retornaCookiePorNome(request.getCookies(), "project", "nenhum").getValue());
+        
+        Cookie projAtual = retornaCookiePorNome(request.getCookies(), "project");
+        // Caso o projeto atual não existe
+        if(CodegenDatabaseController.getProjetoViaNome(projAtual.getValue())
+                .isPseudo()){
+            projAtual.setValue("");
+            Cookie cookieProjeto = new Cookie("project", "");
+            cookieProjeto.setValue("");            
+            cookieProjeto.setMaxAge(0);
+            cookieProjeto.setPath("/");
+            response.addCookie(cookieProjeto);
+        }
+        
         try {
             if (target.startsWith("/api/")) {
                 supplyApi(target, baseRequest, request, response);
@@ -94,12 +106,12 @@ public class CodegenServer extends AbstractHandler {
     }
 
     private void supplyTemplateFile(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        String projeto = retornaCookiePorNome(request.getCookies(), "project", "nenhum").getValue();
+        String projeto = retornaCookiePorNome(request.getCookies(), "project").getValue();
         PrintWriter writer = response.getWriter();
         if (target.equals("/")) {
             target = "/index.html";
         }
-        if (projeto.equals("nenhum") && !target.equals("/projects.html") && !target.equals("/newProject.html")
+        if (projeto.equals("") && !target.equals("/projects.html") && !target.equals("/newProject.html")
                 && !target.equals("/importProject.html") && !target.startsWith("/js") && !target.startsWith("/templates")) {
             response.sendRedirect("/projects.html");
             return;
@@ -131,7 +143,7 @@ public class CodegenServer extends AbstractHandler {
                 //CodegenGlobalConfig.constroiDoJson(leTodasLinhas(request.getReader())).saveConfig();
                 break;
             case "novoModel":
-                CodegenDatabaseController.addModel(retornaCookiePorNome(request.getCookies(), "project", "").getValue(),
+                CodegenDatabaseController.addModel(retornaCookiePorNome(request.getCookies(), "project").getValue(),
                         ServerModel.fromJson(leTodasLinhas(request.getReader())));
                 break;
             case "getModel":
@@ -139,11 +151,11 @@ public class CodegenServer extends AbstractHandler {
                 String project = baseRequest.getParameter("project");
                 writer.println(ServerModel.fromJson(
                         CodegenDatabaseController.getArquivoModelo(
-                                retornaCookiePorNome(request.getCookies(), "project", "nenhum").getValue(), model
+                                retornaCookiePorNome(request.getCookies(), "project").getValue(), model
                         )).toJson());
                 break;
             case "setModel":
-                CodegenDatabaseController.gravaArquivoModelo(retornaCookiePorNome(request.getCookies(), "project", "nenhum").getValue(),
+                CodegenDatabaseController.gravaArquivoModelo(retornaCookiePorNome(request.getCookies(), "project").getValue(),
                         ServerModel.fromJson(request.getReader().lines().findFirst().get()));
                 break;
             case "getProject":
@@ -177,8 +189,11 @@ public class CodegenServer extends AbstractHandler {
             case "excluiTemplateProjeto":
                 CodegenDatabaseController.excluiTemplate(TemplateSpecs.fromJson(leTodasLinhas(request.getReader())));
                 break;
+            case "unvincProject":
+                String projToUnvinc = baseRequest.getParameter("project");
+                CodegenDatabaseController.desvinculaProjeto(projToUnvinc);
+                break;
             case "editaSnippetProjeto":
-                System.out.println("Editando snippet");
                 CodegenDatabaseController.openSnippet(TemplateSpecs.fromJson(leTodasLinhas(request.getReader())));
                 break;
             case "excluiSnippetProjeto":
@@ -219,8 +234,8 @@ public class CodegenServer extends AbstractHandler {
     }
 
     public static void main(String[] args) throws Exception {
-        System.setOut(new PrintStream(new File("log.txt")));
-        System.setErr(new PrintStream(new File("log.txt")));
+        //System.setOut(new PrintStream(new File("log.txt")));
+        //System.setErr(new PrintStream(new File("log.txt")));
         PORTA = 8080;
         System.out.println("HW Codegen\n"
                 + "  Gerador de fontes da Haftware\n"
@@ -291,7 +306,7 @@ public class CodegenServer extends AbstractHandler {
         
     }
     
-    private static Cookie retornaCookiePorNome(Cookie[] cookies, String nome, String valorDefault) {
+    private static Cookie retornaCookiePorNome(Cookie[] cookies, String nome) {
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals(nome)) {
@@ -299,6 +314,6 @@ public class CodegenServer extends AbstractHandler {
                 }
             }
         }
-        return new Cookie(nome, valorDefault);
+        return new Cookie(nome, "");
     }
 }
