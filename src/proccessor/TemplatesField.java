@@ -59,6 +59,10 @@ public class TemplatesField {
         return this.config.temConfigIgualA(config, valor);
     }
 
+    public boolean configTemSubconfig(String config, String subconfig) {
+        return this.config.configTemSubconfig(config, subconfig);
+    }
+    
     public List<String> getSubconfigsDaConfig(String config) {
         return this.config.getSubconfigsDaConfig(config);
     }

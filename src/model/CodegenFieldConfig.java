@@ -49,6 +49,11 @@ public class CodegenFieldConfig {
         return conf.get(config).getSubconfigs();
     }
     
+        public boolean configTemSubconfig(String config, String subconfig){
+        if(!temConfig(config)) return false;
+        return conf.get(config).temSubconfig(subconfig);
+    }
+    
     public String getValorSubconfigDaConfig(String config, String subconfig){
         if(!temConfig(config)) return "";
         return conf.get(config).getValorSubConfig(subconfig);
