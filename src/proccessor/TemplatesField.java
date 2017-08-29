@@ -6,8 +6,8 @@
 package proccessor;
 
 import auxiliar.Utils;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -29,6 +29,19 @@ public class TemplatesField {
         return tipoAsString;
     }
 
+    public String getTipo(){
+        Map<String,String> assocTipo = model.getRoot().getProjeto().getAssocTipo();
+        if(!assocTipo.containsKey(tipoAsString)) {
+            try {
+                if(model.getRoot().getOutroModel(tipoAsString) != null){
+                    return "OUTRO_MODEL";
+                }
+            } catch(Exception e){}
+            return "DESCONHECIDO";
+        }
+        return assocTipo.get(tipoAsString);
+    }
+    
     public CodegenFieldConfig getConfig() {
         return config;
     }

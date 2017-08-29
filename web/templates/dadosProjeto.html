@@ -1,10 +1,57 @@
-<div class="row">
-	<div class="col-md-7">
+<h3>Dados do projeto:
+<a data-toggle="collapse" data-target="#collapseDadosProjeto" class="btn btn-default pull-right btn-xs"><span class="glyphicon glyphicon-chevron-down"></span></a>
+</h3>
+
+<div class="row collapse" id="collapseDadosProjeto">
+	<div class="col-md-6">
 	  Nome do projeto:<br>
 	  <input type="text" id="nome" name="nome" class="form-control" value="${root.projeto.nome}"><br>
 	  Caminho de saida da geração.<br/> 
 	  <strong>Caminho deve ser RELATIVO ao root do projeto, que é:<br/>"</strong><strong class="text-info">${root.projeto.rootDir}</strong><strong>":</strong><br>
 	  <input type="text" id="saidaGeracao" name="saidaGeracao" class="form-control"><br>
+	</div>
+	<div class="col-md-6">
+		<h4>Associações de tipo:
+		<a class="btn pull-right" title="
+		$ {campo.tipo} é uma varivel auxiliar carregada com um valor de acordo com a tabela a abaixo.
+Caso o campo seja de um tipo que não esteja nessa lista, é verificado se existe um modelo com o mesmo nome do tipo do campo, se sim, é retornado 'OUTRO_MODEL', caso contrario é retornado 'DESCONHECIDO'"><span class="glyphicon glyphicon-question-sign"></span></a></h4>
+		<table class='table'>
+			<tr>
+				<th>tipoAsString</th>
+				<th>Tipo associado</th>
+				<th>Opções</th>
+			</tr>
+			<#list root.projeto.assocTipo?keys as tipoAsString>
+			<tr>
+
+				<td>${tipoAsString}</td>
+				<td>${root.projeto.assocTipo[tipoAsString]}</td>
+				<td ><a title="Excluir essa associação de tipo" class='btn btn-danger' onclick='excluiAssociacaoTipo("");'><span class='glyphicon glyphicon-remove'></span></a></td>
+
+			</tr>
+			</#list>
+		</table>
+
+		<table class="table">
+			<tr id="espacoFormNovaAssociacaoTipo" hidden="true">
+				<td>
+				<div class="row">
+					<div class="col-md-6">
+					tipoAsString:<input id="tpasNovaAssociacaoTipo" type="text" class="form-control">
+					</div>
+					<div class="col-md-6">
+					Tipo associado:<input id="tipoNovaAssociacaoTipo" type="text" class="form-control">
+					</div>
+				</div>
+				</td>
+				<td><br/><a title="Confirmar" class="btn btn-success" onclick="criaNovaAssociacaoTipo();"><span class="glyphicon glyphicon-ok"></span></a>
+					<a  title="Cancelar" class="btn btn-danger" onclick="fechaCriacaoAssociacaoTipo();"><span class="glyphicon glyphicon-remove"></span></a></td>
+			</tr>
+		</table>
+		<div id="botaoNovaAssociacaoTipo">
+			<a class="btn btn-info pull-right" onclick="novaAssociacaoTipo();">Nova Associação de Tipo</a>
+		</div><br/><br/>
+		<strong class="text-warning"></strong>
 	</div>
 </div>
 <hr/>

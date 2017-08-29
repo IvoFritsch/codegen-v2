@@ -62,12 +62,22 @@ function newProjectSpecs(){
 	}
 }
 
+function newAssocTipoSpecs(){
+	return {
+		projeto:"",
+		tipoAsString: "",
+		tipo: ""
+	}
+}
+
 function newProject(){
 	return {
 		nome:"",
 		models:[],
 		templates:[],
-		snippets:[]
+		snippets:[],
+		assocTipo:{
+		}
 	}
 }
 

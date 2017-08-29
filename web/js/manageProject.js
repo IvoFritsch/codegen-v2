@@ -43,6 +43,32 @@ function atualizaQuadroDados(){
 	});
 }
 
+function criaNovaAssociacaoTipo(){
+	var xmlhttps = new XMLHttpRequest();
+	var url = "/api/addAssocTipoProjeto";
+	xmlhttps.open("POST", url, true);
+	xmlhttps.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+	var specs = newAssocTipoSpecs();
+	specs.projeto = projetoEmManutencao.nome;
+	specs.tipoAsString = document.getElementById("tpasNovaAssociacaoTipo").value;
+	specs.tipo = document.getElementById("tipoNovaAssociacaoTipo").value;
+	xmlhttps.onreadystatechange = function() {
+	    if (this.readyState == 4 && this.status == 200) {
+			loadProjeto();
+	    }
+	};
+	
+	xmlhttps.send(JSON.stringify(template));
+}
+
+function novaAssociacaoTipo(){
+	$('#espacoFormNovaAssociacaoTipo').removeAttr('hidden');
+}
+
+function fechaCriacaoAssociacaoTipo(){
+	$('#espacoFormNovaAssociacaoTipo').attr('hidden',true);
+}
+
 function novoTemplateProjeto(){
 	$('#espacoFormNovoTemplateProjeto').removeAttr('hidden');
 }

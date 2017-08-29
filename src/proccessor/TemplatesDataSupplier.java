@@ -8,6 +8,7 @@ package proccessor;
 import auxiliar.ModifiableString;
 import auxiliar.ConsolePrinter;
 import database.CodegenDatabaseController;
+import database.Project;
 import java.util.Map;
 
 /**
@@ -26,14 +27,15 @@ public class TemplatesDataSupplier {
         this.projeto = projeto;
         this.proccessConfigs = proccessConfigs;
         this.log = new ProccessLog();
+        this.model.preparaEstrutura(this);
     }
 
     public TemplatesModel getModel() {
         return model;
     }
 
-    public String getProjeto() {
-        return projeto;
+    public Project getProjeto() {
+        return CodegenDatabaseController.getProjetoViaNome(projeto);
     }
     
     public String getConfig(String config){
@@ -59,11 +61,7 @@ public class TemplatesDataSupplier {
     public TemplatesModel getOutroModel(String nome) throws Exception{
         TemplatesModel novoModel;
             novoModel = TemplatesModelsSupplier.getModeloPorNome(projeto, nome);
-        if(novoModel == null){
-            ConsolePrinter.printError("Algum template solicitou um modelo('"+nome+".java') que não foi possível parsear\n"
-                    + "verifique se o arquivo existe e se está compilando corretamente\n"
-                    + "Possivelmente acontecerá um erro a seguir...");
-        }
+        if(novoModel != null) novoModel.preparaEstrutura(this);
         return novoModel;
     }
     

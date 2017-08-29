@@ -25,6 +25,7 @@ public class TemplatesModel {
     private List<TemplatesField> listaCampos = new ArrayList<>();
     
     private CodegenModelConfig config;
+    private TemplatesDataSupplier root;
 
     public String getNome() {
         return nome;
@@ -62,6 +63,10 @@ public class TemplatesModel {
         return config;
     }
 
+    public TemplatesDataSupplier getRoot() {
+        return root;
+    }
+    
     public String getNomeMin() {
         return nome.toLowerCase();
     }
@@ -77,10 +82,10 @@ public class TemplatesModel {
     static TemplatesModel fromJson(String json){
         if(json == null) return null;
         TemplatesModel retorno = new Gson().fromJson(json, TemplatesModel.class);
-        retorno.preparaEstrutura();
         return retorno;
     }
-    private void preparaEstrutura(){
+    void preparaEstrutura(TemplatesDataSupplier root){
+        this.root = root;
         if(listaCampos != null)
             listaCampos.forEach(c -> c.preparaEstrutura(this));
     }

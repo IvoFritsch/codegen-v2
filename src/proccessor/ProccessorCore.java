@@ -55,7 +55,7 @@ public class ProccessorCore {
             log.startNewTemplate(t);
             
             String dirSaida = t.replaceAll("\\[nomeModel\\]", root.getModel().getNome());
-            dirSaida = dirSaida.replaceAll("\\[nomeProj\\]", root.getProjeto());
+            dirSaida = dirSaida.replaceAll("\\[nomeProj\\]", root.getProjeto().getNome());
             
             TemplatesProcessor temp = new TemplatesProcessor(projeto,t, fsb);
             temp.setLogger(log);
@@ -74,7 +74,7 @@ public class ProccessorCore {
         }
         String dirSaida;
         dirSaida = diretorio.replaceAll("\\[nomeModel\\]", root.getModel().getNome());
-        dirSaida = dirSaida.replaceAll("\\[nomeProj\\]", root.getProjeto());
+        dirSaida = dirSaida.replaceAll("\\[nomeProj\\]", root.getProjeto().getNome());
 
         fsb.criaDiretorio(this.DIR_SAIDA + dirSaida.replaceFirst(CodegenDatabaseController.getCaminhoTemplates(specs.getProjeto()), ""));
         File arq = new File(diretorio);
@@ -97,7 +97,7 @@ public class ProccessorCore {
         
         entrada = entrada.replaceFirst("templates/", "");
         saida = saida.replaceAll("\\[nomeModel\\]", root.getModel().getNome());
-        saida = saida.replaceAll("\\[nomeProj\\]", root.getProjeto());
+        saida = saida.replaceAll("\\[nomeProj\\]", root.getProjeto().getNome());
         saida = saida.replaceAll(CodegenDatabaseController.getCaminhoTemplates(specs.getProjeto()), "");
         TemplatesProcessor temp = new TemplatesProcessor(specs.getProjeto(), entrada, fsb);
         temp.init();

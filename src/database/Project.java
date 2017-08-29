@@ -8,7 +8,9 @@ package database;
 import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import model.ServerModel;
 
 /**
@@ -30,6 +32,9 @@ public class Project {
     private final List<String> snippets;
     
     @Expose
+    private final Map<String,String> assocTipo;
+    
+    @Expose
     private String saidaGeracao;
     
     @Expose
@@ -41,6 +46,7 @@ public class Project {
         this.models = new ArrayList<>();
         this.templates = new ArrayList<>();
         this.snippets = new ArrayList<>();
+        this.assocTipo = new HashMap<>();
     }
     
     public Project(String nome) {
@@ -48,6 +54,7 @@ public class Project {
         this.models = new ArrayList<>();
         this.templates = new ArrayList<>();
         this.snippets = new ArrayList<>();
+        this.assocTipo = new HashMap<>();
     }
 
     public String getCaminhoSaidaGeracao(){
@@ -61,6 +68,10 @@ public class Project {
     
     public String getNome() {
         return nome;
+    }
+
+    public Map<String, String> getAssocTipo() {
+        return assocTipo;
     }
     
     public String getRootDir() {
