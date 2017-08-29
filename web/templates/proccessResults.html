@@ -9,36 +9,39 @@
 			<span class="glyphicon glyphicon-remove text-danger"></span>
 		{{/ok}}
 		<strong>{{nome}}</strong>
-		<br/>
-		<span>Templates:</span>
-		<div class="list-group">
-			{{#templates}}
-				<div class="list-group-item">
-					{{#ok}}
-						<span class="glyphicon glyphicon-ok text-success"></span>
-					{{/ok}}
-					{{^ok}}
-						<span class="glyphicon glyphicon-remove text-danger"></span>
-					{{/ok}}
-					<strong>{{nome}}</strong>
-					<a title="Editar esse template com o editor externo configurado no sistema operacional" 
-						class="btn btn-warning btn-xs pull-right" onclick="editaTemplateExterno('{{nome}}','${root.projeto.nome}');">
-						<span class='glyphicon glyphicon-pencil'></span>  
-						<span class='glyphicon glyphicon-share'></span>
-					</a>
-					{{^ok}}
-					<br/>
-					<span>Mensagens de erro:</span>
-					<div class="list-group">
-						{{#mensagens}}
-							<div class="list-group-item text-danger">
-								<strong>{{{.}}}</strong>
-							</div>
-						{{/mensagens}}
+		<a data-toggle="collapse" data-target="#collapse{{nome}}" class="btn pull-right btn-xs"><span class="glyphicon glyphicon-chevron-down"></span></a>
+		<div id="collapse{{nome}}" class="collapse">
+			<br/>
+			<span>Templates:</span>
+			<div class="list-group">
+				{{#templates}}
+					<div class="list-group-item">
+						{{#ok}}
+							<span class="glyphicon glyphicon-ok text-success"></span>
+						{{/ok}}
+						{{^ok}}
+							<span class="glyphicon glyphicon-remove text-danger"></span>
+						{{/ok}}
+						<strong>{{nome}}</strong>
+						<a title="Editar esse template com o editor externo configurado no sistema operacional" 
+							class="btn btn-warning btn-xs pull-right" onclick="editaTemplateExterno('{{nome}}','${root.projeto.nome}');">
+							<span class='glyphicon glyphicon-pencil'></span>  
+							<span class='glyphicon glyphicon-share'></span>
+						</a>
+						{{^ok}}
+						<br/>
+						<span>Mensagens de erro:</span>
+						<div class="list-group">
+							{{#mensagens}}
+								<div class="list-group-item text-danger">
+									<strong>{{{.}}}</strong>
+								</div>
+							{{/mensagens}}
+						</div>
+						{{/ok}}
 					</div>
-					{{/ok}}
-				</div>
-			{{/templates}}
+				{{/templates}}
+			</div>
 		</div>
 		</div>
 	{{/results}}

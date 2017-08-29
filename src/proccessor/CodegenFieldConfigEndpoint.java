@@ -3,12 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package model;
+package proccessor;
 
+import proccessor.CodegenFieldConfig;
 import com.google.gson.annotations.Expose;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import proccessor.TemplatesModel;
 
 /**
  *
@@ -24,6 +26,8 @@ public class CodegenFieldConfigEndpoint {
     private String valor;
     @Expose
     private boolean temSubConfs;
+    
+    private CodegenFieldConfig fieldConfig;
 
     public String getValor() {
         return valor;
@@ -58,4 +62,13 @@ public class CodegenFieldConfigEndpoint {
     public String getNome() {
         return nome;
     }
+
+    public CodegenFieldConfig getFieldConfig() {
+        return fieldConfig;
+    }
+    
+    void preparaEstrutura(CodegenFieldConfig fieldConfig){
+         this.fieldConfig = fieldConfig;
+    }
+    
 }

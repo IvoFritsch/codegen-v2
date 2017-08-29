@@ -8,8 +8,6 @@ package proccessor;
 import auxiliar.Utils;
 import java.util.ArrayList;
 import java.util.List;
-import model.CodegenFieldConfig;
-import model.CodegenFieldConfigEndpoint;
 
 /**
  *
@@ -77,6 +75,11 @@ public class TemplatesField {
     
     public String getNomePriCharMai() {
         return Utils.priCharMai(nome);
+    }
+    
+    void preparaEstrutura(TemplatesModel model){
+        this.model = model;
+        config.preparaEstrutura(this);
     }
     
 }

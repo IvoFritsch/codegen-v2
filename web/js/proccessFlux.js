@@ -56,7 +56,6 @@ function montaObjetoResultados(proccessLog){
 	};
 	var models = pegaModelsLog(proccessLog);
 	for(var m in models){
-		console.log(models[m]);
 		var modelInserir = novoModelObjResultados();
 		modelInserir.nome = models[m];
 		
@@ -78,7 +77,6 @@ function montaObjetoResultados(proccessLog){
 		}
 		saida.results.push(modelInserir);
 	}
-	console.log(saida);
 	return saida;
 	
 }

@@ -3,12 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package model;
+package proccessor;
 
 import com.google.gson.annotations.Expose;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import proccessor.TemplatesField;
 
 /**
  *
@@ -19,9 +20,13 @@ public class CodegenFieldConfig {
     @Expose
     private Map<String,CodegenFieldConfigEndpoint> conf;
     
+    private TemplatesField campo;
+    
     public String getValorConfig(String config){
         if(!temConfig(config)) return "";
-        return conf.get(config).getValor();
+        CodegenFieldConfigEndpoint endpoint = conf.get(config);
+        if(endpoint == null) return campo.getModel().getConfig().getDefault(config);
+        return endpoint.getValor();
     }
     
     public String get(String config){
@@ -34,6 +39,7 @@ public class CodegenFieldConfig {
     }
     
     public boolean temConfig(String config){
+        if(campo.getModel().getConfig().temDefault(config)) return true;
         if(conf == null) return false;
         return conf.containsKey(config);
     }
@@ -70,4 +76,15 @@ public class CodegenFieldConfig {
         conf.forEach((c,v)->saida.add(c));
         return saida;
     }
+
+    public TemplatesField getCampo() {
+        return campo;
+    }
+    
+    void preparaEstrutura(TemplatesField campo){
+        this.campo = campo;
+        if(conf != null) 
+            conf.forEach((c,ce) -> ce.preparaEstrutura(this));
+    }
+    
 }

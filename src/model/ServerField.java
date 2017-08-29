@@ -5,6 +5,7 @@
  */
 package model;
 
+import proccessor.CodegenFieldConfig;
 import com.google.gson.annotations.Expose;
 
 /**

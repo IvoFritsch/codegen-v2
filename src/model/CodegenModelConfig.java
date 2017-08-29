@@ -17,5 +17,14 @@ public class CodegenModelConfig {
     @Expose
     Map<String, String> defaults;
     
+    public boolean temDefault(String defaultName){
+        if(defaults == null) return false;
+        return defaults.containsKey(defaultName);
+    }
+    
+    public String getDefault(String defaultName){
+        if(!temDefault(defaultName)) return "";
+        return defaults.get(defaultName);
+    }
     
 }

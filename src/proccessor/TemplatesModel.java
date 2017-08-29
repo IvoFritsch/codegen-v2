@@ -76,7 +76,13 @@ public class TemplatesModel {
     
     static TemplatesModel fromJson(String json){
         if(json == null) return null;
-        return new Gson().fromJson(json, TemplatesModel.class);
+        TemplatesModel retorno = new Gson().fromJson(json, TemplatesModel.class);
+        retorno.preparaEstrutura();
+        return retorno;
+    }
+    private void preparaEstrutura(){
+        if(listaCampos != null)
+            listaCampos.forEach(c -> c.preparaEstrutura(this));
     }
     
 }
