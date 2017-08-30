@@ -86,7 +86,7 @@ public class TemplatesProcessor {
         
         try {
             String conteudo = FileUtils.readFileToString(new File(CodegenDatabaseController.getCaminhoTemplates(projeto) + originalTemplateName), "UTF-8");
-            conteudo = conteudo.replace("#{", "${r\"#{\"}");
+            //conteudo = conteudo.replace("#{", "${r\"#{\"}");
             FileUtils.write(new File("temp/"+this.templateName), conteudo, "UTF-8", false);
         } catch (Exception ex) {
             String mensagem = "Ocorreu um erro ao tentar ler o "+this.palavraIdentificadora+", erro:\n"

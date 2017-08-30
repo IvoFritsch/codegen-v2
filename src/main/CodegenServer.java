@@ -236,7 +236,7 @@ public class CodegenServer extends AbstractHandler {
     public static void main(String[] args) throws Exception {
         //System.setOut(new PrintStream(new File("log.txt")));
         //System.setErr(new PrintStream(new File("log.txt")));
-        PORTA = 8080;
+        PORTA = 9080;
         System.out.println("HW Codegen\n"
                 + "  Gerador de fontes da Haftware\n"
                 + "  Todos os direitos reservados à Haftware Sistemas ltda.\n");
