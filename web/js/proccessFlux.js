@@ -163,10 +163,31 @@ function coletaModelosSelecionados(){
 	avancaFluxo();
 }
 
+function coletaTemplatesSelecionados(){
+  	proccessSpecs.templates = getCheckedBoxes("processaTemplate");
+	if(proccessSpecs.templates === null) {
+		$("#erroProccess0").html("Selecione ao menos um template");
+		return false;
+	}
+	return true;
+}
+
 function deveProcessarModelo(nome){
 	if(proccessSpecs.modelos == null) return false;
   	for (var i = proccessSpecs.modelos.length - 1; i >= 0; i--) {
   		if(proccessSpecs.modelos[i] === nome){
+  			return true;
+  		}
+  	}
+  	return false;
+}
+
+function deveProcessarTemplate(nome){
+	console.log("Procurando: "+nome);
+	if(proccessSpecs.templates == null) return true;
+	if(proccessSpecs.templates.length === 0) return true;
+  	for (var i = proccessSpecs.templates.length - 1; i >= 0; i--) {
+  		if(proccessSpecs.templates[i] === nome){
   			return true;
   		}
   	}

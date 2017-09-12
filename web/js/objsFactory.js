@@ -42,6 +42,7 @@ function newProccessSpecs(){
 	return {
 		projeto:"",
 		modelos:[],
+		templates:[],
 		config:{},
 	}
 }

@@ -36,7 +36,11 @@
 					
 				  
 		<#list root.listaProjetos as projeto>
-					<li><a href="/api/setProjetoAtual?project=${projeto.nome}">${projeto.nome}</a></li>
+					<li>
+					<div class="text-center" style="padding-left: 5px;padding-right: 5px;">
+						<a title="Gerenciar esse projeto" href="/manageProject.html?project=${projeto.nome}">${projeto.nome}</a><a title="Selecionar esse projeto como atual" class="btn btn-success btn-xs pull-right" href="/api/setProjetoAtual?project=${projeto.nome}"><span class="glyphicon glyphicon-check"></span></a>
+					</div>
+					</li>
 		</#list>
             <li role="separator" class="divider"></li>
             <li><a href="/projects.html">Gerenciar projetos</a></li>

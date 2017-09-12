@@ -52,6 +52,7 @@ public class ProccessorCore {
 
     private void processaTemplatesProjeto(String projeto, ProccessLog log){
         CodegenDatabaseController.getProjetoViaNome(projeto).getTemplates().forEach(t -> {
+            if(!specs.getTemplates().contains(t)) return;
             log.startNewTemplate(t);
             
             String dirSaida = t.replaceAll("\\[nomeModel\\]", root.getModel().getNome());

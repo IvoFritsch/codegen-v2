@@ -23,6 +23,9 @@ public class ProccessSpecs {
     private List<String> modelos;
     
     @Expose
+    private List<String> templates;
+    
+    @Expose
     private Map<String,String> config;
 
     public String getProjeto() {
@@ -31,6 +34,10 @@ public class ProccessSpecs {
 
     public List<String> getModelos() {
         return modelos;
+    }
+
+    public List<String> getTemplates() {
+        return templates;
     }
 
     public Map<String, String> getConfig() {

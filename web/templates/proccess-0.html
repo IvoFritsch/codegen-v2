@@ -8,8 +8,7 @@
 <#list root.projeto.models as model>
 	<tr>
 		<td class="col-md-1">
-	    	<input name="processaModelo" type="checkbox" value="${model}" 
-	    	checked>
+	    	<input name="processaModelo" class="checkModel" type="checkbox" value="${model}">
 	    </td>
 		<td>
 			${model}
@@ -17,6 +16,15 @@
 	</tr>
 </#list>
 </table>
+<div class="btn-group" role="group">
+<a class="btn btn-default" title="Marcar tudo" onclick="
+$('.checkModel').prop('checked', true);"
+><span class="glyphicon glyphicon-check"></span></a>
+<a class="btn btn-default" title="Desmarcar tudo" onclick="
+$('.checkModel').prop('checked', false);"><span class="glyphicon glyphicon-unchecked"></span></a>
+</div>
+<br/>
+<br/>
 <div class="pull-right">
 <strong id="erroProccess0" class="text-danger" style="vertical-align:middle;"></strong>
 <a class="btn btn-warning pull-right" onclick="coletaModelosSelecionados();">Avançar <span class="glyphicon glyphicon-chevron-right"></span></a>

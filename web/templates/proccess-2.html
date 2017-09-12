@@ -1,11 +1,41 @@
-<h4>Tudo pronto, pressione o botão abaixo para processar os templates...</h4>
+<h5>Agora defina configurações adicionais para a geração:</h5>
+<span>As configurações definidas aqui são acessíveis nos templates via <span style="font-weight: bold;">$</span><span style="font-weight: bold;">{root.getConfig(< nome >)}</span></span>
 <br/>
 <div class="row">
-<div class=col-md-3>
+	<div class="col-md-6">
+		<table class="table">
+			<tr>
+				<th>Nome</th>
+				<th>Valor</th>
+			</tr>
+
+		{{#configsList}}
+		<tr>
+			<td>{{.}}</td>
+			<td><input id="valorConfigGeracao{{.}}" type="text" class="form-control" onfocusout="atualizaConfigGeracao('{{.}}');"></td>
+			<td><a title="Remover configuracão" class='btn btn-danger' onclick='removeConfigGeracao("{{.}}");'><span class='glyphicon glyphicon-remove'></span></a></td>
+			<script type="text/javascript">
+
+				document.getElementById("valorConfigGeracao{{.}}").value = proccessSpecs.config['{{.}}'];
+			</script>
+		</tr>
+		{{/configsList}}
+
+		</table>
+
+
+		<table class="table">
+			<tr id="espacoFormNovaConfiguracaoGeracao" hidden="true">
+				<td>Nome:<input id="nomeNovaConfiguracaoGeracao" type="text" class="form-control"></td>
+				<td><br/><a title="Confirmar" class="btn btn-success" onclick="criaNovaConfiguracaoGeracao();"><span class="glyphicon glyphicon-ok"></span></a>
+					<a  title="Cancelar" class="btn btn-danger" onclick="fechaCriacaoConfiguracaoGeracao();"><span class="glyphicon glyphicon-remove"></span></a></td>
+			</tr>
+		</table>
+		<div id="botaoNovoDefaultModelo">
+			<a class="btn btn-info pull-right" onclick="novaConfiguracaoGeracao();">Nova configuração</a>
+		</div>
+	</div>
 </div>
-<div class=col-md-6>
-<a class="btn btn-success center-block" onclick="comandaProcessar();">Processar!<span class="glyphicon glyphicon-chevron-right"></span></a>
-</div>
-</div>
-<br/><br/>
+<br/>
 <a class="btn btn-danger" onclick="voltaFluxo();"><span class="glyphicon glyphicon-chevron-left"></span> Voltar</a>
+<a class="btn btn-warning pull-right" onclick="avancaFluxo();">Avançar <span class="glyphicon glyphicon-chevron-right"></span></a>
