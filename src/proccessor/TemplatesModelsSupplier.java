@@ -5,9 +5,9 @@
  */
 package proccessor;
 
-import auxiliar.ConsolePrinter;
-import database.CodegenDatabase;
 import database.CodegenDatabaseController;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -15,17 +15,16 @@ import database.CodegenDatabaseController;
  * @author Administrador
  */
 public class TemplatesModelsSupplier {
-    private static String caminhoModelos;
-
-    public static void setCaminhoModelos(String caminhoModelos) {
-        ConsolePrinter.printInfo("Vai procurar os modelos na pasta " + (caminhoModelos.isEmpty() ? "base do Codegen" : caminhoModelos));
-        TemplatesModelsSupplier.caminhoModelos = caminhoModelos;
-    }
+    private final Map<String,TemplatesModel> modelosCarregados = new HashMap<>();
     
-    public static TemplatesModel getModeloPorNome(String projeto, String nomeModelo){
+    public TemplatesModel getModeloPorNome(String projeto, String nomeModelo){
         try{
-            return TemplatesModel.fromJson(CodegenDatabaseController.getArquivoModelo(projeto, nomeModelo));
+            if(modelosCarregados.containsKey(nomeModelo)) return modelosCarregados.get(nomeModelo);
+            TemplatesModel retorno = TemplatesModel.fromJson(CodegenDatabaseController.getArquivoModelo(projeto, nomeModelo));
+            modelosCarregados.put(nomeModelo, retorno);
+            return retorno;
         } catch (Exception e){
+            modelosCarregados.put(nomeModelo, null);
             return null;
         }
     }

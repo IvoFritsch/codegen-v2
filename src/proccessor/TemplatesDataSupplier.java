@@ -18,6 +18,7 @@ import java.util.Map;
 public class TemplatesDataSupplier {
 
     private final TemplatesModel model;
+    private final TemplatesModelsSupplier tempModSuppl;
     private final String projeto;
     private final Map<String, String> proccessConfigs;
     private ProccessLog log;
@@ -28,6 +29,7 @@ public class TemplatesDataSupplier {
         this.proccessConfigs = proccessConfigs;
         this.log = new ProccessLog();
         this.model.preparaEstrutura(this);
+        this.tempModSuppl = new TemplatesModelsSupplier();
     }
 
     public TemplatesModel getModel() {
@@ -60,7 +62,7 @@ public class TemplatesDataSupplier {
     
     public TemplatesModel getOutroModel(String nome) throws Exception{
         TemplatesModel novoModel;
-            novoModel = TemplatesModelsSupplier.getModeloPorNome(projeto, nome);
+            novoModel = tempModSuppl.getModeloPorNome(projeto, nome);
         if(novoModel != null) novoModel.preparaEstrutura(this);
         return novoModel;
     }
