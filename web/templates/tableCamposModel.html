@@ -3,6 +3,7 @@
         <th >Nome</th>
         <th >Tipo</th>
         <th >Opções</th>
+        <th >Subir/Descer</th>
     </tr>
     {{#listaCampos}}
     <tr>
@@ -11,6 +12,8 @@
         <td ><a title="Editar informações do campo" class='btn btn-success' onclick='preparaEdicaoCampo("{{nome}}");'><span class='glyphicon glyphicon-pencil'></span></a>
         <a title="Configurações do campo" class='btn btn-warning' onclick='preparaCampoConfig("{{nome}}");'><span class='glyphicon glyphicon-cog'></span></a>
         <a title="Remover campo" class='btn btn-danger' onclick='removeCampoModel("{{nome}}");'><span class='glyphicon glyphicon-remove'></span></a></td>
+        <td><a id="botaoSobeCampo{{nome}}" title="Subir campo" class='btn btn-info' onclick='sobeCampoLista("{{nome}}");'><span class='glyphicon glyphicon-chevron-up'></span></a>
+        <a id="botaoDesceCampo{{nome}}" title="Descer campo" class='btn btn-info' onclick='desceCampoLista("{{nome}}");'><span class='glyphicon glyphicon-chevron-down'></span></a></td>
     </tr>
     {{/listaCampos}}
 </table>

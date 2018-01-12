@@ -39,7 +39,14 @@ function montaTabelaCampos(){
 	$.get('templates/tableCamposModel.html', function(template) {
 		var html = Mustache.to_html(template, modeloEmManutencao);
 		$('#tableCamposContent').html(html);
-		
+                if(modeloEmManutencao.listaCampos.length > 0){
+                    $('#botaoSobeCampo'+modeloEmManutencao.listaCampos[0].nome).attr("disabled",true);
+                    $('#botaoSobeCampo'+modeloEmManutencao.listaCampos[0].nome).removeClass("btn-info");
+                    $('#botaoSobeCampo'+modeloEmManutencao.listaCampos[0].nome).addClass("btn-default");
+                    $('#botaoDesceCampo'+modeloEmManutencao.listaCampos[modeloEmManutencao.listaCampos.length-1].nome).attr("disabled",true);
+                    $('#botaoDesceCampo'+modeloEmManutencao.listaCampos[modeloEmManutencao.listaCampos.length-1].nome).removeClass("btn-info");
+                    $('#botaoDesceCampo'+modeloEmManutencao.listaCampos[modeloEmManutencao.listaCampos.length-1].nome).addClass("btn-default");
+                }
 	});
 }
 
@@ -333,6 +340,36 @@ function pegaConfigsDoCampo(){
 	return listaConfs;
 }
 
+function sobeCampoLista(nomeCampo){
+    var index = pegaIndexCampoViaNome(nomeCampo);
+    if(index === 0) return;
+    swapCampos(index, index-1);
+    apagaConfigsCampoSection();
+    poeGifLoading("tableCamposContent");
+    setTimeout(function() {
+        montaTabelaCampos();
+        indicaNaoSalvo();
+      }, 150);
+}
+
+function desceCampoLista(nomeCampo){
+    var index = pegaIndexCampoViaNome(nomeCampo);
+    if(index >= modeloEmManutencao.listaCampos.length - 1) return;
+    swapCampos(index, index+1);
+    apagaConfigsCampoSection();
+    poeGifLoading("tableCamposContent");
+    setTimeout(function() {
+        montaTabelaCampos();
+        indicaNaoSalvo();
+      }, 150);
+}
+
+function swapCampos(x,y){
+    var b = modeloEmManutencao.listaCampos[y];
+    modeloEmManutencao.listaCampos[y] = modeloEmManutencao.listaCampos[x];
+    modeloEmManutencao.listaCampos[x] = b;
+}
+
 function pegaCampoViaNome(nomeCampo){
 	var arrayLength = modeloEmManutencao.listaCampos.length;
 	for (var i = 0; i < arrayLength; i++) {
@@ -342,3 +379,14 @@ function pegaCampoViaNome(nomeCampo){
 	}
 	return null;
 }
+
+function pegaIndexCampoViaNome(nomeCampo){
+	var arrayLength = modeloEmManutencao.listaCampos.length;
+	for (var i = 0; i < arrayLength; i++) {
+		if(modeloEmManutencao.listaCampos[i].nome === nomeCampo){
+			return i;
+		}
+	}
+	return null;
+}
+
