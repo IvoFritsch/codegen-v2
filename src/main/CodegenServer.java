@@ -112,7 +112,8 @@ public class CodegenServer extends AbstractHandler {
             target = "/index.html";
         }
         if (projeto.equals("") && !target.equals("/projects.html") && !target.equals("/newProject.html")
-                && !target.equals("/importProject.html") && !target.startsWith("/js") && !target.startsWith("/templates")) {
+                && !target.equals("/importProject.html") && !target.startsWith("/js") && !target.startsWith("/templates")
+                && !target.startsWith("/contact.html") && !target.startsWith("/about.html") && !target.startsWith("/help.html")) {
             response.sendRedirect("/projects.html");
             return;
         }
@@ -242,16 +243,21 @@ public class CodegenServer extends AbstractHandler {
                 + "  Todos os direitos reservados à Haftware Sistemas ltda.\n");
         ConsolePrinter.printInfo("Inicializando...");
         ConsolePrinter.printInfo("Inicializando o microservidor do Codegen...");
-        CodegenDatabaseController.init();
-        //FilesSandBox.init(CodegenGlobalConfig.loadConfig().getGenOutput());
-        ServerTemplatesProcessor.init();
-        criaIconeNaTray();
         Server server = new Server(PORTA);
-        server.setHandler(new CodegenServer());
-        server.start();
-        ConsolePrinter.printInfo("Inicializado OK:\n    Porta " + PORTA);
-        //CodegenDatabaseController.criaNovoProjetoNoDestino("C:\\Users\\ivoaf\\Documents", "teste");
-        server.join();
+        try{
+            CodegenDatabaseController.init();
+            //FilesSandBox.init(CodegenGlobalConfig.loadConfig().getGenOutput());
+            ServerTemplatesProcessor.init();
+            criaIconeNaTray();
+            server.setHandler(new CodegenServer());
+            server.start();
+            ConsolePrinter.printInfo("Inicializado OK:\n    Porta " + PORTA);
+            server.join();
+        } catch (Exception e){
+            ConsolePrinter.printError("Não foi possível inicializar o servidor do Codegen\n"
+                    + "    Verifique se a porta " + PORTA + " não está ocupada por outro processo.");
+            System.exit(0);
+        }
     }
 
     private static void criaIconeNaTray(){
@@ -274,12 +280,6 @@ public class CodegenServer extends AbstractHandler {
             Desktop.getDesktop().browse(new URI("http://localhost:"+PORTA+"/about.html"));
             } catch (Exception e){}
         });
-        MenuItem openLog = new MenuItem("Abrir arquivo de Log");
-        openLog.addActionListener((ev) -> {
-            try{
-                Desktop.getDesktop().open(new File("log.txt"));
-            } catch (Exception e){}
-        });
         MenuItem exitItem = new MenuItem("Desligar servidor");
         exitItem.addActionListener((ev) -> {
             ConsolePrinter.printInfo("Desligando o servidor do Codegen...");
@@ -290,8 +290,6 @@ public class CodegenServer extends AbstractHandler {
         //Add components to pop-up menu
         popup.add(openItem);
         popup.add(aboutItem);
-        popup.addSeparator();
-        popup.add(openLog);
         popup.addSeparator();
         popup.add(exitItem);
        

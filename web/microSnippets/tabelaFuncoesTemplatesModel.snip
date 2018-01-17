@@ -1,14 +1,14 @@
 <table class="table">
 <tr>
-	<th class="col-md-6">
+	<th class="col-md-7">
 		<div class="row">
 			<div class="col-md-4">
 				Tipo
 			</div>
-			<div class="col-md-4">
+			<div class="col-md-5">
 				Nome
 			</div>
-			<div class="col-md-4">
+			<div class="col-md-3">
 				Parâmetros
 			</div>
 		</div>
@@ -18,12 +18,12 @@
 <tr>
 	<td>
 	<div class="row">
-		<div class="col-md-8" style="padding-right:0px;">
+		<div class="col-md-9" style="padding-right:0px;">
 			<strong class="text-info">String</strong> 
 			<strong class="text-success" style="float:right;text-align:right;">getNome (
 			</strong>
 		</div>
-		<div class="col-md-4" style="padding-left:3px;">
+		<div class="col-md-3" style="padding-left:3px;">
 		<strong class="text-success">
 			)
 		</strong>
@@ -35,12 +35,12 @@
 <tr>
 	<td>
 	<div class="row">
-		<div class="col-md-8" style="padding-right:0px;">
+		<div class="col-md-9" style="padding-right:0px;">
 			<strong class="text-info">List< Campo ></strong> 
 			<strong class="text-success" style="float:right;text-align:right;">getListaTodosCampos (
 			</strong>
 		</div>
-		<div class="col-md-4" style="padding-left:3px;">
+		<div class="col-md-3" style="padding-left:3px;">
 		<strong class="text-success">
 			)
 		</strong>
@@ -52,12 +52,12 @@
 <tr>
 	<td>
 	<div class="row">
-		<div class="col-md-8" style="padding-right:0px;">
+		<div class="col-md-9" style="padding-right:0px;">
 			<strong class="text-info">List< Campo ></strong> 
 			<strong class="text-success" style="float:right;text-align:right;">getListaCamposComAConfig (
 			</strong>
 		</div>
-		<div class="col-md-4" style="padding-left:3px;">
+		<div class="col-md-3" style="padding-left:3px;">
 			<strong class="text-warning">String</strong>
 			<strong class="text-info">config</strong>
 			
@@ -72,12 +72,32 @@
 <tr>
 	<td>
 	<div class="row">
-		<div class="col-md-8" style="padding-right:0px;">
+		<div class="col-md-9" style="padding-right:0px;">
+			<strong class="text-info">List< Campo ></strong> 
+			<strong class="text-success" style="float:right;text-align:right;">getListaCamposSemAConfig (
+			</strong>
+		</div>
+		<div class="col-md-3" style="padding-left:3px;">
+			<strong class="text-warning">String</strong>
+			<strong class="text-info">config</strong>
+			
+		<strong class="text-success">
+			)
+		</strong>
+		</div>
+	</div>
+	</td>
+	<td>Retorna uma lista com os campos que não contém a config especificada configurada.</td>
+</tr>
+<tr>
+	<td>
+	<div class="row">
+		<div class="col-md-9" style="padding-right:0px;">
 			<strong class="text-info">List< Campo ></strong> 
 			<strong class="text-success" style="float:right;text-align:right;">getListaCamposComAConfigIgualA (
 			</strong>
 		</div>
-		<div class="col-md-4" style="padding-left:3px;">
+		<div class="col-md-3" style="padding-left:3px;">
 			<strong class="text-warning">String</strong>
 			<strong class="text-info">config</strong>
 			<strong>, </strong>
@@ -96,12 +116,36 @@
 <tr>
 	<td>
 	<div class="row">
-		<div class="col-md-8" style="padding-right:0px;">
+		<div class="col-md-9" style="padding-right:0px;">
+			<strong class="text-info">List< Campo ></strong> 
+			<strong class="text-success" style="float:right;text-align:right;">getListaCamposComAConfigDiferenteDe (
+			</strong>
+		</div>
+		<div class="col-md-3" style="padding-left:3px;">
+			<strong class="text-warning">String</strong>
+			<strong class="text-info">config</strong>
+			<strong>, </strong>
+			<br/>
+			<strong class="text-warning">String</strong>
+			<strong class="text-info">valor</strong>
+			
+		<strong class="text-success">
+			)
+		</strong>
+		</div>
+	</div>
+	</td>
+	<td>Retorna uma lista com os campos que contém a config especificada, sendo que ela deve ter o valor diferente do especificado</td>
+</tr>
+<tr>
+	<td>
+	<div class="row">
+		<div class="col-md-9" style="padding-right:0px;">
 			<strong class="text-info">List< String ></strong> 
 			<strong class="text-success" style="float:right;text-align:right;">getValoresEncontradosDaConfig (
 			</strong>
 		</div>
-		<div class="col-md-4" style="padding-left:3px;">
+		<div class="col-md-3" style="padding-left:3px;">
 			<strong class="text-warning">String</strong>
 			<strong class="text-info">config</strong>
 			
@@ -116,12 +160,12 @@
 <tr>
 	<td>
 	<div class="row">
-		<div class="col-md-8" style="padding-right:0px;">
+		<div class="col-md-9" style="padding-right:0px;">
 			<strong class="text-info">Campo</strong> 
 			<strong class="text-success" style="float:right;text-align:right;">getCampoComAConfig (
 			</strong>
 		</div>
-		<div class="col-md-4" style="padding-left:3px;">
+		<div class="col-md-3" style="padding-left:3px;">
 			<strong class="text-warning">String</strong>
 			<strong class="text-info">config</strong>
 			
@@ -136,12 +180,12 @@
 <tr>
 	<td>
 	<div class="row">
-		<div class="col-md-8" style="padding-right:0px;">
+		<div class="col-md-9" style="padding-right:0px;">
 			<strong class="text-info">ModelConfig</strong> 
 			<strong class="text-success" style="float:right;text-align:right;">getConfig (
 			</strong>
 		</div>
-		<div class="col-md-4" style="padding-left:3px;">
+		<div class="col-md-3" style="padding-left:3px;">
 		<strong class="text-success">
 			)
 		</strong>
@@ -153,12 +197,12 @@
 <tr>
 	<td>
 	<div class="row">
-		<div class="col-md-8" style="padding-right:0px;">
+		<div class="col-md-9" style="padding-right:0px;">
 			<strong class="text-info">String</strong> 
 			<strong class="text-success" style="float:right;text-align:right;">getNomeMin (
 			</strong>
 		</div>
-		<div class="col-md-4" style="padding-left:3px;">
+		<div class="col-md-3" style="padding-left:3px;">
 		<strong class="text-success">
 			)
 		</strong>
@@ -170,12 +214,12 @@
 <tr>
 	<td>
 	<div class="row">
-		<div class="col-md-8" style="padding-right:0px;">
+		<div class="col-md-9" style="padding-right:0px;">
 			<strong class="text-info">String</strong> 
 			<strong class="text-success" style="float:right;text-align:right;">getNomePriCharMin (
 			</strong>
 		</div>
-		<div class="col-md-4" style="padding-left:3px;">
+		<div class="col-md-3" style="padding-left:3px;">
 		<strong class="text-success">
 			)
 		</strong>
@@ -187,12 +231,12 @@
 <tr>
 	<td>
 	<div class="row">
-		<div class="col-md-8" style="padding-right:0px;">
+		<div class="col-md-9" style="padding-right:0px;">
 			<strong class="text-info">String</strong> 
 			<strong class="text-success" style="float:right;text-align:right;">getPriCharNome (
 			</strong>
 		</div>
-		<div class="col-md-4" style="padding-left:3px;">
+		<div class="col-md-3" style="padding-left:3px;">
 		<strong class="text-success">
 			)
 		</strong>
@@ -212,5 +256,5 @@
 Não apagar nem modificar esse comentário
 	Gerenciado pelo Sandbox do Codegen
 	Passar essa linha pelo Winmerge também >>>
-	 checksum = 3935970169
+	 checksum = 4257546896
 -->

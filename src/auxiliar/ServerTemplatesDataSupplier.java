@@ -7,7 +7,13 @@ package auxiliar;
 
 import database.CodegenDatabaseController;
 import database.Project;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import model.ServerField;
+import model.ServerModel;
 
 /**
  *
@@ -31,6 +37,28 @@ public class ServerTemplatesDataSupplier {
 
     public List<Project> getListaProjetos() {
         return CodegenDatabaseController.getListaProjetos();
+    }
+    
+    public List<String> getTodasConfigsDefinidasNoProjeto(String projeto){
+        List<String> listaModelosProjeto = CodegenDatabaseController.getListaModelosProjeto(projeto);
+        Map<String, Integer> configsEncontradas = new HashMap<>();
+        try{
+        listaModelosProjeto.forEach(m -> {
+            List<ServerField> listaCamposModelo = ServerModel.fromJson(CodegenDatabaseController.getArquivoModelo(projeto,m)).getListaCampos();
+            listaCamposModelo.forEach(c -> {
+                List<String> listaConfigsCampo = c.getConfig().getListaConfigsCampo();
+                listaConfigsCampo.forEach(cfg -> {
+                    int qtdOcorrencias = (Integer)Utils.defaultIfNull(configsEncontradas.get(cfg), 0);
+                    configsEncontradas.put(cfg, qtdOcorrencias);
+                });
+            });
+        });
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        List<String> retorno = new ArrayList<>(configsEncontradas.keySet());
+        Collections.sort(retorno);
+        return retorno;
     }
 
     // Processa e retorna o snippet, considerando o objeto recebido

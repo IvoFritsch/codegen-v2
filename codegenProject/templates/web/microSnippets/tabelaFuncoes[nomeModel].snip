@@ -1,14 +1,14 @@
 <table class="table">
 <tr>
-	<th class="col-md-6">
+	<th class="col-md-7">
 		<div class="row">
 			<div class="col-md-4">
 				Tipo
 			</div>
-			<div class="col-md-4">
+			<div class="col-md-5">
 				Nome
 			</div>
-			<div class="col-md-4">
+			<div class="col-md-3">
 				Parâmetros
 			</div>
 		</div>
@@ -19,12 +19,12 @@
 <tr>
 	<td>
 	<div class="row">
-		<div class="col-md-8" style="padding-right:0px;">
+		<div class="col-md-9" style="padding-right:0px;">
 			<strong class="text-info">${campo.tipoAsString}</strong> 
 			<strong class="text-success" style="float:right;text-align:right;">${campo.nome} (
 			</strong>
 		</div>
-		<div class="col-md-4" style="padding-left:3px;">
+		<div class="col-md-3" style="padding-left:3px;">
 		<#list campo.getSubconfigsDaConfig("params") as param>
 			<strong class="text-warning">${campo.getValorSubconfigDaConfig("params",param)}</strong>
 			<strong class="text-info">${param}</strong>

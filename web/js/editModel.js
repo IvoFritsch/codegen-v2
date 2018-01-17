@@ -16,6 +16,7 @@ function loadModel() {
 	    if (this.readyState == 4 && this.status == 200) {
 	        modeloEmManutencao = JSON.parse(this.responseText);
 			document.getElementById("nomeModelEmEdicao").innerHTML = modeloEmManutencao.nome;
+			document.getElementById("tituloAba").innerHTML = "Modelo "+modeloEmManutencao.nome+" | Haftware Codegen";
 			montaTabelaCampos();
 	    }
 	};
@@ -190,6 +191,7 @@ function criaNovaConfigCampo(){
 
 function exibeConfigsCampoSection(){
 	poeGifLoading("tableConfigsCampoContent");
+	$('#tableSubconfigsConfigContent').html("");
 	$('#configsCampoSection').removeAttr('hidden');
 	$.get('templates/tableConfigsCampo.html', function(template) {
 		var html = Mustache.to_html(template, pegaConfigsDoCampo(campoEmConfig));
@@ -346,10 +348,8 @@ function sobeCampoLista(nomeCampo){
     swapCampos(index, index-1);
     apagaConfigsCampoSection();
     poeGifLoading("tableCamposContent");
-    setTimeout(function() {
-        montaTabelaCampos();
-        indicaNaoSalvo();
-      }, 150);
+	montaTabelaCampos();
+	indicaNaoSalvo();
 }
 
 function desceCampoLista(nomeCampo){
@@ -358,10 +358,8 @@ function desceCampoLista(nomeCampo){
     swapCampos(index, index+1);
     apagaConfigsCampoSection();
     poeGifLoading("tableCamposContent");
-    setTimeout(function() {
-        montaTabelaCampos();
-        indicaNaoSalvo();
-      }, 150);
+	montaTabelaCampos();
+	indicaNaoSalvo();
 }
 
 function swapCampos(x,y){

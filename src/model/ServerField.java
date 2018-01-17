@@ -22,5 +22,8 @@ public class ServerField {
         
     @Expose
     private CodegenFieldConfig config;
-    
+
+    public CodegenFieldConfig getConfig() {
+        return config;
+    }
 }

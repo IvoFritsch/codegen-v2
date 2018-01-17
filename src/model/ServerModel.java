@@ -29,6 +29,10 @@ public class ServerModel {
     public String getNome() {
         return nome;
     }
+
+    public List<ServerField> getListaCampos() {
+        return listaCampos;
+    }
     
     public static ServerModel fromJson(String json){
         return new Gson().fromJson(json, ServerModel.class);

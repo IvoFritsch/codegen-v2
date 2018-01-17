@@ -51,9 +51,9 @@ public class TemplatesDataSupplier {
         snip.setLogger(this.log);
         snip.setIsSnippet(true);
         if(!snip.pronto()){
-            ConsolePrinter.printError("Não foi possível encontrar o Snippet '"+nomeSnippet+".snip' "
-                    + "\n   ou ocorreu um erro no seu processamento"
-                    + "\nVerifique se ele existe e se sua sintaxe está OK");
+            //ConsolePrinter.printError("Não foi possível encontrar o Snippet '"+nomeSnippet+".snip' "
+            //        + "\n   ou ocorreu um erro no seu processamento"
+            //        + "\nVerifique se ele existe e se sua sintaxe está OK");
         }
         snip.put("root", this);
         snip.put("obj", obj);

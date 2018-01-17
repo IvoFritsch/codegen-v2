@@ -16,6 +16,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import main.CodegenServer;
 import model.ServerModel;
 import org.apache.commons.io.FileUtils;
 
@@ -39,7 +40,7 @@ public class CodegenDatabaseController {
                 ConsolePrinter.printWarning("Projeto "+p+" não encontrado, sendo removido do banco de dados do Codegen...\n"
                         + "Essa mensagem é normal caso o Codegen foi transferido para outro computador\n"
                         + "Você pode reimportar os projetos não encontrados através da URL:\n"
-                        + "    http://localhost:8080/importProject.html");
+                        + "    http://localhost:"+CodegenServer.PORTA+"/importProject.html");
                 projsRemover.add(p);
             }
         });
@@ -188,7 +189,7 @@ public class CodegenDatabaseController {
         try {
             String caminho = pegaPastaPaiProjeto(projeto) + "templates/"+nome;
             caminho = Utils.formalizaCaminho(caminho);
-            FileUtils.write(new File(caminho), "", "UTF-8");
+            FileUtils.write(new File(caminho), "Aqui você escreve o template", "UTF-8");
         } catch (Exception ex) {
         }
     }
@@ -197,7 +198,7 @@ public class CodegenDatabaseController {
         try {
             String caminho = pegaPastaPaiProjeto(projeto) + "templates/microSnippets/"+nome+".snip";
             caminho = Utils.formalizaCaminho(caminho);
-            FileUtils.write(new File(caminho), "", "UTF-8");
+            FileUtils.write(new File(caminho), "Aqui você escreve o snippet", "UTF-8");
         } catch (Exception ex) {
         }
     }

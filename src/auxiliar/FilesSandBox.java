@@ -97,7 +97,7 @@ public class FilesSandBox {
         try {
             ConsolePrinter.printInfo("Deletando o Sandbox nº "+hashCode()+"...");
             FileUtils.deleteDirectory(new File(PASTA_SANDBOX));
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             ConsolePrinter.printError("Erro ao deletar o Sandbox nº "+hashCode()+":\n\t\t"
                     + ex.getLocalizedMessage());
         }

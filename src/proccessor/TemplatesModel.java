@@ -34,9 +34,17 @@ public class TemplatesModel {
     public List<TemplatesField> getListaCamposComAConfig(String config) {
         return listaCampos.stream().filter(c -> c.temConfig(config)).collect(Collectors.toList());
     }
+    
+    public List<TemplatesField> getListaCamposSemAConfig(String config) {
+        return listaCampos.stream().filter(c -> !c.temConfig(config)).collect(Collectors.toList());
+    }
 
     public List<TemplatesField> getListaCamposComAConfigIgualA(String config, String valor) {
         return listaCampos.stream().filter(c -> c.temAConfigIgualA(config, valor)).collect(Collectors.toList());
+    }
+
+    public List<TemplatesField> getListaCamposComAConfigDiferenteDe(String config, String valor) {
+        return listaCampos.stream().filter(c -> !c.temAConfigIgualA(config, valor)).collect(Collectors.toList());
     }
 
     public List<String> getValoresEncontradosDaConfig(String config) {

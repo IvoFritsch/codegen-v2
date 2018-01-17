@@ -1,0 +1,15 @@
+${root.getSnippet("pageHeader",null)}
+	<title>Resumo das Configurações | Haftware Codegen</title>
+	<h2>Resumo das Configurações:</h2>
+	<h5>Nessa página você encontra um resumo das configurações definidas nos modelos do projeto atual(${root.projeto.nome}).<!--br/><br/>É possivel também definir uma descrição para cada configuração.--></h5>
+	<hr/>
+	<div class="row">
+		<div class="col-md-5">
+			<ul class="list-group">
+			<#list root.getTodasConfigsDefinidasNoProjeto(root.projeto.nome) as config>
+				<li class="list-group-item"><strong>${config}</strong></li>
+			</#list>
+			</ul>
+		</div>
+	</div>
+${root.getSnippet("pageFooter",null)}
