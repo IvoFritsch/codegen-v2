@@ -19,10 +19,19 @@
 	</tr>
 	{{/.}}
 </table>
+    <!--h5>Nenhuma configuração, você pode importar as configurações de um dos campos já existentes clicando no botão azul
+	(<span class='glyphicon glyphicon-share-alt'></span>)</h5-->
 <br/>
 <table class="table">
 	<tr id="espacoFormNovaConfigCampo" hidden="true">
-		<td>Nome:<input id="nomeNovaConfigCampo" type="text" class="form-control"></td>
+		<td>Nome:<input list="configsExistentes" id="nomeNovaConfigCampo" type="text" class="form-control">
+		<datalist id="configsExistentes">
+			<#list root.getTodasConfigsDefinidasNoProjeto(root.projeto.nome) as config>
+				<option value="${config}">
+			</#list>
+		</datalist>
+		
+		</td>
 		<td>Tipo:<select id="tipoNovaConfigCampo" type="text" class="form-control">
 			<option value="simples">Simples</option>
 			<option value="comSubConfig">Com SubConfigs</option>
