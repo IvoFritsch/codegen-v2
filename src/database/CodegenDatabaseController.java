@@ -8,6 +8,7 @@ package database;
 import auxiliar.ConsolePrinter;
 import auxiliar.Utils;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
@@ -178,9 +179,9 @@ public class CodegenDatabaseController {
     }
     
     public static void gravaArquivoModelo(String projeto, ServerModel modelo) {
-        
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
         try {
-            FileUtils.write(new File(pegaPastaPaiProjeto(projeto)+"models/"+modelo.getNome()+".cgm"), new Gson().toJson(modelo), "UTF-8");
+            FileUtils.write(new File(pegaPastaPaiProjeto(projeto)+"models/"+modelo.getNome()+".cgm"), gson.toJson(modelo), "UTF-8");
         } catch (Exception ex) {
         }
     }

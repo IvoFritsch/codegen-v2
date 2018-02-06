@@ -6,6 +6,7 @@
 package database;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.Expose;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -98,7 +99,8 @@ public class Project {
     }
     
     public String toJson(){
-        return new Gson().toJson(this);
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        return gson.toJson(this);
     }
 
     public void addTemplate(String nome) {
