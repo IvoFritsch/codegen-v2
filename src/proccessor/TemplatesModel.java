@@ -57,8 +57,8 @@ public class TemplatesModel {
     public TemplatesField getCampoComAConfig(String config) {
         TemplatesField retorno = listaCampos.stream().filter(c -> c.temConfig(config)).findFirst().orElse(null);
         if (retorno == null) {
-            ConsolePrinter.printError("Um template solicitou por algum campo com a configuração '" + config + "' definida\n"
-                    + "Mas nenhum campo foi encontrado, o template possivelmente disparará um erro a seguir");
+            //ConsolePrinter.printError("Um template solicitou por algum campo com a configuração '" + config + "' definida\n"
+              //      + "Mas nenhum campo foi encontrado, o template possivelmente disparará um erro a seguir");
         }
         return retorno;
     }
