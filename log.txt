@@ -1,8 +1,0 @@
-[!!!Alerta!!!]:         Projeto codegen não encontrado, sendo removido do banco de dados do Codegen...
-                        Essa mensagem é normal caso o Codegen foi transferido para outro computador
-                        Você pode reimportar os projetos não e[Info        ]:         Inicializado OK:
-                            Porta 8080
-portProject.html
-2017-08-24 12:44:39.831:INFO:oejs.Server:main: jetty-9.3.z-SNAPSHOT
-2017-08-24 12:44:39.983:INFO:oejs.AbstractConnector:main: Started ServerConnector@6e1567f1{HTTP/1.1,[http/1.1]}{0.0.0.0:8080}
-2017-08-24 12:44:39.983:INFO:oejs.Server:main: Started @1311ms
