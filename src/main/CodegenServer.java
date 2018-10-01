@@ -45,7 +45,7 @@ import proccessor.TemplatesProcessor;
  */
 public class CodegenServer extends AbstractHandler {
 
-    public static int PORTA;
+    public static int PORTA = 9080;
     
     @Override
     public void handle(String target,
@@ -237,7 +237,7 @@ public class CodegenServer extends AbstractHandler {
     public static void main(String[] args) throws Exception {
         //System.setOut(new PrintStream(new File("log.txt")));
         //System.setErr(new PrintStream(new File("log.txt")));
-        PORTA = 9080;
+        org.eclipse.jetty.util.log.Log.setLog(new NoLogging());
         System.out.println("HW Codegen\n"
                 + "  Gerador de fontes da Haftware\n"
                 + "  Todos os direitos reservados à Haftware Sistemas ltda.\n");
