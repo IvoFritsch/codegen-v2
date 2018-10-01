@@ -108,7 +108,7 @@ public class CliStarter {
         }
     }
     
-    public static boolean codegenAvailabilityCheck() { 
+    public static boolean codegenAvailabilityCheck() {
         try (Socket s = new Socket("localhost", CodegenServer.PORTA)) {
             return true;
         } catch (IOException ex) {

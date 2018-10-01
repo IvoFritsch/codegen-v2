@@ -45,7 +45,7 @@ import proccessor.TemplatesProcessor;
  */
 public class CodegenServer extends AbstractHandler {
 
-    public static int PORTA = 9080;
+    public static final int PORTA = 9080;
     
     @Override
     public void handle(String target,
