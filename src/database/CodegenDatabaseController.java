@@ -114,6 +114,7 @@ public class CodegenDatabaseController {
             caminho = Utils.formalizaCaminho(caminho);
             retorno.updateModelsFromDir(Utils.pegaPastaPaiArquivo(caminho));
             retorno.updateTemplatesFromDir(Utils.pegaPastaPaiArquivo(caminho));
+            retorno.updateSnippetsFromDir(Utils.pegaPastaPaiArquivo(caminho));
             return retorno;
         } catch (Exception e) {
             e.printStackTrace();

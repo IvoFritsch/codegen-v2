@@ -1,7 +1,7 @@
 /*
  * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * To change this snippet file, choose Tools | Templates
+ * and open the snippet in the editor.
  */
 package database;
 
@@ -158,6 +158,22 @@ public class Project {
                 remover.add(t);
         });
         remover.forEach(r -> templates.remove(r));
+        
+    }
+    
+    void updateSnippetsFromDir(String dir){
+        FileUtils.listFiles(new File(dir+"templates/microSnippets"), 
+                TrueFileFilter.INSTANCE, TrueFileFilter.INSTANCE).forEach(f -> {
+                    String snippet = Utils.formalizaCaminho(f.toString()).replace(dir+"templates/microSnippets/", "");
+                    if(!snippets.contains(snippet))
+                        snippets.add(snippet);
+                });
+        List<String> remover = new ArrayList<>();
+        snippets.forEach(t -> {
+            if(!new File(dir+"templates/microSnippets/"+t).exists() || new File(dir+"templates/microSnippets/"+t).isDirectory())
+                remover.add(t);
+        });
+        remover.forEach(r -> snippets.remove(r));
         
     }
     
