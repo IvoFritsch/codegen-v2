@@ -61,6 +61,7 @@ public class CodegenDatabaseController {
             return;
         }
         CodegenDatabaseController.db = CodegenDatabase.fromJson(FileUtils.readFileToString(db, "UTF-8"));
+        
     }
     
     private static void saveDb() {
@@ -109,8 +110,13 @@ public class CodegenDatabaseController {
         File file = new File(caminho);
         if(!file.exists()) return null;
         try {
-            return Project.fromJson(FileUtils.readFileToString(file, "UTF-8"));
+            Project retorno = Project.fromJson(FileUtils.readFileToString(file, "UTF-8"));
+            caminho = Utils.formalizaCaminho(caminho);
+            retorno.updateModelsFromDir(Utils.pegaPastaPaiArquivo(caminho));
+            retorno.updateTemplatesFromDir(Utils.pegaPastaPaiArquivo(caminho));
+            return retorno;
         } catch (Exception e) {
+            e.printStackTrace();
         }
         return null;
     }
@@ -266,6 +272,7 @@ public class CodegenDatabaseController {
         saveDb();
         saveProj(proj);
     }
+    
     public static void excluiSnippet(TemplateSpecs specs) {
         Project proj = getProjetoViaNome(specs.getProjeto());
         proj.excluiSnippet(specs.getNome());

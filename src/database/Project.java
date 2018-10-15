@@ -5,14 +5,18 @@
  */
 package database;
 
+import auxiliar.Utils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.Expose;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import model.ServerModel;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.filefilter.TrueFileFilter;
 
 /**
  *
@@ -126,4 +130,35 @@ public class Project {
         snippets.remove(nome);
         CodegenDatabaseController.removeArquivoSnippet(this.nome, nome);
     }
+    
+    void updateModelsFromDir(String dir){
+        FileUtils.listFiles(new File(dir+"models"), 
+                TrueFileFilter.INSTANCE, TrueFileFilter.INSTANCE).forEach(f -> {
+                    if(!models.contains(Utils.pegaNomeArquivo(Utils.formalizaCaminho(f.toString()))))
+                        models.add(Utils.pegaNomeArquivo(Utils.formalizaCaminho(f.toString())));
+                });
+        List<String> remover = new ArrayList<>();
+        models.forEach(m -> {
+            if(!new File(dir+"models/"+m+".cgm").exists())
+                remover.add(m);
+        });
+        remover.forEach(r -> models.remove(r));
+    }
+    
+    void updateTemplatesFromDir(String dir){
+        FileUtils.listFiles(new File(dir+"templates"), 
+                TrueFileFilter.INSTANCE, TrueFileFilter.INSTANCE).forEach(f -> {
+                    String template = Utils.formalizaCaminho(f.toString()).replace(dir+"templates/", "");
+                    if(!templates.contains(template))
+                        templates.add(template);
+                });
+        List<String> remover = new ArrayList<>();
+        templates.forEach(t -> {
+            if(t.startsWith("microSnippets") || !new File(dir+"templates/"+t).exists() || new File(dir+"templates/"+t).isDirectory())
+                remover.add(t);
+        });
+        remover.forEach(r -> templates.remove(r));
+        
+    }
+    
 }
