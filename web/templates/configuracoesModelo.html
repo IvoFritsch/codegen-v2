@@ -31,6 +31,37 @@
 		</div>
 	</div>
 	<div class="col-md-4">
+	
+		<h4>Configurações do modelo:
+		<a title="Ajuda" class="btn pull-right text-info"><span class="glyphicon glyphicon-question-sign"></span></a>
+		</h4>
+		<table class="table">
+			<tr>
+				<th>Nome</th>
+				<th>Valor</th>
+				<th>Opções</th>
+			</tr>
+		{{#modelConfigs}}
+		<tr>
+			<td>{{.}}</td>
+			<td><input id="valorConfigConfig{{.}}Model" type="text" class="form-control" onfocusout="atualizaConfigConfigModel('{{.}}');"></td>
+			<td><a title="Remover configuracão" class='btn btn-danger' onclick='removeConfigConfigModel("{{.}}");'><span class='glyphicon glyphicon-remove'></span></a></td>
+		</tr>
+		{{/modelConfigs}}
+		</table>
+
+		<table class="table">
+			<tr id="espacoFormNovoConfigModelo" hidden="true">
+				<td>Nome:<input id="nomeNovoConfigModelo" type="text" class="form-control"></td>
+				<td><br/><a title="Confirmar" class="btn btn-success" onclick="criaNovoConfigModelo();"><span class="glyphicon glyphicon-ok"></span></a>
+					<a  title="Cancelar" class="btn btn-danger" onclick="fechaCriacaoConfigModelo();"><span class="glyphicon glyphicon-remove"></span></a></td>
+			</tr>
+		</table>
+		<div id="botaoNovoConfigModelo">
+			<a class="btn btn-info pull-right" onclick="novoConfigModelo();">Nova configuração</a>
+		</div>
+	
+	
 	</div>
 	<div class="col-md-4">
 	</div>

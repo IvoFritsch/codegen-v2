@@ -1,0 +1,89 @@
+{
+  "nome": "ModelConfig",
+  "listaCampos": [
+    {
+      "nome": "temDefault",
+      "tipoAsString": "boolean",
+      "config": {
+        "conf": {
+          "descricao": {
+            "nome": "descricao",
+            "valor": "Retorna se o modelo possui a configuração Default especificada pelo nome",
+            "temSubConfs": false
+          },
+          "params": {
+            "subconfs": {
+              "nome": "String"
+            },
+            "nome": "params",
+            "temSubConfs": true
+          }
+        }
+      }
+    },
+    {
+      "nome": "temConfig",
+      "tipoAsString": "boolean",
+      "config": {
+        "conf": {
+          "descricao": {
+            "nome": "descricao",
+            "valor": "Retorna se o modelo possui a Configuração especificada pelo nome",
+            "temSubConfs": false
+          },
+          "params": {
+            "subconfs": {
+              "nome": "String"
+            },
+            "nome": "params",
+            "temSubConfs": true
+          }
+        }
+      }
+    },
+    {
+      "nome": "getDefault",
+      "tipoAsString": "String",
+      "config": {
+        "conf": {
+          "descricao": {
+            "nome": "descricao",
+            "valor": "Retorna o valor da configuração Default, vazio se não existir",
+            "temSubConfs": false
+          },
+          "params": {
+            "subconfs": {
+              "nome": "String"
+            },
+            "nome": "params",
+            "temSubConfs": true
+          }
+        }
+      }
+    },
+    {
+      "nome": "getConfig",
+      "tipoAsString": "String",
+      "config": {
+        "conf": {
+          "descricao": {
+            "nome": "descricao",
+            "valor": "Retorna o valor da Configuração, vazio se não existir",
+            "temSubConfs": false
+          },
+          "params": {
+            "subconfs": {
+              "nome": "String"
+            },
+            "nome": "params",
+            "temSubConfs": true
+          }
+        }
+      }
+    }
+  ],
+  "config": {
+    "defaults": {},
+    "modelConfigs": {}
+  }
+}

@@ -156,8 +156,9 @@ public class CodegenServer extends AbstractHandler {
                         )).toJson());
                 break;
             case "setModel":
+                String linha = request.getReader().lines().findFirst().get();
                 CodegenDatabaseController.gravaArquivoModelo(retornaCookiePorNome(request.getCookies(), "project").getValue(),
-                        ServerModel.fromJson(request.getReader().lines().findFirst().get()));
+                        ServerModel.fromJson(linha));
                 break;
             case "getProject":
                 String proj = baseRequest.getParameter("project");

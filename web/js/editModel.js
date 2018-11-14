@@ -15,6 +15,9 @@ function loadModel() {
 	xmlhttp.onreadystatechange = function() {
 	    if (this.readyState == 4 && this.status == 200) {
 	        modeloEmManutencao = JSON.parse(this.responseText);
+			if(!modeloEmManutencao.config.modelConfigs){
+				modeloEmManutencao.config.modelConfigs = {};
+			}
 			document.getElementById("nomeModelEmEdicao").innerHTML = modeloEmManutencao.nome;
 			document.getElementById("tituloAba").innerHTML = "Modelo "+modeloEmManutencao.nome+" | Haftware Codegen";
 			montaTabelaCampos();

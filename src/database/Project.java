@@ -132,6 +132,7 @@ public class Project {
     }
     
     void updateModelsFromDir(String dir){
+        new File(dir+"models").mkdirs();
         FileUtils.listFiles(new File(dir+"models"), 
                 TrueFileFilter.INSTANCE, TrueFileFilter.INSTANCE).forEach(f -> {
                     if(!models.contains(Utils.pegaNomeArquivo(Utils.formalizaCaminho(f.toString()))))
@@ -162,6 +163,7 @@ public class Project {
     }
     
     void updateSnippetsFromDir(String dir){
+        new File(dir+"templates/microSnippets").mkdirs();
         FileUtils.listFiles(new File(dir+"templates/microSnippets"), 
                 TrueFileFilter.INSTANCE, TrueFileFilter.INSTANCE).forEach(f -> {
                     String snippet = Utils.formalizaCaminho(f.toString()).replace(dir+"templates/microSnippets/", "");
