@@ -61,6 +61,10 @@ public class TemplatesField {
     public String getValorConfig(String config) {
         return this.config.getValorConfig(config);
     }
+    
+    public List<String> getValorConfigIncluiSubconfigs(String config) {
+        return this.config.getValorConfigIncluiSubconfigs(config);
+    }
 
     public boolean temConfig(String config) {
         return this.config.temConfig(config);
@@ -68,6 +72,10 @@ public class TemplatesField {
 
     public boolean temAConfigIgualA(String config, String valor) {
         return this.config.temConfigIgualA(config, valor);
+    }
+    
+    public boolean temAConfigIgualAIncluiSubconfigs(String config, String valor) {
+        return this.config.temConfigIgualAIncluiSubconfigs(config, valor);
     }
 
     public boolean configTemSubconfig(String config, String subconfig) {

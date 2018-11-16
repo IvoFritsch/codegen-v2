@@ -43,6 +43,10 @@ public class TemplatesModel {
         return listaCampos.stream().filter(c -> c.temAConfigIgualA(config, valor)).collect(Collectors.toList());
     }
 
+    public List<TemplatesField> getListaCamposComAConfigIgualAIncluiSubconfigs(String config, String valor) {
+        return listaCampos.stream().filter(c -> c.temAConfigIgualAIncluiSubconfigs(config, valor)).collect(Collectors.toList());
+    }
+
     public List<TemplatesField> getListaCamposComAConfigDiferenteDe(String config, String valor) {
         return listaCampos.stream().filter(c -> !c.temAConfigIgualA(config, valor)).collect(Collectors.toList());
     }
@@ -50,7 +54,19 @@ public class TemplatesModel {
     public List<String> getValoresEncontradosDaConfig(String config) {
         Set<String> retorno = new HashSet<>();
         listaCampos.stream().filter(c -> c.temConfig(config))
-                .forEach(c -> retorno.add(c.getConfig().getValorConfig(config)));
+                .forEach(c -> {
+                    if(!c.getConfig().getValorConfig(config).isEmpty()) retorno.add(c.getConfig().getValorConfig(config));
+                });
+        return retorno.stream().collect(Collectors.toList());
+    }
+    
+    public List<String> getValoresESubconfigsEncontradosDaConfig(String config) {
+        Set<String> retorno = new HashSet<>();
+        listaCampos.stream().filter(c -> c.temConfig(config))
+                .forEach(c -> {
+                    if(!c.getConfig().getValorConfig(config).isEmpty()) retorno.add(c.getConfig().getValorConfig(config));
+                    c.getConfig().getSubconfigsDaConfig(config).forEach(v -> retorno.add(v));
+                });
         return retorno.stream().collect(Collectors.toList());
     }
 

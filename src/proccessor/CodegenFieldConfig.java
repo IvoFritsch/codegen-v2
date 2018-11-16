@@ -28,12 +28,19 @@ public class CodegenFieldConfig {
         return endpoint.getValor();
     }
     
+    public List<String> getValorConfigIncluiSubconfigs(String config) {
+        List<String> retorno = new ArrayList<>();
+        if(!getValorConfig(config).isEmpty()) retorno.add(getValorConfig(config));
+        getSubconfigsDaConfig(config).forEach(v -> retorno.add(v));
+        return retorno;
+    }
+    
     public String get(String config){
         return getValorConfig(config);
     }
     
     public CodegenFieldConfigEndpoint getConfigEndpoint(String config){
-        if(!temConfig(config)) return null;
+        if(!temConfig(config) || conf.get(config) == null) return null;
         return conf.get(config);
     }
     
@@ -49,23 +56,29 @@ public class CodegenFieldConfig {
         return getValorConfig(config).equals(valor);
     }
     
+    public boolean temConfigIgualAIncluiSubconfigs(String config, String valor) {
+        if(conf == null) return false;
+        if(!temConfig(config)) return false;
+        return getValorConfig(config).equals(valor) || configTemSubconfig(config, valor);
+    }
+    
     public List<String> getSubconfigsDaConfig(String config){
-        if(!temConfig(config)) return new ArrayList<>();
+        if(!temConfig(config) || conf.get(config) == null) return new ArrayList<>();
         return conf.get(config).getSubconfigs();
     }
     
         public boolean configTemSubconfig(String config, String subconfig){
-        if(!temConfig(config)) return false;
+        if(!temConfig(config) || conf.get(config) == null) return false;
         return conf.get(config).temSubconfig(subconfig);
     }
     
     public String getValorSubconfigDaConfig(String config, String subconfig){
-        if(!temConfig(config)) return "";
+        if(!temConfig(config) || conf.get(config) == null) return "";
         return conf.get(config).getValorSubConfig(subconfig);
     }
     
     public boolean subconfigDaConfigTemValorIgualA(String config, String subconfig, String valor){
-        if(!temConfig(config)) return false;
+        if(!temConfig(config) || conf.get(config) == null) return false;
         return conf.get(config).subconfigTemValorIgualA(subconfig, valor);
     }
     

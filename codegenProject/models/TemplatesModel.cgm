@@ -1,1 +1,250 @@
-{"nome":"TemplatesModel","listaCampos":[{"nome":"getNome","tipoAsString":"String","config":{"conf":{"descricao":{"nome":"descricao","valor":"Retorna o nome do modelo","temSubConfs":false}}}},{"nome":"getListaTodosCampos","tipoAsString":"List\u003c Campo \u003e","config":{"conf":{"descricao":{"nome":"descricao","valor":"Retorna uma lista com todos os campos do modelo","temSubConfs":false}}}},{"nome":"getListaCamposComAConfig","tipoAsString":"List\u003c Campo \u003e","config":{"conf":{"params":{"subconfs":{"config":"String"},"nome":"params","temSubConfs":true},"descricao":{"nome":"descricao","valor":"Retorna uma lista com os campos que contém a config especificada configurada, mesmo que não tenha valor","temSubConfs":false}}}},{"nome":"getListaCamposSemAConfig","tipoAsString":"List\u003c Campo \u003e","config":{"conf":{"descricao":{"nome":"descricao","valor":"Retorna uma lista com os campos que não contém a config especificada configurada.","temSubConfs":false},"params":{"subconfs":{"config":"String"},"nome":"params","temSubConfs":true}}}},{"nome":"getListaCamposComAConfigIgualA","tipoAsString":"List\u003c Campo \u003e","config":{"conf":{"params":{"subconfs":{"config":"String","valor":"String"},"nome":"params","temSubConfs":true},"descricao":{"nome":"descricao","valor":"Retorna uma lista com os campos que contém a config especificada, sendo que ela deve ter o valor especificado","temSubConfs":false}}}},{"nome":"getListaCamposComAConfigDiferenteDe","tipoAsString":"List\u003c Campo \u003e","config":{"conf":{"descricao":{"nome":"descricao","valor":"Retorna uma lista com os campos que contém a config especificada, sendo que ela deve ter o valor diferente do especificado","temSubConfs":false},"params":{"subconfs":{"config":"String","valor":"String"},"nome":"params","temSubConfs":true}}}},{"nome":"getValoresEncontradosDaConfig","tipoAsString":"List\u003c String \u003e","config":{"conf":{"params":{"subconfs":{"config":"String"},"nome":"params","temSubConfs":true},"descricao":{"nome":"descricao","valor":"Retorna a lista com os valores que foram configurados para a config especificada, se um valor se repetir em mais de um campo, esse valor aparece apenas uma vez na lista retornada","temSubConfs":false}}}},{"nome":"getCampoComAConfig","tipoAsString":"Campo","config":{"conf":{"params":{"subconfs":{"config":"String"},"nome":"params","temSubConfs":true},"descricao":{"nome":"descricao","valor":"Retorna o primeiro campo que for encontrado que possua a config especificada configurada, \u003cstrong\u003enull\u003c/strong\u003e se nenhum campo for encontrado","temSubConfs":false}}}},{"nome":"getConfig","tipoAsString":"ModelConfig","config":{"conf":{"descricao":{"nome":"descricao","valor":"Retorna o objeto que controla as configurações desse modelo (ver a classe ModelConfig)","temSubConfs":false}}}},{"nome":"getNomeMin","tipoAsString":"String","config":{"conf":{"descricao":{"nome":"descricao","valor":"(Funcão auxiliar) Retorna o nome do modelo com todos os caracteres em minúsculo","temSubConfs":false}}}},{"nome":"getNomePriCharMin","tipoAsString":"String","config":{"conf":{"descricao":{"nome":"descricao","valor":"(Funcão auxiliar) Retorna o nome do modelo com o primeiro caractere em minúsculo","temSubConfs":false}}}},{"nome":"getPriCharNome","tipoAsString":"String","config":{"conf":{"descricao":{"nome":"descricao","valor":"(Funcão auxiliar) Retorna o primeiro caractere do nome do modelo","temSubConfs":false}}}}],"config":{"defaults":{}}}
+{
+  "nome": "TemplatesModel",
+  "listaCampos": [
+    {
+      "nome": "getNome",
+      "tipoAsString": "String",
+      "config": {
+        "conf": {
+          "descricao": {
+            "nome": "descricao",
+            "valor": "Retorna o nome do modelo",
+            "temSubConfs": false
+          }
+        }
+      }
+    },
+    {
+      "nome": "getListaTodosCampos",
+      "tipoAsString": "List\u003c Campo \u003e",
+      "config": {
+        "conf": {
+          "descricao": {
+            "nome": "descricao",
+            "valor": "Retorna uma lista com todos os campos do modelo",
+            "temSubConfs": false
+          }
+        }
+      }
+    },
+    {
+      "nome": "getListaCamposComAConfig",
+      "tipoAsString": "List\u003c Campo \u003e",
+      "config": {
+        "conf": {
+          "params": {
+            "subconfs": {
+              "config": "String"
+            },
+            "nome": "params",
+            "temSubConfs": true
+          },
+          "descricao": {
+            "nome": "descricao",
+            "valor": "Retorna uma lista com os campos que contém a config especificada configurada, mesmo que não tenha valor",
+            "temSubConfs": false
+          }
+        }
+      }
+    },
+    {
+      "nome": "getListaCamposSemAConfig",
+      "tipoAsString": "List\u003c Campo \u003e",
+      "config": {
+        "conf": {
+          "descricao": {
+            "nome": "descricao",
+            "valor": "Retorna uma lista com os campos que não contém a config especificada configurada.",
+            "temSubConfs": false
+          },
+          "params": {
+            "subconfs": {
+              "config": "String"
+            },
+            "nome": "params",
+            "temSubConfs": true
+          }
+        }
+      }
+    },
+    {
+      "nome": "getListaCamposComAConfigIgualA",
+      "tipoAsString": "List\u003c Campo \u003e",
+      "config": {
+        "conf": {
+          "params": {
+            "subconfs": {
+              "config": "String",
+              "valor": "String"
+            },
+            "nome": "params",
+            "temSubConfs": true
+          },
+          "descricao": {
+            "nome": "descricao",
+            "valor": "Retorna uma lista com os campos que contém a config especificada, sendo que ela deve ter o valor especificado",
+            "temSubConfs": false
+          }
+        }
+      }
+    },
+    {
+      "nome": "getListaCamposComAConfigDiferenteDe",
+      "tipoAsString": "List\u003c Campo \u003e",
+      "config": {
+        "conf": {
+          "descricao": {
+            "nome": "descricao",
+            "valor": "Retorna uma lista com os campos que contém a config especificada, sendo que ela deve ter o valor diferente do especificado",
+            "temSubConfs": false
+          },
+          "params": {
+            "subconfs": {
+              "config": "String",
+              "valor": "String"
+            },
+            "nome": "params",
+            "temSubConfs": true
+          }
+        }
+      }
+    },
+    {
+      "nome": "getListaCamposComAConfigIgualAIncluiSubconfigs",
+      "tipoAsString": "List\u003c Campo \u003e",
+      "config": {
+        "conf": {
+          "params": {
+            "subconfs": {
+              "config": "String",
+              "valor": "String"
+            },
+            "nome": "params",
+            "temSubConfs": true
+          },
+          "descricao": {
+            "nome": "descricao",
+            "valor": "Retorna uma lista com os campos que contém a config especificada, sendo que ela deve ter o valor ou subconfig especificado",
+            "temSubConfs": false
+          }
+        }
+      }
+    },
+    {
+      "nome": "getValoresEncontradosDaConfig",
+      "tipoAsString": "List\u003c String \u003e",
+      "config": {
+        "conf": {
+          "params": {
+            "subconfs": {
+              "config": "String"
+            },
+            "nome": "params",
+            "temSubConfs": true
+          },
+          "descricao": {
+            "nome": "descricao",
+            "valor": "Retorna a lista com os valores que foram configurados para a config especificada, se um valor se repetir em mais de um campo, esse valor aparece apenas uma vez na lista retornada",
+            "temSubConfs": false
+          }
+        }
+      }
+    },
+    {
+      "nome": "getValoresESubconfigsEncontradosDaConfig",
+      "tipoAsString": "List\u003c String \u003e",
+      "config": {
+        "conf": {
+          "params": {
+            "subconfs": {
+              "config": "String"
+            },
+            "nome": "params",
+            "temSubConfs": true
+          },
+          "descricao": {
+            "nome": "descricao",
+            "valor": "Retorna a lista com os valores e nomes das subconfigs que foram configurados para a config especificada, se um valor se repetir em mais de um campo, esse valor aparece apenas uma vez na lista retornada",
+            "temSubConfs": false
+          }
+        }
+      }
+    },
+    {
+      "nome": "getCampoComAConfig",
+      "tipoAsString": "Campo",
+      "config": {
+        "conf": {
+          "params": {
+            "subconfs": {
+              "config": "String"
+            },
+            "nome": "params",
+            "temSubConfs": true
+          },
+          "descricao": {
+            "nome": "descricao",
+            "valor": "Retorna o primeiro campo que for encontrado que possua a config especificada configurada, \u003cstrong\u003enull\u003c/strong\u003e se nenhum campo for encontrado",
+            "temSubConfs": false
+          }
+        }
+      }
+    },
+    {
+      "nome": "getConfig",
+      "tipoAsString": "ModelConfig",
+      "config": {
+        "conf": {
+          "descricao": {
+            "nome": "descricao",
+            "valor": "Retorna o objeto que controla as configurações desse modelo (ver a classe ModelConfig)",
+            "temSubConfs": false
+          }
+        }
+      }
+    },
+    {
+      "nome": "getNomeMin",
+      "tipoAsString": "String",
+      "config": {
+        "conf": {
+          "descricao": {
+            "nome": "descricao",
+            "valor": "(Funcão auxiliar) Retorna o nome do modelo com todos os caracteres em minúsculo",
+            "temSubConfs": false
+          }
+        }
+      }
+    },
+    {
+      "nome": "getNomePriCharMin",
+      "tipoAsString": "String",
+      "config": {
+        "conf": {
+          "descricao": {
+            "nome": "descricao",
+            "valor": "(Funcão auxiliar) Retorna o nome do modelo com o primeiro caractere em minúsculo",
+            "temSubConfs": false
+          }
+        }
+      }
+    },
+    {
+      "nome": "getPriCharNome",
+      "tipoAsString": "String",
+      "config": {
+        "conf": {
+          "descricao": {
+            "nome": "descricao",
+            "valor": "(Funcão auxiliar) Retorna o primeiro caractere do nome do modelo",
+            "temSubConfs": false
+          }
+        }
+      }
+    }
+  ],
+  "config": {
+    "defaults": {},
+    "modelConfigs": {}
+  }
+}

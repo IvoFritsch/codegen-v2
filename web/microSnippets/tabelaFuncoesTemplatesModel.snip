@@ -141,6 +141,30 @@
 	<td>
 	<div class="row">
 		<div class="col-md-9" style="padding-right:0px;">
+			<strong class="text-info">List< Campo ></strong> 
+			<strong class="text-success" style="float:right;text-align:right;">getListaCamposComAConfigIgualAIncluiSubconfigs (
+			</strong>
+		</div>
+		<div class="col-md-3" style="padding-left:3px;">
+			<strong class="text-warning">String</strong>
+			<strong class="text-info">config</strong>
+			<strong>, </strong>
+			<br/>
+			<strong class="text-warning">String</strong>
+			<strong class="text-info">valor</strong>
+			
+		<strong class="text-success">
+			)
+		</strong>
+		</div>
+	</div>
+	</td>
+	<td>Retorna uma lista com os campos que contém a config especificada, sendo que ela deve ter o valor ou subconfig especificado</td>
+</tr>
+<tr>
+	<td>
+	<div class="row">
+		<div class="col-md-9" style="padding-right:0px;">
 			<strong class="text-info">List< String ></strong> 
 			<strong class="text-success" style="float:right;text-align:right;">getValoresEncontradosDaConfig (
 			</strong>
@@ -156,6 +180,26 @@
 	</div>
 	</td>
 	<td>Retorna a lista com os valores que foram configurados para a config especificada, se um valor se repetir em mais de um campo, esse valor aparece apenas uma vez na lista retornada</td>
+</tr>
+<tr>
+	<td>
+	<div class="row">
+		<div class="col-md-9" style="padding-right:0px;">
+			<strong class="text-info">List< String ></strong> 
+			<strong class="text-success" style="float:right;text-align:right;">getValoresESubconfigsEncontradosDaConfig (
+			</strong>
+		</div>
+		<div class="col-md-3" style="padding-left:3px;">
+			<strong class="text-warning">String</strong>
+			<strong class="text-info">config</strong>
+			
+		<strong class="text-success">
+			)
+		</strong>
+		</div>
+	</div>
+	</td>
+	<td>Retorna a lista com os valores e nomes das subconfigs que foram configurados para a config especificada, se um valor se repetir em mais de um campo, esse valor aparece apenas uma vez na lista retornada</td>
 </tr>
 <tr>
 	<td>
@@ -256,5 +300,5 @@
 Não apagar nem modificar esse comentário
 	Gerenciado pelo Sandbox do Codegen
 	Passar essa linha pelo Winmerge também >>>
-	 checksum = 4257546896
+	 checksum = 643086087
 -->

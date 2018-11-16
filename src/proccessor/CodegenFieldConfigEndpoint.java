@@ -30,6 +30,7 @@ public class CodegenFieldConfigEndpoint {
     private CodegenFieldConfig fieldConfig;
 
     public String getValor() {
+        if(temSubConfs) return "";
         return valor;
     }
     
