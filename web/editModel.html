@@ -12,27 +12,63 @@
 	<h3>Campos do modelo:</h3>
 	<div id="tableCamposContent">
 	</div>
-	<table class="table">
+
+	<!-- <div class="row" id="espacoFormNovoCampo" hidden="true">
+		<div class="col-md-3">
+			<br/>
+			<b>Digite os dados do campo:</b>
+		</div>
+
+		<div class="col-md-4">
+			Nome:
+			<input id="nomeNovoCampo" type="text" class="form-control">
+		</div>
+		
+		<div class="col-md-4">
+			Tipo:
+			<input id="tipoNovoCampo" type="text" class="form-control">
+		</div>
+
+		<div class="col-md-1">
+			<br/>
+			<button title="Confirmar" class="btn btn-success" onclick="criaNovoCampoModel();">
+				<span class="glyphicon glyphicon-ok"></span>
+			</button>
+			&nbsp;
+			<button title="Cancelar" class="btn btn-danger" onclick="fechaCriacaoCampo();" style="position: absolute">
+				<span class="glyphicon glyphicon-remove"></span>
+			</button>
+		</div>
+
+	</div> -->
+
+	<table id="teste" class="table">
 		<tr id="espacoFormNovoCampo" hidden="true">
-			<td>Digite os dados do campo a criar:</td>
-			<td id="nomeNovoCampoContainer">Nome:<input id="nomeNovoCampo" type="text" class="form-control">
-			<span id="erroNomeNovoCampo" class="help-block"></span></td>
-			<td id="tipoNovoCampoContainer">Tipo:<input id="tipoNovoCampo" type="text" class="form-control">
-			<span id="erroTipoNovoCampo" class="help-block"></span></td>
-			<td><br/><a title="Confirmar" class="btn btn-success" onclick="criaNovoCampoModel();"><span class="glyphicon glyphicon-ok"></span></a>
-				<a  title="Cancelar" class="btn btn-danger" onclick="fechaCriacaoCampo();"><span class="glyphicon glyphicon-remove"></span></a>
-			</td>
+
+				<td>Digite os dados do campo a criar:</td>
+				<td id="nomeNovoCampoContainer">Nome:<input id="nomeNovoCampo" type="text" class="form-control">
+				<span id="erroNomeNovoCampo" class="help-block"></span></td>
+				<td id="tipoNovoCampoContainer">Tipo:<input id="tipoNovoCampo" type="text" class="form-control">
+				<span id="erroTipoNovoCampo" class="help-block"></span></td>
+				<td><br/>
+					<button title="Confirmar" class="btn btn-success" onclick="criaNovoCampoModel();"><span class="glyphicon glyphicon-ok"></span></button>
+					<button title="Cancelar" class="btn btn-danger" onclick="fechaCriacaoCampo();"><span class="glyphicon glyphicon-remove"></span></button>
+				</td>
+			
 		</tr>
 		<tr id="espacoFormEdicaoCampo" hidden="true">
-			<td>Digite os novos dados do campo:</td>
-			<td id="nomeCampoEdicaoContainer">
-			Nome:<input id="nomeCampoEdicao" type="text" class="form-control"></td>
-			<td id="tipoCampoEdicaoContainer">Tipo:<input id="tipoCampoEdicao" type="text" class="form-control"></td>
-			<td><br/><a title="Confirmar" class="btn btn-success" onclick="editaDadosCampo();"><span class="glyphicon glyphicon-ok"></span></a>
-				<a  title="Cancelar" class="btn btn-danger" onclick="fechaEdicaoDadosCampo();"><span class="glyphicon glyphicon-remove"></span></a>
-			</td>
+			
+				<td>Digite os novos dados do campo:</td>
+				<td id="nomeCampoEdicaoContainer">Nome:<input id="nomeCampoEdicao" type="text" class="form-control"></td>
+				<td id="tipoCampoEdicaoContainer">Tipo:<input id="tipoCampoEdicao" type="text" class="form-control"></td>
+				<td><br/>
+					<button title="Confirmar" class="btn btn-success" onclick="editaDadosCampo();"><span class="glyphicon glyphicon-ok"></span></button>
+					<button title="Cancelar" class="btn btn-danger" onclick="fechaEdicaoDadosCampo();"><span class="glyphicon glyphicon-remove"></span></button>
+				</td>
+			
 		</tr>
 	</table>
+
 	<div id="botaoNovoCampoModel">
 		<a class="btn btn-success pull-right" onclick="novoCampoModel();">Novo campo</a>
 	</div>
