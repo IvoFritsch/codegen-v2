@@ -185,6 +185,23 @@ public class CodegenDatabaseController {
         saveProj(proj);
     }
     
+    public static void deleteModel(String project, String model){
+        Project proj = getProjetoViaNome(project);
+        if (proj == null) return;
+        proj.deleteModel(model);
+        saveDb();
+        saveProj(proj);
+    }
+    
+    public static boolean deleteModelFile(String project, String model){
+        try {
+            new File(pegaPastaPaiProjeto(project)+"models/"+model+".cgm").delete();
+            return true;
+        } catch (Exception ex){
+            return false;
+        }
+    }
+    
     public static void gravaArquivoModelo(String projeto, ServerModel modelo) {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         try {

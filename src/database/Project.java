@@ -98,6 +98,11 @@ public class Project {
         CodegenDatabaseController.gravaArquivoModelo(nome, model);
     }
     
+    public void deleteModel(String model){
+        if (!models.remove(model)) return;
+        CodegenDatabaseController.deleteModelFile(nome, model);
+    }
+    
     public static Project fromJson(String json){
         return new Gson().fromJson(json, Project.class);
     }

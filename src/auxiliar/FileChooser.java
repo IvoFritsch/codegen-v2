@@ -19,7 +19,7 @@ public class FileChooser {
     private JFrame frame;
     public FileChooser() {
         frame = new JFrame();
-        frame.setTitle("Escolhedor de arquivos do Codegen");
+        frame.setTitle("File chooser");
         frame.setVisible(true);
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         BringToFront();
@@ -32,7 +32,7 @@ public class FileChooser {
             return null;
         }
         JFileChooser fc = new JFileChooser();
-        fc.setDialogTitle("Escolhedor de arquivos do Codegen");
+        fc.setDialogTitle("File chooser");
         FileNameExtensionFilter filter = new FileNameExtensionFilter(descricao, extensoes);
         fc.setFileFilter(filter);
         if(onlyDirs) 

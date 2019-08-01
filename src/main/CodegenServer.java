@@ -9,7 +9,10 @@ import auxiliar.ConsolePrinter;
 import auxiliar.FileChooser;
 import auxiliar.ServerTemplatesDataSupplier;
 import auxiliar.ServerTemplatesProcessor;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import database.CodegenDatabaseController;
+import database.Project;
 import database.ProjectSpecs;
 import database.TemplateSpecs;
 import java.awt.AWTException;
@@ -26,6 +29,7 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.net.URI;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -35,6 +39,7 @@ import org.apache.commons.io.FileUtils;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.AbstractHandler;
+import org.json.JSONObject;
 import proccessor.ProccessSpecs;
 import proccessor.ProccessorCore;
 import proccessor.TemplatesProcessor;
@@ -55,6 +60,11 @@ public class CodegenServer extends AbstractHandler {
             ServletException {
         // Declare response encoding and types
         response.setContentType("text/html; charset=utf-8");
+        
+        response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+        response.setHeader("Access-Control-Allow-Methods", "GET");
+        response.setHeader("Access-Control-Allow-Credentials", "true");
+        
         // Declare response status code
         response.setStatus(HttpServletResponse.SC_OK);
         
@@ -107,6 +117,10 @@ public class CodegenServer extends AbstractHandler {
 
     private void supplyTemplateFile(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response) throws Exception {
         String projeto = retornaCookiePorNome(request.getCookies(), "project").getValue();
+        
+//        response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+//        response.setHeader("Access-Control-Allow-Methods", "GET");
+        
         PrintWriter writer = response.getWriter();
         if (target.equals("/")) {
             target = "/index.html";
@@ -132,6 +146,17 @@ public class CodegenServer extends AbstractHandler {
         target = target.replace("/api/", "");
 
         switch (target) {
+            case "getProjects":
+                List<Project> listaProjetos = CodegenDatabaseController.getListaProjetos();
+                
+                Gson gson = new GsonBuilder().setPrettyPrinting().create();
+                writer.println(gson.toJson(listaProjetos));
+                break;
+            case "getModels":
+                List<String> listaModelosProjeto = CodegenDatabaseController.getListaModelosProjeto(baseRequest.getParameter("project"));
+                
+                writer.println(new Gson().toJson(listaModelosProjeto));
+                break;
             case "turnoff":
                 ConsolePrinter.printInfo("Desligando o servidor do Codegen...");
                 TemplatesProcessor.encerra();
@@ -147,6 +172,9 @@ public class CodegenServer extends AbstractHandler {
                 CodegenDatabaseController.addModel(retornaCookiePorNome(request.getCookies(), "project").getValue(),
                         ServerModel.fromJson(leTodasLinhas(request.getReader())));
                 break;
+            case "deleteModel":
+                CodegenDatabaseController.deleteModel(retornaCookiePorNome(request.getCookies(), "project").getValue(),
+                                                      baseRequest.getParameter("model"));
             case "getModel":
                 String model = baseRequest.getParameter("model");
                 String project = baseRequest.getParameter("project");
@@ -167,6 +195,14 @@ public class CodegenServer extends AbstractHandler {
             case "chooseProjectFile":
                 String fileEscolha = new FileChooser().getFile("Arquivo de projeto do Codegen (.cgp)",false,"cgp");
                 writer.println(fileEscolha);
+                break;
+            case "chooseProjectFileJson":
+                String fileEscolhaJson = new FileChooser().getFile("Codegen project file (.cgp)",false,"cgp");
+                writer.println(new JSONObject().put("path",fileEscolhaJson).toString());
+                break;
+            case "chooseNewProjectFolderJson":
+                String dirEscolhaJson = new FileChooser().getFile("New project path",true,"cgp");
+                writer.println(new JSONObject().put("path", dirEscolhaJson).toString());
                 break;
             case "chooseNewProjectFolder":
                 String dirEscolha = new FileChooser().getFile("Diretorio onde criar o novo projeto",true,"cgp");
@@ -207,6 +243,7 @@ public class CodegenServer extends AbstractHandler {
                 cookieProjeto.setPath("/");
                 response.addCookie(cookieProjeto);
                 response.sendRedirect("/index.html");
+                writer.println("{}");
                 break;
             case "processaTemplate":
                 ProccessorCore proccessorCore = new ProccessorCore(ProccessSpecs.fromJson(leTodasLinhas(request.getReader())));
