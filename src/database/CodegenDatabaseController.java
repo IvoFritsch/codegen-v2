@@ -242,7 +242,7 @@ public class CodegenDatabaseController {
     }
 
     public static void removeArquivoSnippet(String projeto, String nome) {
-        String caminho = pegaPastaPaiProjeto(projeto) + "templates/microSnippets/"+nome+".snip";
+        String caminho = pegaPastaPaiProjeto(projeto) + "templates/microSnippets/"+nome;
         try {
             caminho = Utils.formalizaCaminho(caminho);
             FileUtils.deleteQuietly(new File(caminho));
