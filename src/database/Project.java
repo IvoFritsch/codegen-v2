@@ -45,6 +45,8 @@ public class Project {
     @Expose
     private String rodapeArquivosGerados;
     
+    @Expose
+    private String projectRootDir;
 
     public Project() {
         this.nome = "";
@@ -60,6 +62,8 @@ public class Project {
         this.templates = new ArrayList<>();
         this.snippets = new ArrayList<>();
         this.assocTipo = new HashMap<>();
+        this.projectRootDir = getRootDir()+"";
+        System.out.println(getRootDir());
     }
 
     public String getCaminhoSaidaGeracao(){
@@ -104,7 +108,9 @@ public class Project {
     }
     
     public static Project fromJson(String json){
-        return new Gson().fromJson(json, Project.class);
+        Project retorno = new Gson().fromJson(json, Project.class);
+        retorno.projectRootDir = retorno.getRootDir();
+        return retorno;
     }
     
     public String toJson(){
