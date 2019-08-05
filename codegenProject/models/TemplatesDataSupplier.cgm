@@ -90,7 +90,7 @@
     },
     {
       "nome": "getListaModelos",
-      "tipoAsString": "List\u003cModel\u003e",
+      "tipoAsString": "List\u003c Model \u003e",
       "config": {
         "conf": {
           "descricao": {
