@@ -6,9 +6,10 @@
 package proccessor;
 
 import auxiliar.ModifiableString;
-import auxiliar.ConsolePrinter;
 import database.CodegenDatabaseController;
 import database.Project;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -65,6 +66,10 @@ public class TemplatesDataSupplier {
             novoModel = tempModSuppl.getModeloPorNome(projeto, nome);
         if(novoModel != null) novoModel.preparaEstrutura(this);
         return novoModel;
+    }
+    
+    public List<TemplatesModel> getListaModelos() throws Exception {
+        return tempModSuppl.getListaModelos(projeto);
     }
     
     public ModifiableString modifyString(String s){

@@ -9,6 +9,8 @@ import auxiliar.FilesSandBox;
 import auxiliar.Utils;
 import database.CodegenDatabaseController;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -20,7 +22,7 @@ public class ProccessorCore {
     private TemplatesDataSupplier root;
     private FilesSandBox fsb;
     private final String DIR_SAIDA;
-    
+    private final List<String> processOnceTemplates = new ArrayList<>();
 
     public ProccessorCore(ProccessSpecs specs) {
         this.specs = specs;
@@ -54,7 +56,8 @@ public class ProccessorCore {
         CodegenDatabaseController.getProjetoViaNome(projeto).getTemplates().forEach(t -> {
             if(!specs.getTemplates().contains(t)) return;
             log.startNewTemplate(t);
-            
+            // Se esse template deve ser processado só uma vez e já foi, retorna
+            if(processOnceTemplates.contains(t)) return;
             String dirSaida = t.replaceAll("\\[nomeModel\\]", root.getModel().getNome());
             dirSaida = dirSaida.replaceAll("\\[nomeProj\\]", root.getProjeto().getNome());
             
@@ -62,6 +65,7 @@ public class ProccessorCore {
             temp.setLogger(log);
             temp.put("root", root);
             temp.proccessToFile(this.DIR_SAIDA+dirSaida);
+            if(!t.contains("[nomeModel]")) processOnceTemplates.add(t);
         });
     }
     

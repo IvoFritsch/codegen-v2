@@ -6,7 +6,9 @@
 package proccessor;
 
 import database.CodegenDatabaseController;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -25,6 +27,16 @@ public class TemplatesModelsSupplier {
             return retorno;
         } catch (Exception e){
             modelosCarregados.put(nomeModelo, null);
+            return null;
+        }
+    }
+    
+    public List<TemplatesModel> getListaModelos(String projeto){
+        List<TemplatesModel> retorno = new ArrayList<>();
+        try{
+            CodegenDatabaseController.getListaModelosProjeto(projeto).forEach(nome -> retorno.add(getModeloPorNome(projeto, nome)));
+            return retorno;
+        } catch (Exception e){
             return null;
         }
     }
