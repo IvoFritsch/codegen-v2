@@ -69,7 +69,9 @@ public class TemplatesDataSupplier {
     }
     
     public List<TemplatesModel> getListaModelos() throws Exception {
-        return tempModSuppl.getListaModelos(projeto);
+        List<TemplatesModel> listaModelos = tempModSuppl.getListaModelos(projeto);
+        listaModelos.forEach(m -> m.preparaEstrutura(this));
+        return listaModelos;
     }
     
     public ModifiableString modifyString(String s){

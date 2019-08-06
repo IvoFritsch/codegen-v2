@@ -1,0 +1,11 @@
+interface ${obj.nome}I {
+<#list obj.listaTodosCampos as campo>
+  ${campo.nome}?: ${campo.tipoAsString}<#sep>,</#sep>
+</#list>
+}
+
+interface ${obj.nome}WhereI {
+<#list obj.listaTodosCampos as campo>
+  ${campo.nome}?: ${campo.tipoAsString} | WhereT<#sep>,</#sep>
+</#list>
+}
