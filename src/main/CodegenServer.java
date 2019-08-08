@@ -61,7 +61,7 @@ public class CodegenServer extends AbstractHandler {
         // Declare response encoding and types
         response.setContentType("text/html; charset=utf-8");
         
-        response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+        response.setHeader("Access-Control-Allow-Origin", "http://localhost:3001");
         response.setHeader("Access-Control-Allow-Methods", "GET");
         response.setHeader("Access-Control-Allow-Credentials", "true");
         
