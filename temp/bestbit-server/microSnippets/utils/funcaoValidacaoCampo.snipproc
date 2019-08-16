@@ -1,0 +1,94 @@
+    /**
+     * Valida o campo '${obj.nome}' para a classe ${root.model.nome}
+     * <p>
+     * Coloca a mensagem de validacao na HwResponse recebida
+     *
+     * @param valor O valor do campo a validar
+     * @param response HwResponse para colocar o erro
+     * @param nomeBaseCampo Caminho de campos na input, da raiz até chegar à esse campo, caso o campo esteja na raiz da input, passar null ou ""
+     * @return true - valido, false - invalido
+     */
+	public static boolean valida${obj.nomePriCharMai}${root.model.nome}(${obj.tipoAsString} valor, HwResponse response, String nomeBaseCampo){
+		return valida${obj.nomePriCharMai}${root.model.nome}(valor, response, nomeBaseCampo, "${obj.nome}");
+	}
+	
+	/**
+     * Valida o campo '${obj.nome}' para a classe ${root.model.nome}
+     * <p>
+     * Coloca a mensagem de validacao na HwResponse recebida
+     *
+     * @param valor O valor do campo a validar
+     * @param response HwResponse para colocar o erro
+     * @param nomeBaseCampo Caminho de campos na input, da raiz até chegar à esse campo
+     * @param nomeCampo Nome do campo, se tiver um nome diferente de '${obj.nome}' na input
+     * @return true - valido, false - invalido
+     */
+    public static boolean valida${obj.nomePriCharMai}${root.model.nome}(${obj.tipoAsString} valor, HwResponse response, String nomeBaseCampo, String nomeCampo){
+        if(nomeBaseCampo == null){
+            nomeBaseCampo = "";
+        }
+        if(!nomeBaseCampo.isEmpty()){
+            nomeBaseCampo += ".";
+        }
+        boolean retorno = true;
+<#if obj.config.subconfigDaConfigTemValorIgualA("validacao", "obrigatorio", "true")>
+        if(!Validador.validaObrigatorio(valor<#if obj.config.subconfigDaConfigTemValorIgualA("validacao", "permiteNegativo", "true")>, true</#if>)){
+            response.addErroValidacaoCampo(nomeBaseCampo + nomeCampo, CodigoErroCampo.NAO_INFORMADO, "Esse campo é obrigatório mas não foi informado");
+            retorno = false;
+        }
+</#if>
+<#if obj.config.subconfigDaConfigTemValorIgualA("validacao", "email", "true")>
+        if(!Validador.validaEmail(valor)){
+            response.addErroValidacaoCampo(nomeBaseCampo + nomeCampo, CodigoErroCampo.VALOR_INVALIDO, "O email digitado é inválido");
+            retorno = false;
+        }
+</#if>
+<#if obj.config.subconfigDaConfigTemValorIgualA("validacao", "cpf", "true")>
+        if(!Validador.validaCPF(valor)){
+            response.addErroValidacaoCampo(nomeBaseCampo + nomeCampo, CodigoErroCampo.VALOR_INVALIDO, "O CPF digitado é inválido");
+            retorno = false;
+        }
+</#if>
+<#if obj.config.subconfigDaConfigTemValorIgualA("validacao", "cnpj", "true")>
+        if(!Validador.validaCNPJ(valor)){
+            retorno = false;
+            response.addErroValidacaoCampo(nomeBaseCampo + nomeCampo, CodigoErroCampo.VALOR_INVALIDO, "O CNPJ digitado é inválido");
+        }
+</#if>
+<#if obj.config.subconfigDaConfigTemValorIgualA("validacao", "telefone", "true")>
+        if(!Validador.validaTelefone(valor)){
+            retorno = false;
+            response.addErroValidacaoCampo(nomeBaseCampo + nomeCampo, CodigoErroCampo.VALOR_INVALIDO, "O Telefone digitado é inválido");
+        }
+</#if>
+<#if obj.config.subconfigDaConfigTemValorIgualA("validacao", "celular", "true")>
+        if(!Validador.validaCelular(valor)){
+            retorno = false;
+            response.addErroValidacaoCampo(nomeBaseCampo + nomeCampo, CodigoErroCampo.VALOR_INVALIDO, "O Celular digitado é inválido");
+        }
+</#if>
+<#if obj.config.configTemSubconfig("validacao", "minSize")>
+        if(!Validador.validaMinSize(valor,${obj.config.getValorSubconfigDaConfig("validacao", "minSize")})){
+            response.addErroValidacaoCampo(nomeBaseCampo + nomeCampo, CodigoErroCampo.MIN_SIZE_INVALIDO, "O tamanho mínimo é de ${obj.config.getValorSubconfigDaConfig("validacao", "minSize")} caracteres");
+            retorno = false;
+        }
+</#if>
+<#if obj.config.configTemSubconfig("validacao", "maxSize")>
+        if(!Validador.validaMaxSize(valor,${obj.config.getValorSubconfigDaConfig("validacao", "maxSize")})){
+            response.addErroValidacaoCampo(nomeBaseCampo + nomeCampo, CodigoErroCampo.MAX_SIZE_INVALIDO, "O tamanho máximo é de ${obj.config.getValorSubconfigDaConfig("validacao", "maxSize")} caracteres");
+            retorno = false;
+        }
+<#elseif obj.tipo == "STRING" && obj.config.temConfig("varchar_size")>
+        if(!Validador.validaMaxSize(valor,${obj.config.getValorConfig("varchar_size")})){
+            response.addErroValidacaoCampo(nomeBaseCampo + nomeCampo, CodigoErroCampo.MAX_SIZE_INVALIDO, "O tamanho máximo é de ${obj.config.getValorConfig("varchar_size")} caracteres");
+            retorno = false;
+        }
+</#if>
+<#if obj.subconfigDaConfigTemValorIgualA("validacao", "valoresPossiveis", "true") && obj.temConfig("valoresPossiveis")>
+        if(!Validador.validaValoresPossiveis(valor, <#list obj.getSubconfigsDaConfig("valoresPossiveis") as valorPossivel><#if obj.tipo == 'STRING'>"</#if>${valorPossivel}<#if obj.tipo == 'STRING'>"</#if><#sep>, </#sep></#list>)){
+            response.addErroValidacaoCampo(nomeBaseCampo + nomeCampo, CodigoErroCampo.VALOR_INVALIDO, "O valor informado não corresponde a nenhum dos valores válidos");
+            retorno = false;
+        }
+</#if>
+        return retorno;
+    }

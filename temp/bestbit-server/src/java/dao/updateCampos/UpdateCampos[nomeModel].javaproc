@@ -1,0 +1,69 @@
+package dao.updateCampos;
+
+import restFramework.tableUpdates.UpdateCampos;
+import java.util.Date;
+
+import restFramework.tableUpdates.updateOperations.BooleanUpdateOperation;
+import restFramework.tableUpdates.updateOperations.NumberUpdateOperation;
+import restFramework.tableUpdates.updateOperations.StringUpdateOperation;
+import restFramework.tableUpdates.updateOperations.DateUpdateOperation;
+
+
+/**
+ * Classe para realizar UPDATEs na tabela ${root.model.nome}.
+ *
+ * @author Haftware S.I.
+ */
+public class UpdateCampos${root.model.nome} extends UpdateCampos{
+<#list root.model.listaTodosCampos as campo>
+
+    /**
+     * Atalho para definir diretamente o valor do campo.
+     *
+     * @param v Valor a setar no campo.
+     * @return Classe para realizar update no campo.
+     */
+    public UpdateCampos${root.model.nome} ${campo.nome}(${campo.tipoAsString} v){
+        return ${campo.nome}().set(v);
+    }
+
+    /**
+     * Fornece a classe para realizar update no campo ${campo.nome}
+     *
+     * @return Classe para realizar update no campo
+     */
+<#switch campo.tipo>
+<#case "STRING">
+    public StringUpdateOperation<UpdateCampos${root.model.nome}> ${campo.nome}(){
+        StringUpdateOperation<UpdateCampos${root.model.nome}> novo = new StringUpdateOperation<>("${campo.nome}", this);
+        addUpdate(novo);
+        return novo;
+    }<#break>
+<#case "INTEIRO">
+    public NumberUpdateOperation<UpdateCampos${root.model.nome}> ${campo.nome}(){
+        NumberUpdateOperation<UpdateCampos${root.model.nome}> novo = new NumberUpdateOperation<>("${campo.nome}", this);
+        addUpdate(novo);
+        return novo;
+    }<#break>
+<#case "COM_VIRGULA">
+    public NumberUpdateOperation<UpdateCampos${root.model.nome}> ${campo.nome}(){
+        NumberUpdateOperation<UpdateCampos${root.model.nome}> novo = new NumberUpdateOperation<>("${campo.nome}", this);
+        addUpdate(novo);
+        return novo;
+    }<#break>
+<#case "BOOLEANO">
+    public BooleanUpdateOperation<UpdateCampos${root.model.nome}> ${campo.nome}(){
+        BooleanUpdateOperation<UpdateCampos${root.model.nome}> novo = new BooleanUpdateOperation<>("${campo.nome}", this);
+        addUpdate(novo);
+        return novo;
+    }<#break>
+<#case "DATA">
+    public DateUpdateOperation<UpdateCampos${root.model.nome}> ${campo.nome}(){
+        DateUpdateOperation<UpdateCampos${root.model.nome}> novo = new DateUpdateOperation<>("${campo.nome}", this);
+        addUpdate(novo);
+        return novo;
+    }<#break>
+  <#default>
+</#switch>
+</#list>
+}
