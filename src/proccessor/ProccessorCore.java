@@ -23,6 +23,8 @@ public class ProccessorCore {
     private FilesSandBox fsb;
     private final String DIR_SAIDA;
     private final List<String> processOnceTemplates = new ArrayList<>();
+    
+    private static volatile boolean cancel = false;
 
     public ProccessorCore(ProccessSpecs specs) {
         this.specs = specs;
@@ -31,6 +33,7 @@ public class ProccessorCore {
 
     public ProccessLog process() {
         
+        cancel = false;
         ProccessLog log = new ProccessLog();
         
         fsb = new FilesSandBox(this.DIR_SAIDA, specs.autoOverwrite());
@@ -51,9 +54,18 @@ public class ProccessorCore {
         if(!log.hasMessage()){
             fsb.commitaArquivos();
         }
+        fsb.deleteSandbox();
         return log;
     }
 
+    public static boolean mustCancel(){
+        return cancel;
+    }
+    
+    public static void cancel(){
+        cancel = true;
+    }
+    
     private void processaTemplatesProjeto(String projeto, ProccessLog log){
         CodegenDatabaseController.getProjetoViaNome(projeto).getTemplates().forEach(t -> {
             if(!specs.getTemplates().contains(t)) return;

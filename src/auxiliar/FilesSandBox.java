@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.zip.CRC32;
 import java.util.zip.Checksum;
 import org.apache.commons.io.FileUtils;
+import proccessor.ProccessorCore;
 
 /**
  * Caixa de areia de arquivos, intercepta todos os arquivos gerados pelo codegen
@@ -86,6 +87,7 @@ public class FilesSandBox {
         diretoriosCriar.forEach(d -> new File(d).mkdirs());
 
         arquivosCriados.forEach((c, w) -> {
+            if(ProccessorCore.mustCancel()) return;
             File f = new File(c);
             if (precisaFazerWinmerge(f) && !autoOverwrite) {
                 runWinMerge(c.replaceFirst(saidaBase, PASTA_SANDBOX), c);
@@ -96,6 +98,9 @@ public class FilesSandBox {
         if (mudancas == 0) {
             ConsolePrinter.printInfo("Nada mudou...");
         }
+    }
+    
+    public void deleteSandbox(){
         try {
             ConsolePrinter.printInfo("Deletando o Sandbox nº "+hashCode()+"...");
             FileUtils.deleteDirectory(new File(PASTA_SANDBOX));

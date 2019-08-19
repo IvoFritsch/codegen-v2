@@ -26,7 +26,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.net.URI;
 import java.util.List;
@@ -255,6 +254,8 @@ public class CodegenServer extends AbstractHandler {
                 }
                 writer.println(log);
                 break;
+            case "cancelaProcessamento":
+                ProccessorCore.cancel();
             default:
                 ConsolePrinter.printError("Chamou a api usando um metodo não reconhecido: " + target);
         }
