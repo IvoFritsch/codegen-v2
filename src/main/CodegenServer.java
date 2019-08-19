@@ -256,6 +256,7 @@ public class CodegenServer extends AbstractHandler {
                 break;
             case "cancelaProcessamento":
                 ProccessorCore.cancel();
+                break;
             default:
                 ConsolePrinter.printError("Chamou a api usando um metodo não reconhecido: " + target);
         }
