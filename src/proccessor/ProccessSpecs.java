@@ -27,6 +27,9 @@ public class ProccessSpecs {
     
     @Expose
     private Map<String,String> config;
+    
+    @Expose
+    private boolean autoOverwrite;
 
     public String getProjeto() {
         return projeto;
@@ -42,6 +45,10 @@ public class ProccessSpecs {
 
     public Map<String, String> getConfig() {
         return config;
+    }
+
+    public boolean autoOverwrite() {
+        return autoOverwrite;
     }
     
     public static ProccessSpecs fromJson(String json){

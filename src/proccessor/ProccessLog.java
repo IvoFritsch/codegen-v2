@@ -23,6 +23,7 @@ public class ProccessLog {
     
     private Map<String,List<String>> logModelAtual;
     private List<String> logTemplateAtual;
+    private boolean hasMessage = false;
     
     public void startNewModel(String nome){
         logModelAtual = new HashMap<>();
@@ -37,10 +38,17 @@ public class ProccessLog {
     
     public void putMessage(String mensagem){
         if(logTemplateAtual == null) return;
+        hasMessage = true;
         logTemplateAtual.add(mensagem);
     }
     
     public String toJson(){
         return Utils.toJsonOnlyExpose(this);
     }
+
+    public boolean hasMessage() {
+        return hasMessage;
+    }
+    
+    
 }

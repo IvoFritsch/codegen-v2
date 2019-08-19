@@ -36,13 +36,15 @@ public class FilesSandBox {
     private Map<String, Writer> arquivosCriados;
     private List<String> diretoriosCriar;
     private String saidaBase;
+    private boolean autoOverwrite;
     
     private final String PASTA_SANDBOX = "sandbox_"+hashCode()+"/";
 
     private int mudancas;
 
-    public FilesSandBox(String saidaBase) {
+    public FilesSandBox(String saidaBase, boolean autoOverwrite) {
         init(saidaBase);
+        this.autoOverwrite = autoOverwrite;
     }
     
     private void init(String saidaBase) {
@@ -85,7 +87,7 @@ public class FilesSandBox {
 
         arquivosCriados.forEach((c, w) -> {
             File f = new File(c);
-            if (precisaFazerWinmerge(f)) {
+            if (precisaFazerWinmerge(f) && !autoOverwrite) {
                 runWinMerge(c.replaceFirst(saidaBase, PASTA_SANDBOX), c);
             } else {
                 copiaArquivo(c.replaceFirst(saidaBase, PASTA_SANDBOX), c);

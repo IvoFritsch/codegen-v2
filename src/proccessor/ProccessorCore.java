@@ -33,8 +33,7 @@ public class ProccessorCore {
         
         ProccessLog log = new ProccessLog();
         
-        
-        fsb = new FilesSandBox(this.DIR_SAIDA);
+        fsb = new FilesSandBox(this.DIR_SAIDA, specs.autoOverwrite());
         
         specs.getModelos().forEach(m -> {
             log.startNewModel(m);
@@ -48,7 +47,10 @@ public class ProccessorCore {
             root.setLogger(log);
             processaTemplatesProjeto(specs.getProjeto(),log);
         });
-        fsb.commitaArquivos();
+        // Testar se log está OK antes de commitar
+        if(!log.hasMessage()){
+            fsb.commitaArquivos();
+        }
         return log;
     }
 
