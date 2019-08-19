@@ -1,0 +1,93 @@
+
+package model;
+
+import restFramework.JsonManager;
+import java.util.Date;
+import com.google.gson.annotations.SerializedName;
+import com.google.gson.annotations.Expose;
+
+/**
+ * Classe de modelo do banco de dados para a tabela ${root.model.nomeMin}s
+ *
+ * @author Haftware S.I.
+ */
+public class ${root.model.nome} {
+
+<#list root.model.listaTodosCampos as campo>
+<#if campo.temConfig("valoresPossiveis")>
+
+    /*
+    Valores possíveis:
+<#list campo.getSubconfigsDaConfig("valoresPossiveis") as valor>
+        ${valor} - ${campo.getValorSubconfigDaConfig("valoresPossiveis", valor)}
+</#list>    */</#if>
+    // Grupo: <#list campo.getValorConfigIncluiSubconfigs("grupoCampos")as grupo>${grupo}<#sep>, </#sep></#list>
+<#if campo.temConfig("serializedName")>
+    @SerializedName("${campo.getValorConfig("serializedName")}")
+</#if>
+<#if campo.temAConfigIgualA("apareceJson","true")>
+    @Expose
+</#if>
+    private ${campo.tipoAsString} ${campo.nome};
+</#list>
+
+    public ${root.model.nome}(<#list root.model.getListaCamposComAConfigIgualA("paramConstrutor","true") as campo>${campo.tipoAsString} ${campo.nome}<#sep>, </#sep></#list>) {
+<#list root.model.listaTodosCampos as campo>
+<#if campo.temAConfigIgualA("paramConstrutor","true")>
+        this.${campo.nome} = ${campo.nome};
+<#else>
+<#if campo.temConfig("valorInicial")>
+        this.${campo.nome} = ${campo.getValorConfig("valorInicial")};
+</#if>
+</#if>
+</#list>
+    }
+
+<#list root.model.listaTodosCampos as campo>
+<#if campo.temConfig("valoresPossiveis")>
+
+    /**
+    Valores possíveis:<br>
+<#list campo.getSubconfigsDaConfig("valoresPossiveis") as valor>
+        ${valor} - ${campo.getValorSubconfigDaConfig("valoresPossiveis", valor)}<br>
+</#list>    */</#if>
+    public ${campo.tipoAsString} get${campo.nomePriCharMai}() {
+<#if campo.tipo == 'BOOLEANO' || campo.temConfig("defaultIfNull")>
+        if(${campo.nome} == null) return <#if campo.temConfig("defaultIfNull")>${campo.getValorConfig("defaultIfNull")}<#else>false</#if>;
+</#if>
+        return ${campo.nome};
+    }
+
+<#if campo.tipo == 'BOOLEANO' && !campo.temConfig("defaultIfNull")>
+    public ${campo.tipoAsString} get${campo.nomePriCharMai}LiteralBoolean() {
+        return ${campo.nome};
+    }
+</#if>
+<#if campo.temConfig("valoresPossiveis")>
+
+    /**
+    Valores possíveis:<br>
+<#list campo.getSubconfigsDaConfig("valoresPossiveis") as valor>
+        ${valor} - ${campo.getValorSubconfigDaConfig("valoresPossiveis", valor)}<br>
+</#list>    */</#if>
+    public ${root.model.nome} set${campo.nomePriCharMai}(${campo.tipoAsString} ${campo.nome}) {
+        this.${campo.nome} = ${campo.nome};
+		return this;
+    }
+<#if campo.temConfig("valoresPossiveis")>
+
+    public String getDescricao${campo.nomePriCharMai}() {
+        if(${campo.nome} == null) return null;
+        switch(${campo.nome}.toString()){
+<#list campo.getSubconfigsDaConfig("valoresPossiveis") as valor>
+            case "${valor}": return "${campo.getValorSubconfigDaConfig("valoresPossiveis", valor)}";
+</#list>
+        }
+        return null;
+    }</#if>
+</#list>
+
+	public String toJson() {
+		return JsonManager.toJsonOnlyExpose(this);
+    }
+}

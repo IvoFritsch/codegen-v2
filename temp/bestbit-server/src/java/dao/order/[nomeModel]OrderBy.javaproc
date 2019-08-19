@@ -1,0 +1,88 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package dao.order;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
+import restFramework.selecaoPersonalizada.ContadorPassavel;
+
+/**
+ * Classe para definir ordenação das consultas ao banco na tabela ${root.model.nome}
+ * 
+ * @author Haftware S.I.
+ */
+public class ${root.model.nome}OrderBy {
+ 
+    enum OrderType {
+        ASC,DESC;
+    }
+	
+	private boolean usingIndex = false;
+    private final Map<String, OrderType> fields = new LinkedHashMap<>();
+
+<#list root.model.listaTodosCampos as campo>
+
+    /**
+     * Ordena através do campo ${campo.nome} de maneira crescente.
+     *
+     * @return Esse próprio ${root.model.nome}OrderBy para ordenar mais campos.
+     */
+    public ${root.model.nome}OrderBy ${campo.nome}(){
+        fields.put("${campo.nome}", OrderType.ASC);
+        <#if campo.temAConfigIgualA("buscavelBanco", "true") || campo.temConfig("chaveEstrangeira") || campo.temAConfigIgualA("isId", "true")>this.usingIndex = true;</#if>
+        return this;
+    }
+
+    /**
+     * Ordena através do campo ${campo.nome} de maneira crescente.
+     *
+     * @return Esse próprio ${root.model.nome}OrderBy para ordenar mais campos.
+     */
+    public ${root.model.nome}OrderBy ${campo.nome}Asc(){
+        fields.put("${campo.nome}", OrderType.ASC);
+        <#if campo.temAConfigIgualA("buscavelBanco", "true") || campo.temConfig("chaveEstrangeira") || campo.temAConfigIgualA("isId", "true")>this.usingIndex = true;</#if>
+        return this;
+    }
+
+    /**
+     * Ordena através do campo ${campo.nome} de maneira decrescente.
+     *
+     * @return Esse próprio ${root.model.nome}OrderBy para ordenar mais campos.
+     */
+    public ${root.model.nome}OrderBy ${campo.nome}Desc(){
+        fields.put("${campo.nome}", OrderType.DESC);
+        <#if campo.temAConfigIgualA("buscavelBanco", "true") || campo.temConfig("chaveEstrangeira") || campo.temAConfigIgualA("isId", "true")>this.usingIndex = true;</#if>
+        return this;
+    }
+
+</#list>
+    public boolean useIndex(){
+        return this.usingIndex;
+    }
+    /**
+     * Retorna a cláusula ORDER BY gerada.
+     *
+     * @return Cláusula ORDER BY gerada.
+     */
+    public String getClause(){
+        if(fields.isEmpty()) return "";
+        StringBuilder sb = new StringBuilder(" ORDER BY ");
+        ContadorPassavel c = new ContadorPassavel();
+        c.cont = 1;
+        int qtdFields = fields.size();
+        fields.forEach((n,ot) -> {
+            sb.append(n);
+            if(ot.equals(OrderType.DESC)) 
+                sb.append(" DESC");
+            else
+                sb.append(" ASC");
+            if(c.cont < qtdFields) sb.append(", ");
+            c.cont++;
+        });
+        sb.append(" ");
+        return sb.toString();
+    }
+}
