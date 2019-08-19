@@ -68,6 +68,7 @@ public class ProccessorCore {
     
     private void processaTemplatesProjeto(String projeto, ProccessLog log){
         CodegenDatabaseController.getProjetoViaNome(projeto).getTemplates().forEach(t -> {
+            if(mustCancel()) return;
             if(!specs.getTemplates().contains(t)) return;
             log.startNewTemplate(t);
             // Se esse template deve ser processado só uma vez e já foi, retorna
