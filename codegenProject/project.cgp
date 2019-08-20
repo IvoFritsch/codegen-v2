@@ -25,5 +25,6 @@
     "Boolean": "BOOLEANO",
     "Calendar": "DATA",
     "Date": "DATA"
-  }
+  },
+  "projectRootDir": "C:/Users/Ivo/Documents/workspace/codegen-v2/"
 }

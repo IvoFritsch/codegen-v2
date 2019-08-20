@@ -95,7 +95,10 @@ public class CodegenDatabaseController {
             return new Project();
             else
             return loadProjetoFromFile(db.getCaminhoProjeto(nome));
-        
+    }
+    
+    public static boolean projectExists(String name) {
+        return !db.getCaminhoProjeto(name).isEmpty();
     }
 
     public static List<Project> getListaProjetos() {
@@ -183,6 +186,16 @@ public class CodegenDatabaseController {
         proj.addModel(modelo);
         saveDb();
         saveProj(proj);
+    }
+    
+    public static void renameProject(String oldName, String newName){
+        if(projectExists(newName)) return;
+        Project rename = getProjetoViaNome(oldName);
+        rename.setNome(newName);
+        db.addProjeto(newName, db.getCaminhoProjeto(oldName));
+        db.removeProjeto(oldName);
+        saveDb();
+        saveProj(rename);
     }
     
     public static void deleteModel(String project, String model){

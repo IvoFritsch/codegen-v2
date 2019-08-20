@@ -25,7 +25,7 @@ import org.apache.commons.io.filefilter.TrueFileFilter;
 public class Project {
     
     @Expose
-    private final String nome;
+    private String nome;
     
     @Expose
     private final List<String> models;
@@ -79,6 +79,10 @@ public class Project {
         return nome;
     }
 
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+    
     public Map<String, String> getAssocTipo() {
         return assocTipo;
     }
@@ -189,5 +193,7 @@ public class Project {
         remover.forEach(r -> snippets.remove(r));
         
     }
+    
+    
     
 }

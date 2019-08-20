@@ -195,6 +195,14 @@ public class CodegenServer extends AbstractHandler {
                 String fileEscolha = new FileChooser().getFile("Arquivo de projeto do Codegen (.cgp)",false,"cgp");
                 writer.println(fileEscolha);
                 break;
+            case "renameProject":
+                String newName = new JSONObject(leTodasLinhas(request.getReader())).getString("newName");
+                CodegenDatabaseController.renameProject(retornaCookiePorNome(request.getCookies(), "project").getValue(), newName);
+                Cookie cookieProjeto = new Cookie("project", newName);
+                cookieProjeto.setMaxAge(-1);
+                cookieProjeto.setPath("/");
+                response.addCookie(cookieProjeto);
+                break;
             case "chooseProjectFileJson":
                 String fileEscolhaJson = new FileChooser().getFile("Codegen project file (.cgp)",false,"cgp");
                 writer.println(new JSONObject().put("path",fileEscolhaJson).toString());
@@ -237,7 +245,7 @@ public class CodegenServer extends AbstractHandler {
                 CodegenDatabaseController.excluiSnippet(TemplateSpecs.fromJson(leTodasLinhas(request.getReader())));
                 break;
             case "setProjetoAtual":
-                Cookie cookieProjeto = new Cookie("project", baseRequest.getParameter("project"));
+                cookieProjeto = new Cookie("project", baseRequest.getParameter("project"));
                 cookieProjeto.setMaxAge(-1);
                 cookieProjeto.setPath("/");
                 response.addCookie(cookieProjeto);
