@@ -5,6 +5,8 @@
  */
 package auxiliar;
 
+import database.CodegenDatabaseController;
+import database.Project;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -13,10 +15,7 @@ import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.nio.file.StandardOpenOption;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,18 +33,38 @@ import proccessor.ProccessorCore;
  */
 public class FilesSandBox {
 
-    private Map<String, Writer> arquivosCriados;
+    private Map<String, ProvidedWriter> arquivosCriados;
+    class ProvidedWriter{
+        String universalFileName;
+        Writer writer;
+        boolean closed = false;
+
+        public ProvidedWriter(String universalFileName, Writer writer) {
+            this.universalFileName = universalFileName;
+            this.writer = writer;
+        }
+        
+        public void close() throws IOException{
+            if(closed) return;
+            writer.close();
+            closed = true;
+        }
+    }
+    
     private List<String> diretoriosCriar;
     private String saidaBase;
     private boolean autoOverwrite;
+    private Project projeto;
+    private Map<String, String> newChecksums = new HashMap<>();
     
     private final String PASTA_SANDBOX = "sandbox_"+hashCode()+"/";
 
     private int mudancas;
 
-    public FilesSandBox(String saidaBase, boolean autoOverwrite) {
+    public FilesSandBox(String saidaBase, boolean autoOverwrite, String projeto) {
         init(saidaBase);
         this.autoOverwrite = autoOverwrite;
+        this.projeto = CodegenDatabaseController.getProjetoViaNome(projeto);
     }
     
     private void init(String saidaBase) {
@@ -55,11 +74,10 @@ public class FilesSandBox {
         diretoriosCriar = new ArrayList<>();
     }
 
-    public Writer getFileWriter(String caminho) throws Exception {
-
+    public Writer getFileWriter(String caminho, String universalFileName) throws Exception {
         File file = new File(caminho.replaceFirst(saidaBase, PASTA_SANDBOX));
         Writer out = new OutputStreamWriter(new FileOutputStream(file));
-        arquivosCriados.put(caminho, out);
+        arquivosCriados.put(caminho, new ProvidedWriter(universalFileName, out));
         return out;
     }
 
@@ -71,25 +89,18 @@ public class FilesSandBox {
 
     public void commitaArquivos() {
         ConsolePrinter.printInfo("Consolidando sandbox de arquivos nº "+hashCode()+"...\n"
-                + "Arquivos modificados serão abertos para comparação");
+                + "Arquivos modificados serão abertos para comparação...");
         mudancas = 0;
         ConsolePrinter.printInfo("Fechando os arquivos do Sandbox nº "+hashCode()+"...");
-        arquivosCriados.forEach((c, w) -> {
-            try {
-                w.close();
-            } catch (IOException ex) {
-                System.err.println("Erro ao fechar arquivo:\n\t\t"
-                        + ex.getLocalizedMessage());
-            }
-        });
-        arquivosCriados.forEach((c, w) -> escreveMensagemCopyrightNoFimDoArquivo(c.replaceFirst(saidaBase, PASTA_SANDBOX)));
-        arquivosCriados.forEach((c, w) -> escreveChecksumNoFinalDoArquivo(c.replaceFirst(saidaBase, PASTA_SANDBOX)));
+        fechaArquivos();
         diretoriosCriar.forEach(d -> new File(d).mkdirs());
-
+        arquivosCriados.forEach((c, w) -> {
+            colocaChecksumArquivoNaFila(c, w.universalFileName);
+        });
         arquivosCriados.forEach((c, w) -> {
             if(ProccessorCore.mustCancel()) return;
             File f = new File(c);
-            if (precisaFazerWinmerge(f) && !autoOverwrite) {
+            if (!autoOverwrite && precisaFazerWinmerge(f, w.universalFileName)) {
                 runWinMerge(c.replaceFirst(saidaBase, PASTA_SANDBOX), c);
             } else {
                 copiaArquivo(c.replaceFirst(saidaBase, PASTA_SANDBOX), c);
@@ -98,40 +109,44 @@ public class FilesSandBox {
         if (mudancas == 0) {
             ConsolePrinter.printInfo("Nada mudou...");
         }
+        newChecksums.forEach((a, cs) -> projeto.setFileChecksum(a, cs));
+        projeto.save();
     }
     
     public void deleteSandbox(){
         try {
             ConsolePrinter.printInfo("Deletando o Sandbox nº "+hashCode()+"...");
+            fechaArquivos();
             FileUtils.deleteDirectory(new File(PASTA_SANDBOX));
         } catch (Exception ex) {
             ConsolePrinter.printError("Erro ao deletar o Sandbox nº "+hashCode()+":\n\t\t"
                     + ex.getLocalizedMessage());
         }
     }
+    
+    private void fechaArquivos(){
+        arquivosCriados.forEach((c, w) -> {
+            try {
+                w.close();
+            } catch (IOException ex) {
+                System.err.println("Erro ao fechar arquivo:\n\t\t"
+                        + ex.getLocalizedMessage());
+            }
+        });
+    }
 
-    private boolean precisaFazerWinmerge(File arquivo) {
+    private boolean precisaFazerWinmerge(File arquivo, String nome) {
         try {
             if (arquivo.exists() && !arquivo.isDirectory()) {
-
+                
                 String texto = new String(Files.readAllBytes(arquivo.toPath()));
 
-                String comentarioChecksum = getComentarioChecksum(0, Utils.pegaExtensaoArquivo(
-                        arquivo.toString()
-                ));
+                String checksumLidoArquivo = projeto.getFileChecksum(nome);
+                String checksumCalculadoParaArquivo = getChecksum(texto);
 
-                int inicioChecksum = comentarioChecksum.indexOf("checksum =");
-
-                int ateOndeFazerChecksum = texto.lastIndexOf("checksum =") - inicioChecksum;
-
-                String conteudoComentario = Utils.extraiConteudoComentario(Utils.pegaExtensaoArquivo(arquivo.toString()), texto.substring(ateOndeFazerChecksum));
-                String checksumLidoArquivo = conteudoComentario
-                        .substring(conteudoComentario.lastIndexOf("checksum =") + "checksum =".length()).trim();
-                String checksumCalculadoParaArquivo = String.valueOf(getChecksum(texto, ateOndeFazerChecksum));
-
-                //System.out.println(arquivo+
-                //                 "\n     Lido: "+checksumLidoArquivo+
-                //                 "\nCalculado: "+checksumCalculadoParaArquivo);
+//                System.out.println(arquivo+
+//                                 "\n     Lido: "+checksumLidoArquivo+
+//                                 "\nCalculado: "+checksumCalculadoParaArquivo);
                 return !checksumLidoArquivo.equals(checksumCalculadoParaArquivo);
             } else {
                 return false;
@@ -140,15 +155,6 @@ public class FilesSandBox {
             //e.printStackTrace();
             return true;
         }
-    }
-
-    private String getComentarioChecksum(long checksum, String extensao) {
-        return Utils.formataComentario(extensao,
-                "Não apagar nem modificar esse comentário\n"
-                + "Gerenciado pelo Sandbox do Codegen\n"
-                + "Passar essa linha pelo Winmerge também >>>\n"
-                + " checksum = "
-                + String.valueOf(checksum));
     }
 
     private void copiaArquivo(String origem, String destino) {
@@ -183,44 +189,20 @@ public class FilesSandBox {
                     + destino);
         }
     }
-
-    private void escreveChecksumNoFinalDoArquivo(String arquivo) {
+    
+    private void colocaChecksumArquivoNaFila(String arquivo, String universalFileName) {
         try {
-            String texto = new String(Files.readAllBytes(Paths.get(arquivo)));
+            String texto = new String(Files.readAllBytes(Paths.get(arquivo.replaceFirst(saidaBase, PASTA_SANDBOX))));
 
-            long checksumValue = getChecksum(texto, texto.length());
-
-            String comentarioChecksum = getComentarioChecksum(checksumValue, Utils.pegaExtensaoArquivo(arquivo));
-
-            Files.write(Paths.get(arquivo), comentarioChecksum.getBytes(), StandardOpenOption.APPEND);
-
+            String checksumValue = getChecksum(texto);
+            newChecksums.put(universalFileName, checksumValue);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private void escreveMensagemCopyrightNoFimDoArquivo(String arquivo) {
-        String data;
-
-        SimpleDateFormat sdfDate = new SimpleDateFormat("dd/MM/yyyy - HH:mm:ss");//dd/MM/yyyy
-        Date now = new Date();
-        String strDate = sdfDate.format(now);
-        data = Utils.formataComentario(Utils.pegaExtensaoArquivo(arquivo),
-                "    Esse arquivo foi gerado pelo Haftware Codegen\n"
-                + "    Todos os direitos reservados à Haftware SI\n");
-        try {
-            Files.write(Paths.get(arquivo), data.getBytes(), StandardOpenOption.APPEND);
-        } catch (IOException e) {
-            //exception handling left as an exercise for the reader
-        }
-    }
-
     // Normaliza as quebras de linha e retorna a checksum
-    private long getChecksum(String texto, int posicaoFinal) {
-
-        if (texto.length() != posicaoFinal) {
-            texto = texto.substring(0, posicaoFinal);
-        }
+    private String getChecksum(String texto) {
 
         texto = Utils.formalizaQuebrasDeLinha(texto);
         byte[] bytesTexto = texto.getBytes();
@@ -228,6 +210,6 @@ public class FilesSandBox {
         Checksum checksum = new CRC32();
         checksum.update(bytesTexto, 0, texto.length());
 
-        return checksum.getValue();
+        return String.valueOf(checksum.getValue());
     }
 }

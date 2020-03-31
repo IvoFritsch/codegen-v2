@@ -16,8 +16,9 @@ document.addEventListener('DOMContentLoaded', function() {
 }, false);
 
 function comandaProcessar(){
-	avancaFluxo();
 	proccessSpecs.projeto = '${root.projeto.nome}';
+	proccessSpecs.autoOverwrite = $('#ignorarWinmerge').is(':checked');
+	avancaFluxo();
 	var xmlhttps = new XMLHttpRequest();
 	var url = "/api/processaTemplate";
 	xmlhttps.open("POST", url, true);
@@ -30,6 +31,14 @@ function comandaProcessar(){
 	    }
 	};
 	xmlhttps.send(JSON.stringify(proccessSpecs));
+}
+
+function cancelaProcessar(){
+	var xmlhttps = new XMLHttpRequest();
+	var url = "/api/cancelaProcessamento";
+	xmlhttps.open("POST", url, true);
+	xmlhttps.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+	xmlhttps.send("{}");
 }
 
 function novoModelObjResultados(){

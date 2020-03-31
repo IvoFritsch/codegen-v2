@@ -17,7 +17,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import main.CodegenServer;
 import model.ServerModel;
 import org.apache.commons.io.FileUtils;
 
@@ -40,17 +39,14 @@ public class CodegenDatabaseController {
             if(!new File(db.getCaminhoProjeto(p)).exists()){
                 ConsolePrinter.printWarning("Projeto "+p+" não encontrado, sendo removido do banco de dados do Codegen...\n"
                         + "Essa mensagem é normal caso o Codegen foi transferido para outro computador\n"
-                        + "Você pode reimportar os projetos não encontrados através da URL:\n"
-                        + "    http://localhost:"+CodegenServer.PORTA+"/importProject.html");
+                        + "Você pode reimportar os projetos não encontrados");
                 projsRemover.add(p);
             }
         });
         projsRemover.forEach(p -> db.removeProjeto(p));
         saveDb();
-        try {
-            FileUtils.write(new File("codegenDB/NUNCA EDITAR ESSE DIRETÓRIO MANUALMENTE.txt"), 
-                    "Sempre utilizar o Microservidor do Codegen para fazer edições", "UTF-8");
-        } catch (Exception e){}
+        Utils.writeFile(new File("codegenDB/NUNCA EDITAR ESSE DIRETÓRIO MANUALMENTE.txt"), 
+                "Sempre utilizar o Microservidor do Codegen para fazer edições");
     }
     
     private static void loadDb() throws Exception{
@@ -66,17 +62,13 @@ public class CodegenDatabaseController {
     
     private static void saveDb() {
         File db = new File(DB_FILE);
-        try {
-            FileUtils.write(db, CodegenDatabaseController.db.toJson(), "UTF-8");
-        } catch (Exception e){}
+        Utils.writeFile(db, CodegenDatabaseController.db.toJson());
     }
     
     
-    private static void saveProj(Project proj) {
+    static void saveProj(Project proj) {
         File projFile = new File(db.getCaminhoProjeto(proj.getNome()));
-        try {
-            FileUtils.write(projFile, proj.toJson(), "UTF-8");
-        } catch (Exception e){}
+        Utils.writeFile(projFile, proj.toJson());
     }
     private static String pegaPastaPaiProjeto(String projeto){
         String camProj = Utils.pegaPastaPaiArquivo(db.getCaminhoProjeto(projeto));
@@ -148,9 +140,7 @@ public class CodegenDatabaseController {
     }
     
     private static void salvaArquivoProjeto(String caminho, Project projeto){
-        try{
-            FileUtils.write(new File(caminho), projeto.toJson(), "UTF-8");
-        } catch(Exception e){}
+        Utils.writeFile(new File(caminho), projeto.toJson());
     }
 
     public static void removeFileAndParentsIfEmpty(Path path, String basePath)
@@ -217,28 +207,19 @@ public class CodegenDatabaseController {
     
     public static void gravaArquivoModelo(String projeto, ServerModel modelo) {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        try {
-            FileUtils.write(new File(pegaPastaPaiProjeto(projeto)+"models/"+modelo.getNome()+".cgm"), gson.toJson(modelo), "UTF-8");
-        } catch (Exception ex) {
-        }
+        Utils.writeFile(new File(pegaPastaPaiProjeto(projeto)+"models/"+modelo.getNome()+".cgm"), gson.toJson(modelo));
     }
     
     public static void criaArquivoTemplate(String projeto, String nome) {
-        try {
-            String caminho = pegaPastaPaiProjeto(projeto) + "templates/"+nome;
-            caminho = Utils.formalizaCaminho(caminho);
-            FileUtils.write(new File(caminho), "Aqui você escreve o template", "UTF-8");
-        } catch (Exception ex) {
-        }
+        String caminho = pegaPastaPaiProjeto(projeto) + "templates/"+nome;
+        caminho = Utils.formalizaCaminho(caminho);
+        Utils.writeFile(new File(caminho), "Aqui você escreve o template");
     }
     
     public static void criaArquivoSnippet(String projeto, String nome) {
-        try {
-            String caminho = pegaPastaPaiProjeto(projeto) + "templates/microSnippets/"+nome+".snip";
-            caminho = Utils.formalizaCaminho(caminho);
-            FileUtils.write(new File(caminho), "Aqui você escreve o snippet", "UTF-8");
-        } catch (Exception ex) {
-        }
+        String caminho = pegaPastaPaiProjeto(projeto) + "templates/microSnippets/"+nome+".snip";
+        caminho = Utils.formalizaCaminho(caminho);
+        Utils.writeFile(new File(caminho), "Aqui você escreve o snippet");
     }
     
     public static void removeArquivoTemplate(String projeto, String nome) {

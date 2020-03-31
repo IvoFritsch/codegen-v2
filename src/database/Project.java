@@ -34,6 +34,9 @@ public class Project {
     private final List<String> templates;
     
     @Expose
+    private Map<String, String> generatedFilesChecksum;
+    
+    @Expose
     private final List<String> snippets;
     
     @Expose
@@ -54,6 +57,7 @@ public class Project {
         this.templates = new ArrayList<>();
         this.snippets = new ArrayList<>();
         this.assocTipo = new HashMap<>();
+        this.generatedFilesChecksum = new HashMap<>();
     }
     
     public Project(String nome) {
@@ -62,6 +66,7 @@ public class Project {
         this.templates = new ArrayList<>();
         this.snippets = new ArrayList<>();
         this.assocTipo = new HashMap<>();
+        this.generatedFilesChecksum = new HashMap<>();
         this.projectRootDir = getRootDir()+"";
         System.out.println(getRootDir());
     }
@@ -100,6 +105,14 @@ public class Project {
         return templates;
     }
     
+    public String getFileChecksum(String file){
+        return generatedFilesChecksum.get(file);
+    }
+    
+    public String setFileChecksum(String file, String checksum){
+        return generatedFilesChecksum.put(file, checksum);
+    }
+    
     public void addModel(ServerModel model){
         if(models.contains(model.getNome())) return;
         models.add(model.getNome());
@@ -114,6 +127,7 @@ public class Project {
     public static Project fromJson(String json){
         Project retorno = new Gson().fromJson(json, Project.class);
         retorno.projectRootDir = retorno.getRootDir();
+        if(retorno.generatedFilesChecksum == null) retorno.generatedFilesChecksum = new HashMap<>();
         return retorno;
     }
     
@@ -194,6 +208,9 @@ public class Project {
         
     }
     
+    public void save(){
+        CodegenDatabaseController.saveProj(this);
+    }
     
     
 }

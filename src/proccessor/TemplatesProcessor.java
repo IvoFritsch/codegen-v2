@@ -30,6 +30,7 @@ public class TemplatesProcessor {
     private Configuration cfg;
     private String projeto;
     private FilesSandBox fsb;
+    private String universalFileName;
     private ProccessLog log = new ProccessLog();
     private Template tmp;
     private Map root;
@@ -44,10 +45,10 @@ public class TemplatesProcessor {
     
     
     public TemplatesProcessor(String projeto, String templateName){
-        this(projeto,templateName, null);
+        this(projeto,templateName, null, null);
     }
     
-    public TemplatesProcessor(String projeto, String templateName, FilesSandBox fsb) {
+    public TemplatesProcessor(String projeto, String templateName, FilesSandBox fsb, String universalFileName) {
         log.startNewTemplate(templateName);
         this.projeto = projeto;
         this.fsb = fsb;
@@ -56,6 +57,7 @@ public class TemplatesProcessor {
         this.originalTemplateName = templateName;
         this.templateName = projeto+"/" + templateName + "proc";
         this.root = new HashMap();
+        this.universalFileName = universalFileName;
     }
 
     
@@ -149,6 +151,7 @@ public class TemplatesProcessor {
                     + ex.getLocalizedMessage().replace(" in " + this.templateName, "");
             ConsolePrinter.printError(mensagem);
             log.putMessage(mensagem);
+            System.out.println("");
             FileUtils.deleteQuietly(new File(this.templateName));
             return null;
             
@@ -163,7 +166,7 @@ public class TemplatesProcessor {
         }
         fsb.criaDiretorio(caminho.substring(0,caminho.lastIndexOf("/")+1));
         try {
-            Writer out = fsb.getFileWriter(caminho);
+            Writer out = fsb.getFileWriter(caminho, universalFileName);
             tmp.process(root, out);
         } catch (Exception ex) {
             String mensagem = "Ocorreu um erro ao tentar processar o "+this.palavraIdentificadoraComLink+", erro:\n"

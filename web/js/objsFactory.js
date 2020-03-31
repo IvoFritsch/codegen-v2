@@ -41,6 +41,7 @@ function newSimpleFieldConfig(nomeConfig){
 function newProccessSpecs(){
 	return {
 		projeto:"",
+		autoOverwrite: false,
 		modelos:[],
 		templates:[],
 		config:{},

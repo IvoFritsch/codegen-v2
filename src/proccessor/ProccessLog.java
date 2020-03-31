@@ -20,14 +20,19 @@ public class ProccessLog {
     
     @Expose        // Model      Template    Mensagem
     private final Map<String,Map<String,List<String>>> mensagens = new HashMap<>();
+    @Expose
+    private final Map<String, Boolean> modelsHasMessages = new HashMap<>();
     
     private Map<String,List<String>> logModelAtual;
     private List<String> logTemplateAtual;
     private boolean hasMessage = false;
+    private String modelAtual = null;
     
     public void startNewModel(String nome){
         logModelAtual = new HashMap<>();
         mensagens.put(nome, logModelAtual);
+        modelsHasMessages.put(nome, false);
+        modelAtual = nome;
     }
     
     public void startNewTemplate(String nome){
@@ -38,6 +43,7 @@ public class ProccessLog {
     
     public void putMessage(String mensagem){
         if(logTemplateAtual == null) return;
+        if(modelAtual != null) modelsHasMessages.put(modelAtual, true);
         hasMessage = true;
         logTemplateAtual.add(mensagem);
     }

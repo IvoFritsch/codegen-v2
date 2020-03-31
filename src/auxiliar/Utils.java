@@ -7,6 +7,9 @@ package auxiliar;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import java.io.File;
+import java.io.IOException;
+import org.apache.commons.io.FileUtils;
 
 /**
  *
@@ -57,6 +60,13 @@ public class Utils {
     public static String pegaPastaPaiArquivo(String s){
         if(s.endsWith("/")) s = s.substring(0, s.length() - 1);
         return s.substring(0, s.lastIndexOf("/") + 1);
+    }
+    
+    public static void writeFile(File f, String content){
+        try {
+            FileUtils.write(f, content.replace("\r\n", "\n").replace("\r", "\n").replace("\n", "\r\n"), "UTF-8");
+        } catch (IOException ex) {
+        }
     }
 
     public static String formalizaQuebrasDeLinha(String texto){
