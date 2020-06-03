@@ -1,0 +1,22 @@
+{
+  "nome": "IndexField",
+  "listaCampos": [
+    {
+      "nome": "getNome",
+      "tipoAsString": "String",
+      "config": {
+        "conf": {
+          "descricao": {
+            "nome": "descricao",
+            "valor": "Retorna o nome do campo",
+            "temSubConfs": false
+          }
+        }
+      }
+    }
+  ],
+  "config": {
+    "defaults": {},
+    "modelConfigs": {}
+  }
+}

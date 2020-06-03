@@ -1,0 +1,45 @@
+<table class="table">
+<tr>
+	<th class="col-md-7">
+		<div class="row">
+			<div class="col-md-4">
+				Tipo
+			</div>
+			<div class="col-md-5">
+				Nome
+			</div>
+			<div class="col-md-3">
+				Parâmetros
+			</div>
+		</div>
+	</th>
+	<th>Descricao</th>
+</tr>
+<#list root.model.listaTodosCampos as campo>
+<tr>
+	<td>
+	<div class="row">
+		<div class="col-md-9" style="padding-right:0px;">
+			<strong class="text-info">${campo.tipoAsString}</strong> 
+			<strong class="text-success" style="float:right;text-align:right;">${campo.nome} (
+			</strong>
+		</div>
+		<div class="col-md-3" style="padding-left:3px;">
+		<#list campo.getSubconfigsDaConfig("params") as param>
+			<strong class="text-warning">${campo.getValorSubconfigDaConfig("params",param)}</strong>
+			<strong class="text-info">${param}</strong>
+			<#sep><strong>, </strong></#sep>
+			<#if param?has_next>
+			<br/>
+			</#if>
+		</#list>
+		<strong class="text-success">
+			)
+		</strong>
+		</div>
+	</div>
+	</td>
+	<td>${campo.getValorConfig("descricao")}</td>
+</tr>
+</#list>
+</table>

@@ -6,6 +6,8 @@
 package model;
 
 import com.google.gson.annotations.Expose;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -18,6 +20,9 @@ public class CodegenModelConfig {
     Map<String, String> defaults;
     @Expose
     Map<String, String> modelConfigs;
+    @Expose
+    List<IndexModel> indexes;
+    
     
     public boolean temDefault(String defaultName){
         if(defaults == null) return false;
@@ -37,6 +42,11 @@ public class CodegenModelConfig {
     public String getConfig(String configName){
         if(!temConfig(configName)) return "";
         return modelConfigs.get(configName);
+    }
+    
+    public List<IndexModel> getIndexes(){
+       if(indexes == null) return new ArrayList<>();
+       return indexes;
     }
     
 }

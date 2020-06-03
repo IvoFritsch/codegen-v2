@@ -80,6 +80,19 @@
           }
         }
       }
+    },
+    {
+      "nome": "getIndexes",
+      "tipoAsString": "List\u003c IndexModel \u003e",
+      "config": {
+        "conf": {
+          "descricao": {
+            "nome": "descricao",
+            "valor": "Retorna uma lista com todos os índices do modelo",
+            "temSubConfs": false
+          }
+        }
+      }
     }
   ],
   "config": {

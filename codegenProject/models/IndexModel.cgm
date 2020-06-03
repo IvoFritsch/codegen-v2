@@ -1,0 +1,35 @@
+{
+  "nome": "IndexModel",
+  "listaCampos": [
+    {
+      "nome": "getNome",
+      "tipoAsString": "String",
+      "config": {
+        "conf": {
+          "descricao": {
+            "nome": "descricao",
+            "valor": "Retorna o nome do índice",
+            "temSubConfs": false
+          }
+        }
+      }
+    },
+    {
+      "nome": "getCampos",
+      "tipoAsString": "List\u003c IndexField \u003e",
+      "config": {
+        "conf": {
+          "descricao": {
+            "nome": "descricao",
+            "valor": "Retorna uma lista com todos os campos do índice",
+            "temSubConfs": false
+          }
+        }
+      }
+    }
+  ],
+  "config": {
+    "defaults": {},
+    "modelConfigs": {}
+  }
+}

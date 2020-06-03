@@ -144,6 +144,8 @@ public class CodegenServer extends AbstractHandler {
         PrintWriter writer = response.getWriter();
         target = target.replace("/api/", "");
 
+        System.out.println(target);
+        
         switch (target) {
             case "getProjects":
                 List<Project> listaProjetos = CodegenDatabaseController.getListaProjetos();

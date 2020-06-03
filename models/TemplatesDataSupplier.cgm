@@ -123,22 +123,7 @@
     }
   ],
   "config": {
-    "defaults": {
-      "pedro": "ivo"
-    },
-    "modelConfigs": {},
-    "indexes": [
-      {
-        "nome": "pedrin",
-        "campos": [
-          {
-            "nome": "carai"
-          },
-          {
-            "nome": "ivin"
-          }
-        ]
-      }
-    ]
+    "defaults": {},
+    "modelConfigs": {}
   }
 }

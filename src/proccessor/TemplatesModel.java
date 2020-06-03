@@ -5,7 +5,6 @@
  */
 package proccessor;
 
-import auxiliar.ConsolePrinter;
 import auxiliar.Utils;
 import com.google.gson.Gson;
 import java.util.ArrayList;
