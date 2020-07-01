@@ -100,11 +100,18 @@ public class FilesSandBox {
         arquivosCriados.forEach((c, w) -> {
             if(ProccessorCore.mustCancel()) return;
             File f = new File(c);
-            if (!autoOverwrite && precisaFazerWinmerge(f, w.universalFileName)) {
-                runWinMerge(c.replaceFirst(saidaBase, PASTA_SANDBOX), c);
-            } else {
-                copiaArquivo(c.replaceFirst(saidaBase, PASTA_SANDBOX), c);
+            
+            switch ( getProcedimentoFinalArquivo(f, w.universalFileName) ){
+                case COPIAR:
+                    copiaArquivo(c.replaceFirst(saidaBase, PASTA_SANDBOX), c);
+                    break;
+                case IGNORAR:
+                    break;
+                case WINMERGE:
+                    runWinMerge(c.replaceFirst(saidaBase, PASTA_SANDBOX), c);
+                    break;
             }
+            
         });
         if (mudancas == 0) {
             ConsolePrinter.printInfo("Nada mudou...");
@@ -135,7 +142,13 @@ public class FilesSandBox {
         });
     }
 
-    private boolean precisaFazerWinmerge(File arquivo, String nome) {
+    enum ProcedimentoFinalizacaoArquivo {
+        WINMERGE,
+        COPIAR,
+        IGNORAR
+    }
+    
+    private ProcedimentoFinalizacaoArquivo getProcedimentoFinalArquivo(File arquivo, String nome) {
         try {
             if (arquivo.exists() && !arquivo.isDirectory()) {
                 
@@ -143,17 +156,22 @@ public class FilesSandBox {
 
                 String checksumLidoArquivo = projeto.getFileChecksum(nome);
                 String checksumCalculadoParaArquivo = getChecksum(texto);
+                String primeiraLinha  = texto.split("\n", 2)[0];
+                
+                if ( primeiraLinha.contains("codegen-ignore") ) return ProcedimentoFinalizacaoArquivo.IGNORAR;
 
-//                System.out.println(arquivo+
-//                                 "\n     Lido: "+checksumLidoArquivo+
-//                                 "\nCalculado: "+checksumCalculadoParaArquivo);
-                return !checksumLidoArquivo.equals(checksumCalculadoParaArquivo);
+                if ( checksumLidoArquivo.equals(checksumCalculadoParaArquivo) || autoOverwrite ){
+                    return ProcedimentoFinalizacaoArquivo.COPIAR;
+                }
+                
+                return ProcedimentoFinalizacaoArquivo.WINMERGE;
+                
             } else {
-                return false;
+                return ProcedimentoFinalizacaoArquivo.COPIAR;
             }
         } catch (Exception e) {
             //e.printStackTrace();
-            return true;
+            return ProcedimentoFinalizacaoArquivo.WINMERGE;
         }
     }
 

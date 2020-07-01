@@ -95,7 +95,7 @@ public class CodegenFieldConfig {
     
     void preparaEstrutura(TemplatesField campo){
         this.campo = campo;
-        System.out.println(campo);
+        //System.out.println(campo);
         if(conf != null) 
             conf.forEach((c,ce) -> ce.preparaEstrutura(this));
     }

@@ -1,7 +1,0 @@
-<#list root.getListaModelos() as model >
-  <#list model.config.indexes as index >
-    <#list index.campos as campo >
-      ${campo.nome?upper_case}<#sep>,</#sep>
-    </#list>
-  </#list>
-</#list>
