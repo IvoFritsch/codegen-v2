@@ -1,5 +1,5 @@
 # Codegen V2.0
-An very complete tool to generate source code based on data models
+An very robust and reliable tool to generate source code based on data models, it has been used in production environments for years with no problems at all
 
 Haftware SI - 2019
 
