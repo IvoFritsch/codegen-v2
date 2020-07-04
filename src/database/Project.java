@@ -22,34 +22,26 @@ import org.apache.commons.io.filefilter.TrueFileFilter;
  *
  * @author Ivo Fritsch
  */
-public class Project {
+public final class Project {
     
     @Expose
     private String nome;
     
     @Expose
-    private final List<String> models;
-    
-    @Expose
-    private final List<String> templates;
-    
-    @Expose
     private Map<String, String> generatedFilesChecksum;
-    
-    @Expose
-    private final List<String> snippets;
     
     @Expose
     private final Map<String,String> assocTipo;
     
     @Expose
-    private String saidaGeracao;
+    private String caminhoSaidaGeracao;
     
-    @Expose
-    private String rodapeArquivosGerados;
+    private final List<String> templates;
     
-    @Expose
-    private String projectRootDir;
+    private final List<String> models;
+    
+    private final List<String> snippets;
+    
 
     public Project() {
         this.nome = "";
@@ -67,13 +59,36 @@ public class Project {
         this.snippets = new ArrayList<>();
         this.assocTipo = new HashMap<>();
         this.generatedFilesChecksum = new HashMap<>();
-        this.projectRootDir = getRootDir()+"";
-        System.out.println(getRootDir());
     }
 
     public String getCaminhoSaidaGeracao(){
-        String saida = getRootDir()+"";
+        String concat = caminhoSaidaGeracao;
+        if(concat == null) concat = "";
+        String saida = getRootDir() + concat;
         return saida;
+    }
+
+    public String getCaminhoSaidaGeracaoRelativo(){
+        return caminhoSaidaGeracao != null ? caminhoSaidaGeracao : "";
+    }
+    
+    public void setCaminhoSaidaGeracao(String caminhoSaidaGeracao) {
+        if(caminhoSaidaGeracao == null || caminhoSaidaGeracao.isEmpty()) {
+            this.caminhoSaidaGeracao = "";
+            return;
+        }
+        caminhoSaidaGeracao = caminhoSaidaGeracao.replace('\\', '/');
+        if(caminhoSaidaGeracao.startsWith("/")) {
+           caminhoSaidaGeracao = caminhoSaidaGeracao.replaceFirst("/", "");
+        }
+        if(caminhoSaidaGeracao.isEmpty()) {
+            this.caminhoSaidaGeracao = "";
+            return;
+        }
+        if(!caminhoSaidaGeracao.endsWith("/")){
+           caminhoSaidaGeracao += "/";
+        }
+        this.caminhoSaidaGeracao = caminhoSaidaGeracao;
     }
     
     public boolean isPseudo() {
@@ -126,13 +141,12 @@ public class Project {
     
     public static Project fromJson(String json){
         Project retorno = new Gson().fromJson(json, Project.class);
-        retorno.projectRootDir = retorno.getRootDir();
         if(retorno.generatedFilesChecksum == null) retorno.generatedFilesChecksum = new HashMap<>();
         return retorno;
     }
     
     public String toJson(){
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        Gson gson = new GsonBuilder().setPrettyPrinting().excludeFieldsWithoutExposeAnnotation().create();
         return gson.toJson(this);
     }
 
@@ -211,6 +225,4 @@ public class Project {
     public void save(){
         CodegenDatabaseController.saveProj(this);
     }
-    
-    
 }

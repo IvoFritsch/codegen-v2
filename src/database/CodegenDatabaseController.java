@@ -170,6 +170,14 @@ public class CodegenDatabaseController {
         return null;
     }
     
+    public static void mudaCaminhoSaidaGeracaoProjeto(String projeto, String novoCaminho){
+        Project proj = getProjetoViaNome(projeto);
+        if(proj == null) return;
+        proj.setCaminhoSaidaGeracao(novoCaminho);
+        saveDb();
+        saveProj(proj);
+    }
+    
     public static void addModel(String projeto, ServerModel modelo){
         Project proj = getProjetoViaNome(projeto);
         if(proj == null) return;

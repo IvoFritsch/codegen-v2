@@ -143,14 +143,11 @@ public class CodegenServer extends AbstractHandler {
     private void supplyApi(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response) throws IOException {
         PrintWriter writer = response.getWriter();
         target = target.replace("/api/", "");
-
-        System.out.println(target);
-        
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
         switch (target) {
             case "getProjects":
                 List<Project> listaProjetos = CodegenDatabaseController.getListaProjetos();
                 
-                Gson gson = new GsonBuilder().setPrettyPrinting().create();
                 writer.println(gson.toJson(listaProjetos));
                 break;
             case "getModels":
@@ -191,7 +188,7 @@ public class CodegenServer extends AbstractHandler {
                 break;
             case "getProject":
                 String proj = baseRequest.getParameter("project");
-                writer.println(CodegenDatabaseController.getProjetoViaNome(proj).toJson());
+                writer.println(gson.toJson(CodegenDatabaseController.getProjetoViaNome(proj)));
                 break;
             case "chooseProjectFile":
                 String fileEscolha = new FileChooser().getFile("Arquivo de projeto do Codegen (.cgp)",false,"cgp");
@@ -204,6 +201,10 @@ public class CodegenServer extends AbstractHandler {
                 cookieProjeto.setMaxAge(-1);
                 cookieProjeto.setPath("/");
                 response.addCookie(cookieProjeto);
+                break;
+            case "mudaCaminhoSaidaGeracaoProjeto":
+                String novoCaminho = new JSONObject(leTodasLinhas(request.getReader())).getString("novoCaminho");
+                CodegenDatabaseController.mudaCaminhoSaidaGeracaoProjeto(retornaCookiePorNome(request.getCookies(), "project").getValue(), novoCaminho);
                 break;
             case "chooseProjectFileJson":
                 String fileEscolhaJson = new FileChooser().getFile("Codegen project file (.cgp)",false,"cgp");

@@ -61,6 +61,21 @@ function criaNovaAssociacaoTipo(){
 	xmlhttps.send(JSON.stringify(template));
 }
 
+function gravaCaminhoSaidaGeracao(){
+  
+	var xmlhttps = new XMLHttpRequest();
+	var url = "/api/mudaCaminhoSaidaGeracaoProjeto";
+	xmlhttps.open("POST", url, true);
+	xmlhttps.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+	xmlhttps.onreadystatechange = function() {
+	    if (this.readyState == 4 && this.status == 200) {
+			loadProjeto();
+	    }
+	};
+	
+	xmlhttps.send(JSON.stringify({ novoCaminho: $('#saidaGeracao').val() }));
+}
+
 function novaAssociacaoTipo(){
 	$('#espacoFormNovaAssociacaoTipo').removeAttr('hidden');
 }

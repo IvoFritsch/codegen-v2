@@ -94,6 +94,8 @@ public class ServerTemplatesProcessor {
             StringWriter output = new StringWriter();
             tmp.process(root, output);
             FileUtils.deleteQuietly(new File("web/" + this.templateName));
+            if("dadosProjeto.html".equals(this.templateName))
+                System.out.println(output.toString());
             return output.toString();
         } catch (Exception ex) {
             ConsolePrinter.printError("Ocorreu um erro ao tentar processar o arquivo web '" + this.templateName + "', erro:\n"

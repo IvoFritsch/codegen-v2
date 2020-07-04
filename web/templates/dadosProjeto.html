@@ -3,113 +3,121 @@
 </h3>
 
 <div class="row collapse" id="collapseDadosProjeto">
-	<div class="col-md-6">
-	  Nome do projeto:<br>
-	  <input type="text" id="nome" name="nome" class="form-control" value="${root.projeto.nome}"><br>
-	  Caminho de saida da geração.<br/> 
-	  <strong>Caminho deve ser RELATIVO ao root do projeto, que é:<br/>"</strong><strong class="text-info">${root.projeto.rootDir}</strong><strong>":</strong><br>
-	  <input type="text" id="saidaGeracao" name="saidaGeracao" class="form-control"><br>
-	</div>
-	<div class="col-md-6">
-		<h4>Associações de tipo:
-		<a class="btn pull-right" title="
-		$ {campo.tipo} é uma varivel auxiliar carregada com um valor de acordo com a tabela a abaixo.
+  <div class="col-md-6">
+    Nome do projeto:<br>
+    <input type="text" id="nome" name="nome" class="form-control" value="${root.projeto.nome}" disabled><br>
+    Caminho de saida da geração.<br/> 
+    <strong>Caminho deve ser RELATIVO ao root do projeto, que é:<br/>"</strong><strong class="text-info">${root.projeto.rootDir}</strong><strong>":</strong><br>
+    <div class="row">
+      <div class="col-md-10">
+        <input type="text" id="saidaGeracao" name="saidaGeracao" class="form-control" style="font-weight: bold;" value="${root.projeto.caminhoSaidaGeracaoRelativo}"/>
+      </div>
+      <div class="col-md-1">
+        <a title="Confirmar" class="btn btn-success" onclick="gravaCaminhoSaidaGeracao();"><span class="glyphicon glyphicon-ok" style="font-weight: bold"></span></a>
+      </div>
+    </div>
+    <br/>
+  </div>
+  <div class="col-md-6">
+    <h4>Associações de tipo:
+    <a class="btn pull-right" title="
+    $ {campo.tipo} é uma varivel auxiliar carregada com um valor de acordo com a tabela a abaixo.
 Caso o campo seja de um tipo que não esteja nessa lista, é verificado se existe um modelo com o mesmo nome do tipo do campo, se sim, é retornado 'OUTRO_MODEL', caso contrario é retornado 'DESCONHECIDO'"><span class="glyphicon glyphicon-question-sign"></span></a></h4>
-		<table class='table'>
-			<tr>
-				<th>tipoAsString</th>
-				<th>Tipo associado</th>
-				<th>Opções</th>
-			</tr>
-			<#list root.projeto.assocTipo?keys as tipoAsString>
-			<tr>
+    <table class='table'>
+      <tr>
+        <th>tipoAsString</th>
+        <th>Tipo associado</th>
+        <th>Opções</th>
+      </tr>
+      <#list root.projeto.assocTipo?keys as tipoAsString>
+      <tr>
 
-				<td>${tipoAsString}</td>
-				<td>${root.projeto.assocTipo[tipoAsString]}</td>
-				<td ><a title="Excluir essa associação de tipo" class='btn btn-danger' onclick='excluiAssociacaoTipo("");'><span class='glyphicon glyphicon-remove'></span></a></td>
+        <td>${tipoAsString}</td>
+        <td>${root.projeto.assocTipo[tipoAsString]}</td>
+        <td ><a title="Excluir essa associação de tipo" class='btn btn-danger' onclick='excluiAssociacaoTipo("");'><span class='glyphicon glyphicon-remove'></span></a></td>
 
-			</tr>
-			</#list>
-		</table>
+      </tr>
+      </#list>
+    </table>
 
-		<table class="table">
-			<tr id="espacoFormNovaAssociacaoTipo" hidden="true">
-				<td>
-				<div class="row">
-					<div class="col-md-6">
-					tipoAsString:<input id="tpasNovaAssociacaoTipo" type="text" class="form-control">
-					</div>
-					<div class="col-md-6">
-					Tipo associado:<input id="tipoNovaAssociacaoTipo" type="text" class="form-control">
-					</div>
-				</div>
-				</td>
-				<td><br/><a title="Confirmar" class="btn btn-success" onclick="criaNovaAssociacaoTipo();"><span class="glyphicon glyphicon-ok"></span></a>
-					<a  title="Cancelar" class="btn btn-danger" onclick="fechaCriacaoAssociacaoTipo();"><span class="glyphicon glyphicon-remove"></span></a></td>
-			</tr>
-		</table>
-		<div id="botaoNovaAssociacaoTipo">
-			<a class="btn btn-info pull-right" onclick="novaAssociacaoTipo();">Nova Associação de Tipo</a>
-		</div><br/><br/>
-		<strong class="text-warning"></strong>
-	</div>
+    <table class="table">
+      <tr id="espacoFormNovaAssociacaoTipo" hidden="true">
+        <td>
+        <div class="row">
+          <div class="col-md-6">
+          tipoAsString:<input id="tpasNovaAssociacaoTipo" type="text" class="form-control">
+          </div>
+          <div class="col-md-6">
+          Tipo associado:<input id="tipoNovaAssociacaoTipo" type="text" class="form-control">
+          </div>
+        </div>
+        </td>
+        <td><br/><a title="Confirmar" class="btn btn-success" onclick="criaNovaAssociacaoTipo();"><span class="glyphicon glyphicon-ok"></span></a>
+          <a  title="Cancelar" class="btn btn-danger" onclick="fechaCriacaoAssociacaoTipo();"><span class="glyphicon glyphicon-remove"></span></a></td>
+      </tr>
+    </table>
+    <div id="botaoNovaAssociacaoTipo">
+      <a class="btn btn-info pull-right" onclick="novaAssociacaoTipo();">Nova Associação de Tipo</a>
+    </div><br/><br/>
+    <strong class="text-warning"></strong>
+  </div>
 </div>
 <hr/>
 <div class="row">
-	<div class="col-md-6">
-		<h4>Templates desse projeto:</h4>
-		<table class='table'>
-			<tr>
-				<th >Caminho/Nome</th>
-				<th >Opções</th>
-			</tr>
-		{{#templates}}
-			<tr>
-				<td>{{.}}</td>
-				<td ><a title="Editar esse template com o editor externo configurado no sistema operacional" class='btn btn-success' onclick='editaTemplateExterno("{{.}}", "${root.projeto.nome}");'><span class='glyphicon glyphicon-pencil'></span>  
-				<span class='glyphicon glyphicon-share'></span></a>
-				<a title="Excluir esse template" class='btn btn-danger' onclick='excluiTemplateProjeto("{{.}}");'><span class='glyphicon glyphicon-remove'></span></a></td>
-			</tr>
-		{{/templates}}
-		</table>
+  <div class="col-md-6">
+    <h4>Templates desse projeto:</h4>
+    <table class='table'>
+      <tr>
+        <th >Caminho/Nome</th>
+        <th >Opções</th>
+      </tr>
+    {{#templates}}
+      <tr>
+        <td>{{.}}</td>
+        <td ><a title="Editar esse template com o editor externo configurado no sistema operacional" class='btn btn-success' onclick='editaTemplateExterno("{{.}}", "${root.projeto.nome}");'><span class='glyphicon glyphicon-pencil'></span>  
+        <span class='glyphicon glyphicon-share'></span></a>
+        <a title="Excluir esse template" class='btn btn-danger' onclick='excluiTemplateProjeto("{{.}}");'><span class='glyphicon glyphicon-remove'></span></a></td>
+      </tr>
+    {{/templates}}
+    </table>
 
-		<table class="table">
-			<tr id="espacoFormNovoTemplateProjeto" hidden="true">
-				<td>Caminho/Nome:<input id="nomeNovoTemplateProjeto" type="text" class="form-control"></td>
-				<td><br/><a title="Confirmar" class="btn btn-success" onclick="criaNovoTemplateProjeto();"><span class="glyphicon glyphicon-ok"></span></a>
-					<a  title="Cancelar" class="btn btn-danger" onclick="fechaCriacaoTemplateProjeto();"><span class="glyphicon glyphicon-remove"></span></a></td>
-			</tr>
-		</table>
-		<div id="botaoNovoTemplateProjeto">
-			<a class="btn btn-info pull-right" onclick="novoTemplateProjeto();">Novo template</a>
-		</div>
-	</div>
-	<div class="col-md-6">
-		<h4>Snippets desse projeto:</h4>
-		<table class='table'>
-			<tr>
-				<th >Caminho/Nome</th>
-				<th >Opções</th>
-			</tr>
-		{{#snippets}}
-			<tr>
-				<td>{{.}}</td>
-				<td ><a title="Editar esse snippet com o editor externo configurado no sistema operacional" class='btn btn-success' onclick='editaSnippetExterno("{{.}}", "${root.projeto.nome}");'><span class='glyphicon glyphicon-pencil'></span>  
-				<span class='glyphicon glyphicon-share'></span></a>
-				<a title="Excluir esse snippet" class='btn btn-danger' onclick='excluiSnippetProjeto("{{.}}");'><span class='glyphicon glyphicon-remove'></span></a></td>
-			</tr>
-		{{/snippets}}
-		</table>
+    <table class="table">
+      <tr id="espacoFormNovoTemplateProjeto" hidden="true">
+        <td>Caminho/Nome:<input id="nomeNovoTemplateProjeto" type="text" class="form-control"></td>
+        <td><br/><a title="Confirmar" class="btn btn-success" onclick="criaNovoTemplateProjeto();"><span class="glyphicon glyphicon-ok"></span></a>
+          <a  title="Cancelar" class="btn btn-danger" onclick="fechaCriacaoTemplateProjeto();"><span class="glyphicon glyphicon-remove"></span></a></td>
+      </tr>
+    </table>
+    <div id="botaoNovoTemplateProjeto">
+      <a class="btn btn-info pull-right" onclick="novoTemplateProjeto();">Novo template</a>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <h4>Snippets desse projeto:</h4>
+    <table class='table'>
+      <tr>
+        <th >Caminho/Nome</th>
+        <th >Opções</th>
+      </tr>
+    {{#snippets}}
+      <tr>
+        <td>{{.}}</td>
+        <td ><a title="Editar esse snippet com o editor externo configurado no sistema operacional" class='btn btn-success' onclick='editaSnippetExterno("{{.}}", "${root.projeto.nome}");'><span class='glyphicon glyphicon-pencil'></span>  
+        <span class='glyphicon glyphicon-share'></span></a>
+        <a title="Excluir esse snippet" class='btn btn-danger' onclick='excluiSnippetProjeto("{{.}}");'><span class='glyphicon glyphicon-remove'></span></a></td>
+      </tr>
+    {{/snippets}}
+    </table>
 
-		<table class="table">
-			<tr id="espacoFormNovoSnippetProjeto" hidden="true">
-				<td>Caminho/Nome:<input id="nomeNovoSnippetProjeto" type="text" class="form-control"></td>
-				<td><br/><a title="Confirmar" class="btn btn-success" onclick="criaNovoSnippetProjeto();"><span class="glyphicon glyphicon-ok"></span></a>
-					<a  title="Cancelar" class="btn btn-danger" onclick="fechaCriacaoSnippetProjeto();"><span class="glyphicon glyphicon-remove"></span></a></td>
-			</tr>
-		</table>
-		<div id="botaoNovoSnippetProjeto">
-			<a class="btn btn-info pull-right" onclick="novoSnippetProjeto();">Novo snippet</a>
-		</div>
-	</div>
+    <table class="table">
+      <tr id="espacoFormNovoSnippetProjeto" hidden="true">
+        <td>Caminho/Nome:<input id="nomeNovoSnippetProjeto" type="text" class="form-control"></td>
+        <td><br/><a title="Confirmar" class="btn btn-success" onclick="criaNovoSnippetProjeto();"><span class="glyphicon glyphicon-ok"></span></a>
+          <a  title="Cancelar" class="btn btn-danger" onclick="fechaCriacaoSnippetProjeto();"><span class="glyphicon glyphicon-remove"></span></a></td>
+      </tr>
+    </table>
+    <div id="botaoNovoSnippetProjeto">
+      <a class="btn btn-info pull-right" onclick="novoSnippetProjeto();">Novo snippet</a>
+    </div>
+  </div>
 </div>
