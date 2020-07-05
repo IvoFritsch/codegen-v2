@@ -25,8 +25,9 @@ public class ProccessLog {
     
     private Map<String,List<String>> logModelAtual;
     private List<String> logTemplateAtual;
-    private boolean hasMessage = false;
+    private boolean hasError = false;
     private String modelAtual = null;
+    private String templateAtual = null;
     
     public void startNewModel(String nome){
         logModelAtual = new HashMap<>();
@@ -37,14 +38,26 @@ public class ProccessLog {
     
     public void startNewTemplate(String nome){
         if(logModelAtual == null) return;
+        templateAtual = nome;
         logTemplateAtual = new ArrayList<>();
         logModelAtual.put(nome, logTemplateAtual);
+    }
+    
+    public void cancelaTemplateAtual(){
+        if(logModelAtual == null) return;
+        logModelAtual.remove(templateAtual);
+    }
+    
+    public void putError(String mensagem){
+        if(logTemplateAtual == null) return;
+        if(modelAtual != null) modelsHasMessages.put(modelAtual, true);
+        hasError = true;
+        logTemplateAtual.add(mensagem);
     }
     
     public void putMessage(String mensagem){
         if(logTemplateAtual == null) return;
         if(modelAtual != null) modelsHasMessages.put(modelAtual, true);
-        hasMessage = true;
         logTemplateAtual.add(mensagem);
     }
     
@@ -52,8 +65,8 @@ public class ProccessLog {
         return Utils.toJsonOnlyExpose(this);
     }
 
-    public boolean hasMessage() {
-        return hasMessage;
+    public boolean hasError() {
+        return hasError;
     }
     
     

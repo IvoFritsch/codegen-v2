@@ -77,7 +77,7 @@ public class TemplatesProcessor {
             if (ex.getClass() == FileNotFoundException.class) {
                 String mensagem = "Não foi encontrada a pasta de templates.";
                 ConsolePrinter.printError(mensagem);
-                log.putMessage(mensagem);
+                log.putError(mensagem);
                 return false;
             }
             Logger.getLogger(TemplatesProcessor.class.getName()).log(Level.SEVERE, null, ex);
@@ -93,7 +93,7 @@ public class TemplatesProcessor {
         } catch (Exception ex) {
             String mensagem = "Ocorreu um erro ao tentar ler o "+this.palavraIdentificadora+", erro:\n"
                     + ex.getLocalizedMessage().replace(" in " + this.templateName, "");
-            log.putMessage(mensagem);
+            log.putError(mensagem);
             ConsolePrinter.printError(mensagem);
             pronto = false;
             return false;
@@ -103,7 +103,7 @@ public class TemplatesProcessor {
         } catch (Exception ex) {
             String mensagem = "Ocorreu um erro ao tentar parsear o "+this.palavraIdentificadoraComLink+", erro:\n"
                     + ex.getLocalizedMessage().replace(" in " + this.templateName, "");
-            log.putMessage(mensagem);
+            log.putError(mensagem);
             ConsolePrinter.printError(mensagem);
             pronto = false;
         }
@@ -131,7 +131,7 @@ public class TemplatesProcessor {
                     + "Erro do Codegen:\n"
                     + "O TemplateProcessor tentou executar um put sendo que o root não está devidamente instanciado";
             ConsolePrinter.printError(mensagem);
-            log.putMessage(mensagem);
+            log.putError(mensagem);
             pronto = false;
             return;
         }
@@ -150,7 +150,7 @@ public class TemplatesProcessor {
             String mensagem = "Ocorreu um erro ao tentar processar o "+this.palavraIdentificadoraComLink+", erro:\n"
                     + ex.getLocalizedMessage().replace(" in " + this.templateName, "");
             ConsolePrinter.printError(mensagem);
-            log.putMessage(mensagem);
+            log.putError(mensagem);
             System.out.println("");
             FileUtils.deleteQuietly(new File(this.templateName));
             return null;
@@ -169,10 +169,16 @@ public class TemplatesProcessor {
             Writer out = fsb.getFileWriter(caminho, universalFileName);
             tmp.process(root, out);
         } catch (Exception ex) {
-            String mensagem = "Ocorreu um erro ao tentar processar o "+this.palavraIdentificadoraComLink+", erro:\n"
-                    + ex.getLocalizedMessage().replace(" in " + this.templateName, "");
-            ConsolePrinter.printError(mensagem);
-            log.putMessage(mensagem);
+            if(ex.getCause() instanceof CancelaGeracaoException){
+                log.putMessage("A geração desse template foi cancelada com ${root.cancelaGeracao()}");
+                fsb.cancelaArquivo(caminho);
+                log.cancelaTemplateAtual();
+            } else {
+                String mensagem = "Ocorreu um erro ao tentar processar o "+this.palavraIdentificadoraComLink+", erro:\n"
+                        + ex.getLocalizedMessage().replace(" in " + this.templateName, "");
+                ConsolePrinter.printError(mensagem);
+                log.putError(mensagem);
+            }
         }
         FileUtils.deleteQuietly(new File(this.templateName));
     }
@@ -183,7 +189,7 @@ public class TemplatesProcessor {
 
     public void setIsSnippet(boolean isSnippet) {
         this.isSnippet = isSnippet;
-        if(isSnippet){
+        if(this.isSnippet){
             this.palavraIdentificadora = "snippet "+
                     this.originalTemplateName.substring(0, this.originalTemplateName.lastIndexOf(".")).replace("microSnippets/", "")+"";
             

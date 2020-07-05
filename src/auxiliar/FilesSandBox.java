@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.zip.CRC32;
 import java.util.zip.Checksum;
 import org.apache.commons.io.FileUtils;
@@ -79,6 +81,14 @@ public class FilesSandBox {
         Writer out = new OutputStreamWriter(new FileOutputStream(file));
         arquivosCriados.put(caminho, new ProvidedWriter(universalFileName, out));
         return out;
+    }
+    
+    public void cancelaArquivo(String caminho){
+        try {
+            ProvidedWriter cancelar = arquivosCriados.get(caminho);
+            cancelar.close();
+            arquivosCriados.remove(caminho);
+        } catch (IOException ex) {}
     }
 
     public void criaDiretorio(String caminho) {

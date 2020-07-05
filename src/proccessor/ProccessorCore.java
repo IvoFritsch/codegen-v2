@@ -49,7 +49,7 @@ public class ProccessorCore {
             processaTemplatesProjeto(specs.getProjeto(),log);
         });
         // Testar se log está OK antes de commitar
-        if(!log.hasMessage()){
+        if(!log.hasError()){
             fsb.commitaArquivos();
         }
         fsb.deleteSandbox();

@@ -8,7 +8,6 @@ package proccessor;
 import auxiliar.ModifiableString;
 import database.CodegenDatabaseController;
 import database.Project;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -37,6 +36,10 @@ public class TemplatesDataSupplier {
         return model;
     }
 
+    public void cancelaGeracao(){
+        throw new CancelaGeracaoException();
+    }
+    
     public Project getProjeto() {
         return CodegenDatabaseController.getProjetoViaNome(projeto);
     }
