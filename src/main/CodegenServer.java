@@ -49,7 +49,11 @@ import proccessor.TemplatesProcessor;
  */
 public class CodegenServer extends AbstractHandler {
 
-    public static final int PORTA = 9080;
+    public static int PORTA = 9080;
+    
+    static {
+        org.eclipse.jetty.util.log.Log.setLog(new NoLogging());
+    }
     
     @Override
     public void handle(String target,
@@ -294,6 +298,7 @@ public class CodegenServer extends AbstractHandler {
                 + "  Todos os direitos reservados à Haftware Sistemas ltda.\n");
         ConsolePrinter.printInfo("Inicializando...");
         ConsolePrinter.printInfo("Inicializando o microservidor do Codegen...");
+        CliStarter.readConfFile();
         Server server = new Server(PORTA);
         try{
             CodegenDatabaseController.init();

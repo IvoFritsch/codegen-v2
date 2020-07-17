@@ -13,12 +13,15 @@ import java.net.HttpURLConnection;
 import java.net.Socket;
 import java.net.URISyntaxException;
 import java.net.URL;
+import org.apache.commons.io.FileUtils;
+import org.json.JSONObject;
 
 /**
  *
  * @author Pedrivo
  */
 public class CliStarter {
+    private static String jarPath = "";
     public static void main(String[] args) {
         if(args.length == 0){
             System.out.println("Inicia/Para o servidor do Haftware Codegen v2.\n"
@@ -28,7 +31,19 @@ public class CliStarter {
                     + "    status              -  Mostra se o Codegen está rodando.");
             return;
         }
-        
+        jarPath = null;
+        try {
+            jarPath = new File(CliStarter.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getPath();
+        } catch (URISyntaxException ex) {
+            System.err.println("Não foi possível iniciar o Codegen, arquivo .jar não foi encontrado");
+            return;
+        }
+        try {
+            readConfFile();
+        } catch (Exception ex) {
+            System.err.println("Não foi possível iniciar o Codegen, erro ao ler arquivo conf.json");
+            return;
+        }
         if(args.length > 0){
             switch(args[0]){
                 case "start":
@@ -47,16 +62,28 @@ public class CliStarter {
         }
     }
     
+    public static void readConfFile() throws IOException{
+        String path;
+        if(!jarPath.isEmpty()){
+            path = new File(jarPath).getParentFile().getPath();
+        } else {
+            path = ".";
+        }
+        File confFile = new File(path + "/conf.json");
+        if(!confFile.exists()){
+            FileUtils.write(confFile, 
+                    new JSONObject()
+                        .put("port", CodegenServer.PORTA)
+                    .toString(2), "UTF-8");
+        }
+        String confJson = FileUtils.readFileToString(confFile, "UTF-8");
+        JSONObject confs = new JSONObject(confJson);
+        CodegenServer.PORTA = confs.getInt("port");
+    }
+    
     private static void startCodegen(){
         if(codegenAvailabilityCheck()){
             System.err.println("O Codegen já está rodando.");
-            return;
-        }
-        String jarPath = null;
-        try {
-            jarPath = new File(CliStarter.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getPath();
-        } catch (URISyntaxException ex) {
-            System.err.println("Não foi possível iniciar o Codegen, arquivo .jar não foi encontrado");
             return;
         }
         try {
