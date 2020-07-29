@@ -62,6 +62,10 @@ public class TemplatesField {
         return this.config.getValorConfig(config);
     }
     
+    public String getValorConfigOuDefault(String config, String def) {
+        return this.config.temConfig(config) ? this.config.getValorConfig(config) : def;
+    }
+    
     public List<String> getValorConfigIncluiSubconfigs(String config) {
         return this.config.getValorConfigIncluiSubconfigs(config);
     }

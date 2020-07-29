@@ -22,6 +22,27 @@
       }
     },
     {
+      "nome": "getValorConfigOuDefault",
+      "tipoAsString": "String",
+      "config": {
+        "conf": {
+          "params": {
+            "subconfs": {
+              "config": "String",
+              "default": "String"
+            },
+            "nome": "params",
+            "temSubConfs": true
+          },
+          "descricao": {
+            "nome": "descricao",
+            "valor": "Retorna o valor da configuração do campo, ou o segundo parâmetro caso não existir",
+            "temSubConfs": false
+          }
+        }
+      }
+    },
+    {
       "nome": "getValorConfigIncluiSubconfigs",
       "tipoAsString": "List\u003c String \u003e",
       "config": {

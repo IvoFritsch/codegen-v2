@@ -1,29 +1,15 @@
 {
   "nome": "codegen",
-  "models": [
-    "TemplatesField",
-    "TemplatesDataSupplier",
-    "TemplatesModel",
-    "ModifiableString",
-    "ModelConfig",
-    "IndexModel",
-    "IndexField"
-  ],
-  "templates": [
-    "web/microSnippets/tabelaFuncoes[nomeModel].snip",
-    "pedro.txt"
-  ],
   "generatedFilesChecksum": {
     "web/microSnippets/tabelaFuncoesModelConfig.snip": "2748666501",
     "web/microSnippets/tabelaFuncoesTemplatesModel.snip": "2004021268",
-    "web/microSnippets/tabelaFuncoesTemplatesField.snip": "2697955645",
-    "web/microSnippets/tabelaFuncoesTemplatesDataSupplier.snip": "2250865562",
+    "web/microSnippets/tabelaFuncoesTemplatesField.snip": "1603821851",
+    "web/microSnippets/tabelaFuncoesTemplatesDataSupplier.snip": "2994993964",
     "web/microSnippets/tabelaFuncoesIndexModel.snip": "2390645515",
     "web/microSnippets/tabelaFuncoesIndexField.snip": "2927737207",
     "web/microSnippets/tabelaFuncoesModifiableString.snip": "2829590122",
     "pedro.txt": "3597005563"
   },
-  "snippets": [],
   "assocTipo": {
     "String": "STRING",
     "int": "INTEIRO",
@@ -38,6 +24,5 @@
     "Boolean": "BOOLEANO",
     "Calendar": "DATA",
     "Date": "DATA"
-  },
-  "projectRootDir": "C:/Users/pedro/workspace/codegen-v2/"
+  }
 }

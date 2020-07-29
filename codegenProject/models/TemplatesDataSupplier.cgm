@@ -69,6 +69,19 @@
       }
     },
     {
+      "nome": "cancelaGeracao",
+      "tipoAsString": "Void",
+      "config": {
+        "conf": {
+          "descricao": {
+            "nome": "descricao",
+            "valor": "Cancela a geração do template para o model atual",
+            "temSubConfs": false
+          }
+        }
+      }
+    },
+    {
       "nome": "getOutroModel",
       "tipoAsString": "Model",
       "config": {
