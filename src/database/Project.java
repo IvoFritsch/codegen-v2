@@ -10,10 +10,15 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.Expose;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import model.ServerModel;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.TrueFileFilter;
@@ -38,7 +43,43 @@ public final class Project {
     
     private final List<String> templates;
     
-    private final List<String> models;
+    class ModelLista {
+        boolean importado;
+        String nome;
+
+        public ModelLista(String nome, boolean importado) {
+            this.importado = importado;
+            this.nome = nome;
+        }
+
+        public ModelLista(String nome) {
+            this.nome = nome;
+            importado = false;
+        }
+
+        @Override
+        public int hashCode() {
+            int hash = 3;
+            hash = 13 * hash + Objects.hashCode(this.nome);
+            return hash;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj) {
+                return true;
+            }
+            if (obj == null) {
+                return false;
+            }
+            if (getClass() != obj.getClass()) {
+                return false;
+            }
+            final ModelLista other = (ModelLista) obj;
+            return Objects.equals(this.nome, other.nome);
+        }
+    }
+    private final List<ModelLista> models;
     
     private final List<String> snippets;
     
@@ -111,9 +152,13 @@ public final class Project {
         return CodegenDatabaseController.getRootProjeto(this.nome);
     }
 
-
+    public boolean modeloPertenceAoProjeto(String model){
+        ModelLista r = models.stream().filter(m -> m.equals(new ModelLista(model))).findFirst().orElse(null);
+        return r != null && !r.importado;
+    }
+    
     public List<String> getModels() {
-        return models;
+        return models.stream().map(m -> m.nome).collect(Collectors.toList());
     }
 
     public List<String> getTemplates() {
@@ -129,13 +174,13 @@ public final class Project {
     }
     
     public void addModel(ServerModel model){
-        if(models.contains(model.getNome())) return;
-        models.add(model.getNome());
+        if(models.contains(new ModelLista(model.getNome()))) return;
+        models.add(new ModelLista(model.getNome(), false));
         CodegenDatabaseController.gravaArquivoModelo(nome, model);
     }
     
     public void deleteModel(String model){
-        if (!models.remove(model)) return;
+        if (!models.remove(new ModelLista(model))) return;
         CodegenDatabaseController.deleteModelFile(nome, model);
     }
     
@@ -178,15 +223,30 @@ public final class Project {
         new File(dir+"models").mkdirs();
         FileUtils.listFiles(new File(dir+"models"), 
                 TrueFileFilter.INSTANCE, TrueFileFilter.INSTANCE).forEach(f -> {
-                    if(!models.contains(Utils.pegaNomeArquivo(Utils.formalizaCaminho(f.toString()))))
-                        models.add(Utils.pegaNomeArquivo(Utils.formalizaCaminho(f.toString())));
+                    if(".import".equals(f.getName())) return;
+                    ModelLista inserir = new ModelLista(Utils.pegaNomeArquivo(Utils.formalizaCaminho(f.toString())));
+                    if(!models.contains(inserir))
+                        models.add(inserir);
                 });
-        List<String> remover = new ArrayList<>();
+        List<ModelLista> remover = new ArrayList<>();
         models.forEach(m -> {
             if(!new File(dir+"models/"+m+".cgm").exists())
                 remover.add(m);
         });
         remover.forEach(r -> models.remove(r));
+        File imports = new File(dir+"models/.import");
+        if(imports.exists()){
+            try {
+                FileUtils.readLines(imports, "UTF-8").forEach(p -> {
+                    CodegenDatabaseController.getListaModelosProjeto(p).forEach(mi -> {
+                        if(!models.contains(new ModelLista(mi))){
+                            models.add(new ModelLista(mi, true));
+                        }
+                    });
+                });
+            } catch (IOException ex) {
+            }
+        }
     }
     
     void updateTemplatesFromDir(String dir){
