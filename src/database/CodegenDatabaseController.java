@@ -161,6 +161,7 @@ public class CodegenDatabaseController {
     
     
     public static String getArquivoModelo(String projeto, String modelo) {
+        projeto = CodegenDatabaseController.getProjetoViaNome(projeto).modeloImportadoDoProjeto(modelo);
         File file = new File(pegaPastaPaiProjeto(projeto) + "models/" + modelo+".cgm");
         if(!file.exists()) return null;
         try {

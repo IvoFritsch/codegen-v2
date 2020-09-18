@@ -16,8 +16,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import model.ServerModel;
 import org.apache.commons.io.FileUtils;
@@ -45,16 +43,19 @@ public final class Project {
     
     class ModelLista {
         boolean importado;
+        String importadoDe;
         String nome;
 
-        public ModelLista(String nome, boolean importado) {
-            this.importado = importado;
+        public ModelLista(String nome, String importadoDe) {
+            this.importado = true;
+            this.importadoDe = importadoDe;
             this.nome = nome;
         }
 
         public ModelLista(String nome) {
             this.nome = nome;
             importado = false;
+            this.nome = nome;
         }
 
         @Override
@@ -152,9 +153,13 @@ public final class Project {
         return CodegenDatabaseController.getRootProjeto(this.nome);
     }
 
-    public boolean modeloPertenceAoProjeto(String model){
+    public boolean modeloPertenceAEsseProjeto(String model){
         ModelLista r = models.stream().filter(m -> m.equals(new ModelLista(model))).findFirst().orElse(null);
         return r != null && !r.importado;
+    }
+    public String modeloImportadoDoProjeto(String model){
+        ModelLista r = models.stream().filter(m -> m.equals(new ModelLista(model))).findFirst().orElse(null);
+        return r.importadoDe;
     }
     
     public List<String> getModels() {
@@ -175,7 +180,7 @@ public final class Project {
     
     public void addModel(ServerModel model){
         if(models.contains(new ModelLista(model.getNome()))) return;
-        models.add(new ModelLista(model.getNome(), false));
+        models.add(new ModelLista(model.getNome()));
         CodegenDatabaseController.gravaArquivoModelo(nome, model);
     }
     
@@ -225,12 +230,13 @@ public final class Project {
                 TrueFileFilter.INSTANCE, TrueFileFilter.INSTANCE).forEach(f -> {
                     if(".import".equals(f.getName())) return;
                     ModelLista inserir = new ModelLista(Utils.pegaNomeArquivo(Utils.formalizaCaminho(f.toString())));
-                    if(!models.contains(inserir))
+                    if(!models.contains(inserir)){
                         models.add(inserir);
+                    }
                 });
         List<ModelLista> remover = new ArrayList<>();
         models.forEach(m -> {
-            if(!new File(dir+"models/"+m+".cgm").exists())
+            if(!new File(dir+"models/"+m.nome+".cgm").exists())
                 remover.add(m);
         });
         remover.forEach(r -> models.remove(r));
@@ -240,7 +246,7 @@ public final class Project {
                 FileUtils.readLines(imports, "UTF-8").forEach(p -> {
                     CodegenDatabaseController.getListaModelosProjeto(p).forEach(mi -> {
                         if(!models.contains(new ModelLista(mi))){
-                            models.add(new ModelLista(mi, true));
+                            models.add(new ModelLista(mi, p));
                         }
                     });
                 });

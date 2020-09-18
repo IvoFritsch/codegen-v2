@@ -16,11 +16,17 @@
 		<#list root.projeto.models as model>
 		<tr>
 		<td >
-		<h4>${model} </h4>
+		<h4>
+                    ${model}
+                </h4>
 		</td>
 		<td>
-		<a class="btn btn-warning pull-right" title="Editar modelo" href="editModel.html?model=${model}"><span class="glyphicon glyphicon-edit"></span> Editar esse modelo</a>
-		</td>
+                    <#if root.projeto.modeloPertenceAEsseProjeto(model)>
+                        <a class="btn btn-warning pull-right" title="Editar modelo" href="editModel.html?model=${model}"><span class="glyphicon glyphicon-edit"></span> Editar esse modelo</a>
+                    <#else>
+                        <span style="font-size: 17px;color: brown;">Importado de <b>${root.projeto.modeloImportadoDoProjeto(model)}</b></span>
+                    </#if>
+                </td>
 		</tr>
 		</#list>
 		</table>

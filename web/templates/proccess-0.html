@@ -11,7 +11,10 @@
 	    	<input name="processaModelo" class="checkModel" type="checkbox" value="${model}">
 	    </td>
 		<td>
-			${model}
+                    ${model}
+                    <#if !root.projeto.modeloPertenceAEsseProjeto(model)>
+                        <span style="color: brown;">(Importado de <b>${root.projeto.modeloImportadoDoProjeto(model)}</b>)</span>
+                    </#if>
 		</td>
 	</tr>
 </#list>
