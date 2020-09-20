@@ -80,14 +80,14 @@ public final class Project {
             return Objects.equals(this.nome, other.nome);
         }
     }
-    private final List<ModelLista> models;
+    private final List<ModelLista> allModels;
     
     private final List<String> snippets;
     
 
     public Project() {
         this.nome = "";
-        this.models = new ArrayList<>();
+        this.allModels = new ArrayList<>();
         this.templates = new ArrayList<>();
         this.snippets = new ArrayList<>();
         this.assocTipo = new HashMap<>();
@@ -96,7 +96,7 @@ public final class Project {
     
     public Project(String nome) {
         this.nome = nome;
-        this.models = new ArrayList<>();
+        this.allModels = new ArrayList<>();
         this.templates = new ArrayList<>();
         this.snippets = new ArrayList<>();
         this.assocTipo = new HashMap<>();
@@ -154,16 +154,16 @@ public final class Project {
     }
 
     public boolean modeloPertenceAEsseProjeto(String model){
-        ModelLista r = models.stream().filter(m -> m.equals(new ModelLista(model))).findFirst().orElse(null);
+        ModelLista r = allModels.stream().filter(m -> m.equals(new ModelLista(model))).findFirst().orElse(null);
         return r != null && !r.importado;
     }
     public String modeloImportadoDoProjeto(String model){
-        ModelLista r = models.stream().filter(m -> m.equals(new ModelLista(model))).findFirst().orElse(null);
+        ModelLista r = allModels.stream().filter(m -> m.equals(new ModelLista(model))).findFirst().orElse(null);
         return r.importadoDe;
     }
     
     public List<String> getModels() {
-        return models.stream().map(m -> m.nome).collect(Collectors.toList());
+        return allModels.stream().map(m -> m.nome).collect(Collectors.toList());
     }
 
     public List<String> getTemplates() {
@@ -179,20 +179,25 @@ public final class Project {
     }
     
     public void addModel(ServerModel model){
-        if(models.contains(new ModelLista(model.getNome()))) return;
-        models.add(new ModelLista(model.getNome()));
+        if(allModels.contains(new ModelLista(model.getNome()))) return;
+        allModels.add(new ModelLista(model.getNome()));
         CodegenDatabaseController.gravaArquivoModelo(nome, model);
     }
     
     public void deleteModel(String model){
-        if (!models.remove(new ModelLista(model))) return;
+        if (!allModels.remove(new ModelLista(model))) return;
         CodegenDatabaseController.deleteModelFile(nome, model);
     }
     
     public static Project fromJson(String json){
-        Project retorno = new Gson().fromJson(json, Project.class);
-        if(retorno.generatedFilesChecksum == null) retorno.generatedFilesChecksum = new HashMap<>();
-        return retorno;
+        try{
+            Project retorno = new Gson().fromJson(json, Project.class);
+            if(retorno.generatedFilesChecksum == null) retorno.generatedFilesChecksum = new HashMap<>();
+            return retorno;
+        } catch(Exception e){
+            System.out.println(e.getMessage() + json);
+            throw e;
+        }
     }
     
     public String toJson(){
@@ -230,23 +235,23 @@ public final class Project {
                 TrueFileFilter.INSTANCE, TrueFileFilter.INSTANCE).forEach(f -> {
                     if(".import".equals(f.getName())) return;
                     ModelLista inserir = new ModelLista(Utils.pegaNomeArquivo(Utils.formalizaCaminho(f.toString())));
-                    if(!models.contains(inserir)){
-                        models.add(inserir);
+                    if(!allModels.contains(inserir)){
+                        allModels.add(inserir);
                     }
                 });
         List<ModelLista> remover = new ArrayList<>();
-        models.forEach(m -> {
+        allModels.forEach(m -> {
             if(!new File(dir+"models/"+m.nome+".cgm").exists())
                 remover.add(m);
         });
-        remover.forEach(r -> models.remove(r));
+        remover.forEach(r -> allModels.remove(r));
         File imports = new File(dir+"models/.import");
         if(imports.exists()){
             try {
                 FileUtils.readLines(imports, "UTF-8").forEach(p -> {
                     CodegenDatabaseController.getListaModelosProjeto(p).forEach(mi -> {
-                        if(!models.contains(new ModelLista(mi))){
-                            models.add(new ModelLista(mi, p));
+                        if(!allModels.contains(new ModelLista(mi))){
+                            allModels.add(new ModelLista(mi, p));
                         }
                     });
                 });
