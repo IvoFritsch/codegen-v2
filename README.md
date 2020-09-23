@@ -1,4 +1,4 @@
-# Codegen V2.0
+# Codegen V2
 An very robust and reliable tool to generate source code based on data models, it has been used in production environments for years with no problems at all
 
 Haftware SI - 2019
@@ -11,7 +11,7 @@ Codegen V2.0 is fully portable and the installation is done by simply copying th
 1. Extract the [codegen-pack.zip](https://github.com/IvoFritsch/codegen-v2/raw/master/codegen-pack.zip) in any location on your system.
 2. Add the location to your PATH variable (**If you dont want to do this, you must always call the `codegen.bat` via it's complete path.**)
 4. Everything's ready
-5. You may now execute Codegen V2.0
+5. You may now execute Codegen V2
 
 ## Usage:
 
