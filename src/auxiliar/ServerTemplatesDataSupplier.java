@@ -44,7 +44,7 @@ public class ServerTemplatesDataSupplier {
         Map<String, Integer> configsEncontradas = new HashMap<>();
         try{
         listaModelosProjeto.forEach(m -> {
-            List<ServerField> listaCamposModelo = ServerModel.fromJson(CodegenDatabaseController.getArquivoModelo(projeto,m)).getListaCampos();
+            List<ServerField> listaCamposModelo = ServerModel.fromJson(CodegenDatabaseController.getArquivoModelo(projeto,m).json, m).getListaCampos();
             listaCamposModelo.forEach(c -> {
                 List<String> listaConfigsCampo = c.getConfig().getListaConfigsCampo();
                 listaConfigsCampo.forEach(cfg -> {

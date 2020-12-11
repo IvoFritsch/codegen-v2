@@ -9,6 +9,8 @@ import auxiliar.FilesSandBox;
 import database.CodegenDatabaseController;
 import java.util.ArrayList;
 import java.util.List;
+import main.VersaoInvalidaException;
+import model.ServerModel;
 
 /**
  *
@@ -38,13 +40,21 @@ public class ProccessorCore {
         
         specs.getModelos().forEach(m -> {
             log.startNewModel(m);
-            root = new TemplatesDataSupplier(specs.getProjeto(),
-                    TemplatesModel.fromJson(
-                            CodegenDatabaseController.getArquivoModelo(
-                                    specs.getProjeto(),
-                                    m)),
-                                    specs.getConfig()
-                    );
+            CodegenDatabaseController.ArquivoModel arquivoModelo = null;
+            try {
+              arquivoModelo = CodegenDatabaseController.getArquivoModelo(specs.getProjeto(), m);
+              root = new TemplatesDataSupplier(specs.getProjeto(),
+                  TemplatesModel.fromJson(
+                              ServerModel.fromJson(arquivoModelo.json, m).toJson(true)
+                  ).adicionaCamposPadraoProjeto(arquivoModelo.projeto),
+                  specs.getConfig()
+                  );
+            } catch (VersaoInvalidaException e) {
+              log.startNewTemplate("Erro de versão no arquivo do modelo");
+              log.putError(e.getMessage());
+              System.out.println("aasaa");
+              return;
+            }
             root.setLogger(log);
             processaTemplatesProjeto(specs.getProjeto(),log);
         });

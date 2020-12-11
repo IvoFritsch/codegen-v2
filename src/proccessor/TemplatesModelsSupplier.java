@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import model.ServerModel;
 
 
 /**
@@ -22,7 +23,7 @@ public class TemplatesModelsSupplier {
     public TemplatesModel getModeloPorNome(String projeto, String nomeModelo){
         try{
             if(modelosCarregados.containsKey(nomeModelo)) return modelosCarregados.get(nomeModelo);
-            TemplatesModel retorno = TemplatesModel.fromJson(CodegenDatabaseController.getArquivoModelo(projeto, nomeModelo));
+            TemplatesModel retorno = TemplatesModel.fromJson(ServerModel.fromJson(CodegenDatabaseController.getArquivoModelo(projeto, nomeModelo).json, nomeModelo).toJson(true));
             modelosCarregados.put(nomeModelo, retorno);
             return retorno;
         } catch (Exception e){

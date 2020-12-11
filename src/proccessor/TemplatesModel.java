@@ -7,12 +7,14 @@ package proccessor;
 
 import auxiliar.Utils;
 import com.google.gson.Gson;
+import database.Project;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import model.CodegenModelConfig;
+import model.ServerField;
 
 /**
  *
@@ -25,9 +27,21 @@ public class TemplatesModel {
     
     private CodegenModelConfig config;
     private TemplatesDataSupplier root;
+    private int versao;
 
     public String getNome() {
         return nome;
+    }
+    
+    TemplatesModel adicionaCamposPadraoProjeto(Project p){
+      List<ServerField> camposPadrao = p.getCamposPadrao();
+      if(camposPadrao == null) return this;
+      camposPadrao.forEach(c -> {
+        if(this.listaCampos.stream().noneMatch(cpe -> cpe.getNome().equals(c.getNome()))){
+          this.listaCampos.add(TemplatesField.fromJson(c.toJson()));
+        }
+      });
+      return this;
     }
     
     public List<TemplatesField> getListaCamposComAConfig(String config) {

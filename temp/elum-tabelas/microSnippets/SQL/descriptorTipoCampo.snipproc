@@ -1,0 +1,16 @@
+<#switch obj.tipo>
+  <#case "STRING">
+VARCHAR(${obj.getValorConfig("varchar_size")})<#break>
+  <#case "DATA">
+TIMESTAMP(2)<#break>
+  <#case "INTEIRO">
+<#if obj.tipoAsString == "Long">
+BIGINT<#break>
+</#if>
+INTEGER<#break>
+  <#case "COM_VIRGULA">
+NUMERIC(15,3)<#break>
+  <#case "BOOLEANO">
+TINYINT<#break>
+  <#default>
+</#switch>

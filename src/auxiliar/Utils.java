@@ -130,6 +130,6 @@ public class Utils {
     }
     
     public static String toJsonOnlyExpose(Object obj){
-        return new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create().toJson(obj);
+        return new GsonBuilder().setPrettyPrinting().excludeFieldsWithoutExposeAnnotation().create().toJson(obj);
     }
 }

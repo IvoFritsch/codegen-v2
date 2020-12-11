@@ -159,8 +159,17 @@ public class CodegenDatabaseController {
     removeFileAndParentsIfEmpty(path.getParent(), basePath);
 }
     
+    public static class ArquivoModel {
+      public String json;
+      public Project projeto;
+
+      public ArquivoModel(String json, String projeto) {
+        this.json = json;
+        this.projeto = getProjetoViaNome(projeto);
+      }
+    }
     
-    public static String getArquivoModelo(String projeto, String modelo) {
+    public static ArquivoModel getArquivoModelo(String projeto, String modelo) {
         String importadoDe = CodegenDatabaseController.getProjetoViaNome(projeto).modeloImportadoDoProjeto(modelo);
         if(importadoDe != null){
             projeto = importadoDe;
@@ -168,7 +177,10 @@ public class CodegenDatabaseController {
         File file = new File(pegaPastaPaiProjeto(projeto) + "models/" + modelo+".cgm");
         if(!file.exists()) return null;
         try {
-            return FileUtils.readFileToString(file, "UTF-8");
+            return new ArquivoModel(
+                FileUtils.readFileToString(file, "UTF-8"),
+                projeto
+            );
         } catch (Exception e) {
         }
         return null;
@@ -218,8 +230,7 @@ public class CodegenDatabaseController {
     }
     
     public static void gravaArquivoModelo(String projeto, ServerModel modelo) {
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        Utils.writeFile(new File(pegaPastaPaiProjeto(projeto)+"models/"+modelo.getNome()+".cgm"), gson.toJson(modelo));
+        Utils.writeFile(new File(pegaPastaPaiProjeto(projeto)+"models/"+modelo.getNome()+".cgm"), modelo.toJson());
     }
     
     public static void criaArquivoTemplate(String projeto, String nome) {

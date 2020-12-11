@@ -33,6 +33,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.swing.JOptionPane;
 import model.ServerModel;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.jetty.server.Request;
@@ -50,6 +51,7 @@ import proccessor.TemplatesProcessor;
 public class CodegenServer extends AbstractHandler {
 
     public static int PORTA = 9080;
+    private static TrayIcon trayIcon;
     
     static {
         org.eclipse.jetty.util.log.Log.setLog(new NoLogging());
@@ -92,6 +94,8 @@ public class CodegenServer extends AbstractHandler {
             } else {
                 supplyTemplateFile(target, baseRequest, request, response);
             }
+        } catch(VersaoInvalidaException e) {
+          newTrayNotification("Erro de versão, atualize o Codegen", e.getMessage(), TrayIcon.MessageType.ERROR);
         } catch (Exception e) {
         }
         // Inform jetty that this request has now been handled
@@ -182,7 +186,7 @@ public class CodegenServer extends AbstractHandler {
                 writer.println(ServerModel.fromJson(
                         CodegenDatabaseController.getArquivoModelo(
                                 retornaCookiePorNome(request.getCookies(), "project").getValue(), model
-                        )).toJson());
+                        ).json, model).toJson(true));
                 break;
             case "setModel":
                 String linha = request.getReader().lines().findFirst().get();
@@ -315,10 +319,15 @@ public class CodegenServer extends AbstractHandler {
         }
     }
 
+    public static void newTrayNotification(String title, String message, TrayIcon.MessageType type){
+        if(trayIcon == null) return;
+        trayIcon.displayMessage(title, message, type);
+    }
+    
     private static void criaIconeNaTray(){
         if(!SystemTray.isSupported()) return;
         final PopupMenu popup = new PopupMenu();
-        final TrayIcon trayIcon =
+        trayIcon =
                 new TrayIcon(Toolkit.getDefaultToolkit().getImage("web/haftware-logo.png"));
         final SystemTray tray = SystemTray.getSystemTray();
        

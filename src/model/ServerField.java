@@ -5,6 +5,7 @@
  */
 package model;
 
+import com.google.gson.Gson;
 import proccessor.CodegenFieldConfig;
 import com.google.gson.annotations.Expose;
 
@@ -25,5 +26,13 @@ public class ServerField {
 
     public CodegenFieldConfig getConfig() {
         return config;
+    }
+
+    public String getNome() {
+      return nome;
+    }
+    
+    public String toJson(){
+      return new Gson().toJson(this);
     }
 }

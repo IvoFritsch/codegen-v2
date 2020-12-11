@@ -6,6 +6,7 @@
 package proccessor;
 
 import auxiliar.Utils;
+import com.google.gson.Gson;
 import java.util.List;
 import java.util.Map;
 
@@ -105,6 +106,12 @@ public class TemplatesField {
     void preparaEstrutura(TemplatesModel model){
         this.model = model;
         config.preparaEstrutura(this);
+    }
+    
+    static TemplatesField fromJson(String json){
+        if(json == null) return null;
+        TemplatesField retorno = new Gson().fromJson(json, TemplatesField.class);
+        return retorno;
     }
     
 }

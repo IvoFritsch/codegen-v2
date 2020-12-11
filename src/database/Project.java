@@ -17,15 +17,20 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import main.VersaoInvalidaException;
+import model.ServerField;
 import model.ServerModel;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.TrueFileFilter;
+
 
 /**
  *
  * @author Ivo Fritsch
  */
 public final class Project {
+  
+    private final static int VERSAO_ATUAL = 1;
     
     @Expose
     private String nome;
@@ -38,6 +43,12 @@ public final class Project {
     
     @Expose
     private String caminhoSaidaGeracao;
+    
+    @Expose
+    private List<ServerField> camposPadrao = new ArrayList<>();
+    
+    @Expose
+    private int versao;
     
     private final List<String> templates;
     
@@ -55,7 +66,6 @@ public final class Project {
         public ModelLista(String nome) {
             this.nome = nome;
             importado = false;
-            this.nome = nome;
         }
 
         @Override
@@ -83,7 +93,10 @@ public final class Project {
     private final List<ModelLista> allModels;
     
     private final List<String> snippets;
-    
+
+    public List<ServerField> getCamposPadrao() {
+      return camposPadrao;
+    }
 
     public Project() {
         this.nome = "";
@@ -92,6 +105,7 @@ public final class Project {
         this.snippets = new ArrayList<>();
         this.assocTipo = new HashMap<>();
         this.generatedFilesChecksum = new HashMap<>();
+        this.versao = VERSAO_ATUAL;
     }
     
     public Project(String nome) {
@@ -101,6 +115,7 @@ public final class Project {
         this.snippets = new ArrayList<>();
         this.assocTipo = new HashMap<>();
         this.generatedFilesChecksum = new HashMap<>();
+        this.versao = VERSAO_ATUAL;
     }
 
     public String getCaminhoSaidaGeracao(){
@@ -193,7 +208,13 @@ public final class Project {
         try{
             Project retorno = new Gson().fromJson(json, Project.class);
             if(retorno.generatedFilesChecksum == null) retorno.generatedFilesChecksum = new HashMap<>();
+            if(retorno.versao > VERSAO_ATUAL){
+              throw new VersaoInvalidaException("projeto(project.cgp)", VERSAO_ATUAL, retorno.versao);
+            }
+            retorno.versao = VERSAO_ATUAL;
             return retorno;
+        } catch(VersaoInvalidaException e) {
+          throw e;
         } catch(Exception e){
             System.out.println(e.getMessage() + json);
             throw e;
