@@ -1,5 +1,7 @@
 {
   "projetos": {
-    "elum-tabelas": "C:/Users/Ivo/Documents/workspace/elum/elum-tabelas/codegenProject/project.cgp"
+    "elum-tabelas": "C:/Users/Ivo/Documents/workspace/elum/elum-tabelas/codegenProject/project.cgp",
+    "elum-back": "C:/Users/Ivo/Documents/workspace/elum/elum-back/codegenProject/project.cgp",
+    "elum-front": "C:/Users/Ivo/Documents/workspace/elum/elum-front/codegenProject/project.cgp"
   }
 }

@@ -15,7 +15,7 @@ public class VersaoInvalidaException extends RuntimeException {
   public int versaoEncontrada;
 
   public VersaoInvalidaException(String objeto, int versaoEsperada, int versaoEncontrada) {
-    super("Versão invalida no " + objeto + ", (esperada v"+versaoEsperada+", encontrada v"+versaoEncontrada+")");
+    super("Versão invalida no " + objeto + ", (o Codegen está na v"+versaoEsperada+", porém o projeto é da v"+versaoEncontrada+")");
     this.versaoEsperada = versaoEsperada;
     this.versaoEncontrada = versaoEncontrada;
     this.objeto = objeto;
