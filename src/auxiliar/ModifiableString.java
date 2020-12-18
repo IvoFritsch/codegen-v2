@@ -5,6 +5,8 @@
  */
 package auxiliar;
 
+import java.text.Normalizer;
+
 /**
  *
  * @author ivoaf
@@ -17,32 +19,22 @@ public class ModifiableString{
         this.valor = valor;
     }
 
-    public ModifiableString substring(int i) {
-        return new ModifiableString(valor.substring(i));
+    public ModifiableString removeAccents() {
+      return new ModifiableString(Normalizer
+        .normalize(valor, Normalizer.Form.NFD)
+        .replaceAll("[^\\p{ASCII}]", ""));
     }
-
-    public ModifiableString substring(int i, int i1) {
-        return new ModifiableString(valor.substring(i, i1));
+    
+    public ModifiableString removeNonAlphanumericChars() {
+      return new ModifiableString(valor.replaceAll("[^A-Za-z0-9 ]", ""));
     }
-
-    public ModifiableString replace(CharSequence cs, CharSequence cs1) {
-        return new ModifiableString(valor.replace(cs, cs1));
-    }
-
-    public ModifiableString toLowerCase() {
-        return new ModifiableString(valor.toLowerCase());
-    }
-
-    public ModifiableString toUpperCase() {
-        return new ModifiableString(valor.toUpperCase());
-    }
-
-    public ModifiableString trim() {
-        return new ModifiableString(valor.trim());
+    
+    public ModifiableString removeRepeatedSpaces() {
+      return new ModifiableString(valor.trim().replaceAll(" +", " "));
     }
     
     @Override
     public String toString() {
-        return valor;
+      return valor;
     }
 }

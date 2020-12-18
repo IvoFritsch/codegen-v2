@@ -1,1 +1,63 @@
-{"nome":"ModifiableString","listaCampos":[{"nome":"substring","tipoAsString":"StringModificavel","config":{"conf":{"params":{"subconfs":{"inicio":"int","fim":"[Opcional] int"},"nome":"params","temSubConfs":true},"descricao":{"nome":"descricao","valor":"Retorna uma nova StringModificavel, que vai da posição inicial especificada até a final.\u003cbr/\u003e Se a posição final não for especificada, vai até o fim da String","temSubConfs":false}}}}],"config":{"defaults":{}}}
+{
+  "listaCampos": [
+    {
+      "nome": "removeAccents",
+      "tipoAsString": "StringModificavel",
+      "config": {
+        "conf": {
+          "params": {
+            "subconfs": {},
+            "nome": "params",
+            "temSubConfs": true
+          },
+          "descricao": {
+            "nome": "descricao",
+            "valor": "Remove os acentos da String",
+            "temSubConfs": false
+          }
+        }
+      }
+    },
+    {
+      "nome": "removeNonAlphanumericChars",
+      "tipoAsString": "StringModificavel",
+      "config": {
+        "conf": {
+          "params": {
+            "subconfs": {},
+            "nome": "params",
+            "temSubConfs": true
+          },
+          "descricao": {
+            "nome": "descricao",
+            "valor": "Remove os caracteres não alfanuméricos da String",
+            "temSubConfs": false
+          }
+        }
+      }
+    },
+    {
+      "nome": "removeRepeatedSpaces",
+      "tipoAsString": "StringModificavel",
+      "config": {
+        "conf": {
+          "params": {
+            "subconfs": {},
+            "nome": "params",
+            "temSubConfs": true
+          },
+          "descricao": {
+            "nome": "descricao",
+            "valor": "Remove os espaços repetidos",
+            "temSubConfs": false
+          }
+        }
+      }
+    }
+  ],
+  "config": {
+    "defaults": {},
+    "modelConfigs": {}
+  },
+  "versao": 1
+}
